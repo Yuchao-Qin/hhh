@@ -2,20 +2,28 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store/index";
-import ElementUI from 'element-ui';
-// import 'element-ui/lib/theme-chalk/index.css';
+import 'element-ui/lib/theme-chalk/index.css';
 import axios from "axios";
 // import "@/permission"; //路由访问权限
-import { Button, Checkbox, Row, Col, Icon} from "element-ui";
+import { Button, Checkbox, Row, Col, Icon, Collapse, CollapseItem, RadioButton, RadioGroup, Menu, Submenu, MenuItemGroup, MenuItem} from "element-ui";
 Vue.config.productionTip = false;
 
 // 注册组件
-Vue.use(ElementUI);
 Vue.use(Button);
 Vue.use(Checkbox);
 Vue.use(Row);
 Vue.use(Col);
 Vue.use(Icon);
+// Vue.use(Radio);
+Vue.use(Collapse);
+Vue.use(CollapseItem);
+Vue.use(RadioGroup);
+Vue.use(RadioButton);
+Vue.use(Menu);
+Vue.use(RadioButton);
+Vue.use(Submenu);
+Vue.use(MenuItem);
+Vue.use(MenuItemGroup);
 
 
 
