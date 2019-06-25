@@ -5,10 +5,43 @@ import store from "./store/index";
 import 'element-ui/lib/theme-chalk/index.css';
 import axios from "axios";
 // import "@/permission"; //路由访问权限
-import { Button, Checkbox, Row, Col, Icon, Collapse, CollapseItem, RadioButton, RadioGroup, Menu, Submenu, MenuItemGroup, MenuItem} from "element-ui";
+import { Option, 
+         Select,
+         Input,
+         FormItem,
+         Form,
+         Button,
+         Checkbox,
+         Row, 
+         Col, 
+         Icon, 
+         Collapse, 
+         CollapseItem, 
+         RadioButton, 
+         RadioGroup, 
+         Menu, 
+         Submenu, 
+         MenuItemGroup, 
+         MenuItem, 
+         Breadcrumb, 
+         BreadcrumbItem, 
+         Table, 
+         TableColumn, 
+         Scrollbar, 
+         Pagination 
+         ,Dialog , 
+         CheckboxGroup, 
+         DatePicker
+        } from "element-ui";
+        
 Vue.config.productionTip = false;
 
 // 注册组件
+Vue.use(Option);
+Vue.use(Select);
+Vue.use(Input);
+Vue.use(FormItem);
+Vue.use(Form);
 Vue.use(Button);
 Vue.use(Checkbox);
 Vue.use(Row);
@@ -24,6 +57,15 @@ Vue.use(RadioButton);
 Vue.use(Submenu);
 Vue.use(MenuItem);
 Vue.use(MenuItemGroup);
+Vue.use(Breadcrumb);
+Vue.use(BreadcrumbItem);
+Vue.use(Table);
+Vue.use(TableColumn);
+Vue.use(Scrollbar);
+Vue.use(Pagination);
+Vue.use(Dialog);
+Vue.use(CheckboxGroup);
+Vue.use(DatePicker);
 
 
 
