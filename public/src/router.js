@@ -25,7 +25,12 @@ export default new Router({
       {
         path:'Management/Yhgl-2-1',
         name:'Yhgl-2-1',
-        components:  {default1:()=>import("./views/Management/Yhgl-2-1")}
+        components:  {default1:()=>import("./views/Management/Yhgl-2-1")},
+      },
+      {
+        path:'Management/Yhgl-2-1/BillDetail',
+        name:'BillDetail',
+        components:  {default1:()=>import("./views/Management/inPage/BillDetail")},
       },
       {
         path:'Management/Sjgl-2-2',
