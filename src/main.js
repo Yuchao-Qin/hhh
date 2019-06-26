@@ -4,6 +4,9 @@ import router from "./router";
 import store from "./store/index";
 import 'element-ui/lib/theme-chalk/index.css';
 import axios from "axios";
+import VueCropper from 'vue-cropper' 
+
+
 // import "@/permission"; //路由访问权限
 import { Option, 
          Select,
@@ -31,12 +34,14 @@ import { Option,
          Pagination 
          ,Dialog , 
          CheckboxGroup, 
-         DatePicker
+         DatePicker,
+         Divider,
         } from "element-ui";
         
 Vue.config.productionTip = false;
 
 // 注册组件
+Vue.use(VueCropper)
 Vue.use(Option);
 Vue.use(Select);
 Vue.use(Input);
@@ -66,6 +71,8 @@ Vue.use(Pagination);
 Vue.use(Dialog);
 Vue.use(CheckboxGroup);
 Vue.use(DatePicker);
+Vue.use(Divider);
+Vue.use(Select);
 
 
 
