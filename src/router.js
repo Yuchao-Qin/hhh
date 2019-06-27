@@ -28,11 +28,6 @@ export default new Router({
         components:  {default1:()=>import("./views/Management/Yhgl-2-1")},
       },
       {
-        path:'Management/Yhgl-2-1/BillDetail',
-        name:'BillDetail',
-        components:  {default1:()=>import("./views/Management/inPage/BillDetail")},
-      },
-      {
         path:'Management/Sjgl-2-2',
         name:'Sjgl-2-2',
         components:  {default1:()=>import("./views/Management/Sjgl-2-2")}
@@ -81,6 +76,16 @@ export default new Router({
         path:'Setting/Gzrz-4-2',
         name:'Gzrz-4-2',
         components:  {default1:()=>import("./views/Setting/Gzrz-4-2")}
+      },
+      {
+        path:'Management/Yhgl-2-1/BillDetail',
+        name:'BillDetail',
+        components:  {default1:()=>import("./views/Management/inPage/BillDetail")},
+      },
+      {
+        path:'Management/Yhgl-2-2/userManager',
+        name:'userManager',
+        components:  {default1:()=>import("./views/Management/inPage/userManager")},
       },
     ]
     }

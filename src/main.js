@@ -35,7 +35,7 @@ import { Option,
          ,Dialog , 
          CheckboxGroup, 
          DatePicker,
-         Divider,
+         Divider
         } from "element-ui";
         
 Vue.config.productionTip = false;
@@ -73,6 +73,7 @@ Vue.use(CheckboxGroup);
 Vue.use(DatePicker);
 Vue.use(Divider);
 Vue.use(Select);
+Vue.use(Collapse);
 
 
 

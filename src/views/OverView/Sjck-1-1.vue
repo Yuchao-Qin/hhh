@@ -128,7 +128,7 @@ export default {
     newAccount() {},
     search() {
       request
-        .get('/business/read/1')
+        .get('/feedback/test')
         .then(response => {
           console.log(response)
         })
