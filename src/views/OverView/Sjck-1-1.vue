@@ -83,7 +83,7 @@ export default {
   data() {
     return {
       radio1: '账户管理',
-            crumData: {
+      crumData: {
         breadItem: [{ name: '设置' }, { name: '账户权限' }, { name: '账户管理' }],
         leadingIn: false,
         leadingOut: false
@@ -131,11 +131,14 @@ export default {
   methods: {
     newAccount() {},
     search() {
-      request
-        .get('/feedback/test')
-        .then(response => {
-          console.log(response)
-        })
+      // request.post('post/accesstoken ', { accesstoken: '413e3ed3-56c5-469a-ab6d-3b8f6a704ec2' }).then(response => {
+      //   console.log(response)
+      // })
+      request({
+        url: 'post/accesstoken',
+        method: 'post',
+        params: { accesstoken: '413e3ed3-56c5-469a-ab6d-3b8f6a704ec2' }
+      })
     }
   },
   mounted() {
@@ -153,8 +156,6 @@ export default {
   flex-direction: column;
   height: 100%;
 }
-
-
 
 .headGroup {
   padding-top: 20px;

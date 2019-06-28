@@ -4,8 +4,8 @@ import store from "../store";
 // 创建axios实例
 const service = axios.create({
   baseURL: process.env.BASE_URL, // api 的 base_url
-  header:{'Content-Type': 'multipart/form-data' }
   // timeout: 5000 // 请求超时时间
+  // withCredentials: true
 });
 
 // request拦截器
