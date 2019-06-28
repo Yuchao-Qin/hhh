@@ -38,9 +38,9 @@ export default new Router({
         components:  {default1:()=>import("./views/Management/Kqgl-2-3")}
       },
       {
-        path:'Management/Xxgl-2-4',
-        name:'Xxgl-2-4',
-        components:  {default1:()=>import("./views/Management/Xxgl-2-4")}
+        path:'Management/Fkgl-2-4',
+        name:'Fkgl-2-4',
+        components:  {default1:()=>import("./views/Management/Fkgl-2-4")}
       },
       {
         path:'Content/Gggl-3-1',
@@ -66,6 +66,11 @@ export default new Router({
         path:'Content/Qtgl-3-5',
         name:'Qtgl-3-5',
         components:  {default1:()=>import("./views/Content/Qtgl-3-5")}
+      },
+      {
+        path:'Content/Spgl-3-6',
+        name:'Spgl-3-6',
+        components:  {default1:()=>import("./views/Content/Spgl-3-6")}
       },
       {
         path:'Setting/Zhqx-4-1',

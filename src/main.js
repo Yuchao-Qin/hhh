@@ -35,7 +35,12 @@ import { Option,
          ,Dialog , 
          CheckboxGroup, 
          DatePicker,
-         Divider
+         Divider,
+         Popover,
+         Upload
+        //  Dropdown,
+        //  DropdownMenu,
+        //  DropdownItem
         } from "element-ui";
         
 Vue.config.productionTip = false;
@@ -74,6 +79,11 @@ Vue.use(DatePicker);
 Vue.use(Divider);
 Vue.use(Select);
 Vue.use(Collapse);
+Vue.use(Popover);
+Vue.use(Upload);
+// Vue.use(Dropdown);
+// Vue.use(DropdownMenu);
+// Vue.use(DropdownItem);
 
 
 

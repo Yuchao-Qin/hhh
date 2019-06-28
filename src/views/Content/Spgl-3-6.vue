@@ -6,7 +6,7 @@
     <!-- 账户管理 -->
     <div class="tableContainer">
       <el-row :gutter="3" class="tableTitle">
-        <el-col :span="6" class="calendarContainer">
+        <el-col :span="4" class="calendarContainer">
           <el-date-picker size="mini" v-model="value1" type="daterange" class="calendar"
             range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
           </el-date-picker>
@@ -15,7 +15,7 @@
           </div>
 
         </el-col>
-        <el-col :span="12" class="searchContainer">
+        <el-col :span="6" class="searchContainer">
           <el-input size="mini" placeholder="请输入内容" v-model="searchValue" class="searchInput">
             <el-select v-model="searchSelect" slot="prepend" class="searchSelect"
               placeholder="请选择">
@@ -29,6 +29,34 @@
         <el-col :span="8">
           <el-button size="mini" type="primary">查看全部</el-button>
           <el-button size="mini" type="primary">删除选中项</el-button>
+          <el-popover class="popoverButton" placement="left" width="200"
+            trigger="click" v-model="subjectVisible">
+            <el-select size="mini" v-model="subjectMenu">
+              <el-option value="1" label="专题A"></el-option>
+              <el-option value="2" label="专题B"></el-option>
+              <el-option value="3" label="专题C"></el-option>
+            </el-select>
+            <div class="addMenuButtonContainer">
+              <el-button size="mini" type="primary" @click="subjectVisible=false">确认添加</el-button>
+            </div>
+            <el-button slot="reference" size="mini" type="primary">添加至专题</el-button>
+          </el-popover>
+
+          <el-popover class="popoverButton" placement="left" width="200"
+            trigger="click" v-model="menuVisible">
+            <el-select size="mini" v-model="addMenu">
+              <el-option value="1" label="热销专区"></el-option>
+              <el-option value="2" label="9.9包邮"></el-option>
+              <el-option value="3" label="特惠专区"></el-option>
+              <el-option value="4" label="品牌优选"></el-option>
+              <el-option value="5" label="大额抵扣"></el-option>
+            </el-select>
+            <div class="addMenuButtonContainer">
+              <el-button size="mini" type="primary" @click="menuVisible=false">确认添加</el-button>
+            </div>
+            <el-button slot="reference" size="mini" type="primary">添加至菜单</el-button>
+          </el-popover>
+
         </el-col>
       </el-row>
       <el-table ref="multipleTable" @selection-change="handleSelectionChange"
@@ -37,24 +65,31 @@
         </el-table-column>
         <el-table-column prop="accountNumber" label="编号">
         </el-table-column>
-        <el-table-column prop="character" label="用户ID" show-overflow-tooltip>
+        <el-table-column prop="character" label="商品ID" show-overflow-tooltip>
         </el-table-column>
-        <el-table-column prop="character" label="微信昵称">
+        <el-table-column prop="character" label="商品名称">
         </el-table-column>
-        <el-table-column prop="character" label="注册时间">
+        <el-table-column prop="character" label="商品主图">
         </el-table-column>
-        <el-table-column prop="character" label="手机号">
+        <el-table-column prop="character" label="商品详情页链接地址">
         </el-table-column>
-        <el-table-column prop="character" label="头像">
+        <el-table-column prop="character" label="商品一级类目">
         </el-table-column>
-        <el-table-column prop="character" label="绑定商家">
+        <el-table-column prop="character" label="商品价格（元）">
         </el-table-column>
-        <el-table-column prop="character" label="账户内余额">
+        <el-table-column prop="character" label="商品月销量">
         </el-table-column>
-        <el-table-column prop="operating" label="操作">
-          <el-button type="text" size="small" @click="dialogFormVisible = true">编辑</el-button>
-          <el-button type="text" size="small" class="delet">删除</el-button>
-          <el-button type="text" size="small" @click="toBillDetail">账单详情</el-button>
+        <el-table-column prop="character" label="店铺名称">
+        </el-table-column>
+        <el-table-column prop="character" label="优惠券ID">
+        </el-table-column>
+        <el-table-column prop="character" label="优惠券剩余量">
+        </el-table-column>
+        <el-table-column prop="character" label="优惠券面额">
+        </el-table-column>
+        <el-table-column prop="character" label="优惠券开始时间">
+        </el-table-column>
+        <el-table-column prop="character" label="优惠券结束时间">
         </el-table-column>
 
       </el-table>
@@ -96,10 +131,10 @@ export default {
       dialogFormVisible: false,
       dialogTableVisible: false,
       radio1: '账户管理',
-            crumData: {
+      crumData: {
         breadItem: [{ name: '设置' }, { name: '账户权限' }, { name: '账户管理' }],
-        leadingIn: false,
-        leadingOut: false
+        leadingIn: true,
+        leadingOut: true
       },
       tableData: [
         {
@@ -140,7 +175,11 @@ export default {
         nickName: '',
         phoneNumber: '',
         bangding: ''
-      }
+      },
+      addMenu: '',
+      menuVisible: false,
+      subjectVisible: false,
+      subjectMenu: ''
     }
   },
   watch: {
@@ -170,11 +209,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.popoverButton {
+  margin-left: 10px;
+}
 .page {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
+
 
 
 .headGroup {
@@ -196,7 +239,7 @@ export default {
 .tableName {
   font-weight: bold;
   align-self: flex-end;
-  text-align: left;
+  text-align: right;
 }
 .addAccount {
   text-align: left;
@@ -243,6 +286,11 @@ export default {
 .vue-cropper {
   height: 100px;
 }
+
+.addMenuButtonContainer {
+  text-align: center;
+  margin-top: 28px;
+}
 </style>
 
 <style>
@@ -250,4 +298,3 @@ export default {
   background: #fff;
 }
 </style>
-

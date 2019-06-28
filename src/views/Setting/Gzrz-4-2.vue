@@ -46,7 +46,11 @@ export default {
   data() {
     return {
       radio1: '账户管理',
-      crumData: [{ name: '设置' }, { name: '账户权限' }, { name: '账户管理' }],
+      crumData: {
+        breadItem: [{ name: '设置' }, { name: '账户权限' }, { name: '账户管理' }],
+        leadingIn: false,
+        leadingOut: false
+      },
       tableData: [
         {
           accountNumber: '2016-05-02',
@@ -106,20 +110,13 @@ export default {
   height: 100%;
 }
 
-.breadcrumb-box {
-  border: 1px solid #e1e1e1;
-  padding: 20px;
-  border-right: none;
-  border-left: none;
-}
-
 .headGroup {
   padding-top: 20px;
   text-align: left;
 }
 
 .tableContainer {
-  text-align:left;
+  text-align: left;
   padding: 0 15px;
   flex: 1;
   position: relative;

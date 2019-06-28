@@ -54,13 +54,14 @@ export default {
             { name: '用户管理', index: 'yhgl-2-1' },
             { name: '商家管理', index: 'sjgl-2-2' },
             { name: '卡券管理', index: 'kqgl-2-3' },
-            { name: '消息管理', index: 'xxgl-2-4' }
+            { name: '反馈管理', index: 'Fkgl-2-4' }
           ]
         },
         {
           title: '内&emsp;&emsp;容',
           icon: 'el-icon-folder-opened',
           item: [
+            { name: '商品管理', index: 'spgl-3-6' },
             { name: '广告管理', index: 'gggl-3-1' },
             { name: '导航管理', index: 'dhgl-3-2' },
             { name: '菜单管理', index: 'cdgl-3-3' },
