@@ -7,64 +7,62 @@
     <div class="tableContainer">
       <el-row :gutter="3" class="tableTitle">
         <el-col :span="6">
-          <span class="hidetitle">当前菜单栏模块状态为--显示/隐藏</span>
+          <span class="hidetitle">当前专题栏模块状态为--显示/隐藏</span>
         </el-col>
         <el-col :span="6">
-          <el-button size="mini" type="primary">菜单栏模块设为显示/隐藏</el-button>
+          <el-button size="mini" type="primary">专题栏模块设为显示/隐藏</el-button>
         </el-col>
         <el-col :span="8">
-          <el-button size="mini" type="primary" @click="addSubject=true">+添加菜单
+          <el-button size="mini" type="primary" @click="addSubject=true">+添加专题
           </el-button>
         </el-col>
       </el-row>
       <el-table :data="tableData" border stripe style="width: 100%">
-        <el-table-column prop="accountNumber" type="index" width="50"
-          label="排序">
+        <el-table-column prop="accountNumber" label="专题类型名">
         </el-table-column>
-        <el-table-column prop="character" label="菜单名称">
+        <el-table-column prop="character" label="首页专题图片">
         </el-table-column>
-        <el-table-column prop="character" label="图标">
+        <el-table-column prop="character" label="专题详情页标题">
         </el-table-column>
         <el-table-column prop="character" label="专题详情页大图">
-          <template slot="header" slot-scope="{}">
-            <el-select v-model="shang_jia" size="mini" placeholder="是否上架">
-              <el-option value="1" label="上架"></el-option>
-              <el-option value="2" label="下架">下架</el-option>
-            </el-select>
-          </template>
         </el-table-column>
-        <el-table-column prop="character" label="菜单详情页分类标题">
+        <el-table-column prop="character" label="大图跳转商品ID">
         </el-table-column>
         <el-table-column prop="operating" label="操作">
           <el-button type="text" size="small" class="delet"
-            @click="$router.push({name:'MenuManage'})">商品管理</el-button>
-          <el-button type="text" size="small" @click="menuDialogVisible = true">
-            编辑</el-button>
+            @click="$router.push({name:'ProdectManage'})">商品管理</el-button>
+          <el-button type="text" size="small"
+            @click="subjectEditVisible = true">编辑</el-button>
         </el-table-column>
         <el-table-column prop="FromIp" label="来源IP">
         </el-table-column>
       </el-table>
       <!-- 添加专题模态框 -->
-      <el-dialog width="40%" class="addSubjectTitle" title="添加菜单"
+      <el-dialog width="40%" class="addSubjectTitle" title="添加专题"
         :visible.sync="addSubject">
         <el-form label-width="180px" :model="ruleForm" status-icon width="40%"
           class="demo-ruleForm">
-          <el-form-item class="jueseName" label="菜单名称">
+          <el-form-item class="jueseName" label="专题类名">
             <el-input v-model="ruleForm.jueSeName" size="small"
               autocomplete="off">
             </el-input>
           </el-form-item>
-          <el-form-item class="jueseName" label="排序">
+          <el-form-item class="jueseName" label="首页专题图片">
             <el-input v-model="ruleForm.jueSeName" size="small"
               autocomplete="off">
             </el-input>
           </el-form-item>
-          <el-form-item class="jueseName" label="图标">
+          <el-form-item class="jueseName" label="专题详情页标题">
             <el-input v-model="ruleForm.jueSeName" size="small"
               autocomplete="off">
             </el-input>
           </el-form-item>
-          <el-form-item class="jueseName" label="菜单详情页分类标题">
+          <el-form-item class="jueseName" label="专题详情页大图">
+            <el-input v-model="ruleForm.jueSeName" size="small"
+              autocomplete="off">
+            </el-input>
+          </el-form-item>
+          <el-form-item class="jueseName" label="专题详情页跳转商品ID">
             <el-input v-model="ruleForm.jueSeName" size="small"
               autocomplete="off">
             </el-input>
@@ -77,29 +75,33 @@
       </el-dialog>
       <!-- 编辑模态框 -->
       <el-dialog width="40%" class="addSubjectTitle" title="编辑"
-        :visible.sync="menuDialogVisible">
+        :visible.sync="subjectEditVisible">
         <el-form label-width="180px" :model="ruleForm" status-icon width="40%"
           class="demo-ruleForm">
-          <el-form-item class="jueseName" label="菜单名称">
+          <el-form-item class="jueseName" label="专题类名">
             <el-input v-model="ruleForm.jueSeName" size="small"
               autocomplete="off">
             </el-input>
           </el-form-item>
-          <el-form-item class="jueseName" label="排序">
+          <el-form-item class="jueseName" label="首页专题图片">
             <el-input v-model="ruleForm.jueSeName" size="small"
               autocomplete="off">
             </el-input>
           </el-form-item>
-          <el-form-item class="jueseName" label="图标">
+          <el-form-item class="jueseName" label="专题详情页标题">
             <el-input v-model="ruleForm.jueSeName" size="small"
               autocomplete="off">
             </el-input>
           </el-form-item>
-          <el-form-item class="jueseName" label="是否上架">
-            <el-select v-model="shang_jia" size="small" placeholder="是否上架">
-              <el-option value="1" label="上架"></el-option>
-              <el-option value="2" label="下架">下架</el-option>
-            </el-select>
+          <el-form-item class="jueseName" label="专题详情页大图">
+            <el-input v-model="ruleForm.jueSeName" size="small"
+              autocomplete="off">
+            </el-input>
+          </el-form-item>
+          <el-form-item class="jueseName" label="专题详情页跳转商品ID">
+            <el-input v-model="ruleForm.jueSeName" size="small"
+              autocomplete="off">
+            </el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -120,7 +122,7 @@ export default {
   data() {
     return {
       addSubject: false,
-      menuDialogVisible: false,
+      subjectEditVisible: false,
       radio1: '账户管理',
       crumData: {
         breadItem: [{ name: '设置' }, { name: '账户权限' }, { name: '账户管理' }],
@@ -160,7 +162,6 @@ export default {
       value1: '',
       value2: '',
       searchValue: '',
-      shang_jia: '',
       ruleForm: {
         jueSeName: ''
       }
@@ -247,4 +248,3 @@ export default {
   text-align: center;
 }
 </style>
-

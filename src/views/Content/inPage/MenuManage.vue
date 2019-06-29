@@ -3,103 +3,83 @@
   <div class="page">
     <!-- 面包屑 -->
     <Breadcrumb :crumData="crumData"></Breadcrumb>
+    <h3 class="headGroup">
+      菜单商品管理————热销专区
+    </h3>
     <!-- 账户管理 -->
     <div class="tableContainer">
       <el-row :gutter="3" class="tableTitle">
-        <el-col :span="6">
-          <span class="hidetitle">当前菜单栏模块状态为--显示/隐藏</span>
-        </el-col>
-        <el-col :span="6">
-          <el-button size="mini" type="primary">菜单栏模块设为显示/隐藏</el-button>
-        </el-col>
-        <el-col :span="8">
-          <el-button size="mini" type="primary" @click="addSubject=true">+添加菜单
-          </el-button>
+        <el-col :span="24">
+          <el-button size="mini" type="primary">删除所有选项</el-button>
+          <el-button size="mini" type="primary">设为今日推荐</el-button>
+          <el-select v-model="productSelect" size="mini">
+            <el-option>全部商品</el-option>
+            <el-option>今日推荐商品</el-option>
+            <el-option>其他商品</el-option>
+          </el-select>
         </el-col>
       </el-row>
       <el-table :data="tableData" border stripe style="width: 100%">
-        <el-table-column prop="accountNumber" type="index" width="50"
-          label="排序">
+        <el-table-column type="selection" width="55">
         </el-table-column>
-        <el-table-column prop="character" label="菜单名称">
+        <el-table-column type="index" width="50" label="序号">
         </el-table-column>
-        <el-table-column prop="character" label="图标">
+        <el-table-column prop="accountNumber" label="商品ID">
         </el-table-column>
-        <el-table-column prop="character" label="专题详情页大图">
-          <template slot="header" slot-scope="{}">
-            <el-select v-model="shang_jia" size="mini" placeholder="是否上架">
-              <el-option value="1" label="上架"></el-option>
-              <el-option value="2" label="下架">下架</el-option>
-            </el-select>
-          </template>
+        <el-table-column prop="character" label="商品名称">
         </el-table-column>
-        <el-table-column prop="character" label="菜单详情页分类标题">
+        <el-table-column prop="character" label="商品主图">
         </el-table-column>
-        <el-table-column prop="operating" label="操作">
-          <el-button type="text" size="small" class="delet"
-            @click="$router.push({name:'MenuManage'})">商品管理</el-button>
-          <el-button type="text" size="small" @click="menuDialogVisible = true">
-            编辑</el-button>
+        <el-table-column prop="character" label="商品详情页链接地址">
         </el-table-column>
-        <el-table-column prop="FromIp" label="来源IP">
+        <el-table-column prop="character" label="商品一级类目">
+        </el-table-column>
+        <el-table-column prop="character" label="商品价格（元）">
+        </el-table-column>
+        <el-table-column prop="character" label="商品月销量">
+        </el-table-column>
+        <el-table-column prop="character" label="店铺名称">
+        </el-table-column>
+        <el-table-column prop="character" label="优惠券ID">
+        </el-table-column>
+        <el-table-column prop="character" label="优惠券剩余量">
+        </el-table-column>
+        <el-table-column prop="character" label="优惠券面额">
+        </el-table-column>
+        <el-table-column prop="character" label="优惠券开始时间">
+        </el-table-column>
+        <el-table-column prop="character" label="xxx">
         </el-table-column>
       </el-table>
       <!-- 添加专题模态框 -->
-      <el-dialog width="40%" class="addSubjectTitle" title="添加菜单"
+      <el-dialog width="40%" class="addSubjectTitle" title="添加专题"
         :visible.sync="addSubject">
         <el-form label-width="180px" :model="ruleForm" status-icon width="40%"
           class="demo-ruleForm">
-          <el-form-item class="jueseName" label="菜单名称">
+          <el-form-item class="jueseName" label="专题类名">
             <el-input v-model="ruleForm.jueSeName" size="small"
               autocomplete="off">
             </el-input>
           </el-form-item>
-          <el-form-item class="jueseName" label="排序">
+          <el-form-item class="jueseName" label="首页专题图片">
             <el-input v-model="ruleForm.jueSeName" size="small"
               autocomplete="off">
             </el-input>
           </el-form-item>
-          <el-form-item class="jueseName" label="图标">
+          <el-form-item class="jueseName" label="专题详情页标题">
             <el-input v-model="ruleForm.jueSeName" size="small"
               autocomplete="off">
             </el-input>
           </el-form-item>
-          <el-form-item class="jueseName" label="菜单详情页分类标题">
+          <el-form-item class="jueseName" label="专题详情页大图">
             <el-input v-model="ruleForm.jueSeName" size="small"
               autocomplete="off">
             </el-input>
           </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogEditVisible = false">取 消</el-button>
-          <el-button type="primary" @click="confirm('ruleForm')">确 定</el-button>
-        </div>
-      </el-dialog>
-      <!-- 编辑模态框 -->
-      <el-dialog width="40%" class="addSubjectTitle" title="编辑"
-        :visible.sync="menuDialogVisible">
-        <el-form label-width="180px" :model="ruleForm" status-icon width="40%"
-          class="demo-ruleForm">
-          <el-form-item class="jueseName" label="菜单名称">
+          <el-form-item class="jueseName" label="专题详情页跳转商品ID">
             <el-input v-model="ruleForm.jueSeName" size="small"
               autocomplete="off">
             </el-input>
-          </el-form-item>
-          <el-form-item class="jueseName" label="排序">
-            <el-input v-model="ruleForm.jueSeName" size="small"
-              autocomplete="off">
-            </el-input>
-          </el-form-item>
-          <el-form-item class="jueseName" label="图标">
-            <el-input v-model="ruleForm.jueSeName" size="small"
-              autocomplete="off">
-            </el-input>
-          </el-form-item>
-          <el-form-item class="jueseName" label="是否上架">
-            <el-select v-model="shang_jia" size="small" placeholder="是否上架">
-              <el-option value="1" label="上架"></el-option>
-              <el-option value="2" label="下架">下架</el-option>
-            </el-select>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -119,13 +99,13 @@ import Breadcrumb from '@/components/Breadcrumb.vue'
 export default {
   data() {
     return {
+      productSelect:'',
       addSubject: false,
-      menuDialogVisible: false,
       radio1: '账户管理',
       crumData: {
         breadItem: [{ name: '设置' }, { name: '账户权限' }, { name: '账户管理' }],
         leadingIn: false,
-        leadingOut: false
+        leadingOut: true
       },
       tableData: [
         {
@@ -160,7 +140,6 @@ export default {
       value1: '',
       value2: '',
       searchValue: '',
-      shang_jia: '',
       ruleForm: {
         jueSeName: ''
       }
@@ -191,8 +170,7 @@ export default {
 }
 
 .headGroup {
-  padding-top: 20px;
-  text-align: left;
+  // text-align: left;
 }
 
 .tableContainer {
@@ -240,6 +218,10 @@ export default {
 .jueseName {
   width: 60%;
 }
+
+.el-select {
+  margin-left: 10px;
+}
 </style>
 
 <style>
@@ -247,4 +229,3 @@ export default {
   text-align: center;
 }
 </style>
-

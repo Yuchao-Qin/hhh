@@ -13,7 +13,8 @@
     <div v-show="radio1 === '广告图分类'" class="tableContainer">
       <el-row :gutter="5" class="tableTitle">
         <el-col class="addAccount" :span="4">
-          <el-button size="small" type="primary" @click="AdvertisingClass = true">+
+          <el-button size="small" type="primary"
+            @click="AdvertisingClass = true">+
             添加广告类别</el-button>
         </el-col>
       </el-row>
@@ -21,14 +22,15 @@
         <el-table-column prop="accountNumber" label="广告图类名">
         </el-table-column>
         <el-table-column prop="operating" label="操作">
-          <el-button type="text" size="small" class="delet" @click="AdvertisingClass = true">编辑</el-button>
+          <el-button type="text" size="small" class="delet"
+            @click="AdvertisingClass = true">编辑</el-button>
           <el-button type="text" size="small">删除</el-button>
         </el-table-column>
       </el-table>
       <!-- 模态 -->
       <el-dialog width="30%" title="新增分类" :visible.sync="AdvertisingClass">
-        <el-form :model="ruleForm" status-icon ref="ruleForm" label-width="100px"
-          class="demo-ruleForm">
+        <el-form :model="ruleForm" status-icon ref="ruleForm"
+          label-width="100px" class="demo-ruleForm">
           <el-form-item label="广告图类名" prop="account">
             <el-input v-model="ruleForm.AdvertisingClassName" size="small"
               autocomplete="off"></el-input>
@@ -59,7 +61,8 @@
           <el-button size="mini" type="primary">删除选中项</el-button>
         </el-col>
         <el-col :span="4">
-          <el-button size="mini" type="primary" @click="addAdvertVisible = true">+
+          <el-button size="mini" type="primary"
+            @click="addAdvertVisible = true">+
             添加广告图</el-button>
         </el-col>
       </el-row>
@@ -71,13 +74,15 @@
         </el-table-column>
         <el-table-column prop="character" label="广告名称">
         </el-table-column>
-        <el-form-item class="jueseName" label="广告图类型">
-          <el-select v-model="isGrounding">
-            <el-option value="1" label="轮播banner图"></el-option>
-            <el-option value="2" label="'我的'页广告图"></el-option>
-            <el-option value="3" label="'完善信息页'广告图"></el-option>
-          </el-select>
-        </el-form-item>
+        <el-table-column class="jueseName" label="广告图类型">
+          <template slot="header" slot-scope="{}">
+            <el-select v-model="isGrounding" size="mini">
+              <el-option value="1" label="轮播banner图"></el-option>
+              <el-option value="2" label="'我的'页广告图"></el-option>
+              <el-option value="3" label="'完善信息页'广告图"></el-option>
+            </el-select>
+          </template>
+        </el-table-column>
         <el-table-column prop="havePower" label="广告图片">
         </el-table-column>
         <el-table-column prop="havePower" label="跳转商品ID">
@@ -85,28 +90,34 @@
         <el-table-column prop="havePower" label="是否上架">
         </el-table-column>
         <el-table-column prop="operating" label="操作">
-          <el-button type="text" size="small" class="delet" @click="dialogEditVisible = true">编辑</el-button>
+          <el-button type="text" size="small" class="delet"
+            @click="dialogEditVisible = true">编辑</el-button>
           <el-button type="text" size="small">删除</el-button>
         </el-table-column>
       </el-table>
       <!-- 模态 -->
       <el-dialog width="40%" title="新增角色" :visible.sync="dialogEditVisible">
-        <el-form :model="ruleForm" status-icon ref="ruleForm" label-width="100px"
-          class="demo-ruleForm">
+        <el-form :model="ruleForm" status-icon ref="ruleForm"
+          label-width="100px" class="demo-ruleForm">
           <el-form-item class="jueseName" label="排序">
-            <el-input v-model="jueSeName" size="small" autocomplete="off"></el-input>
+            <el-input v-model="jueSeName" size="small" autocomplete="off">
+            </el-input>
           </el-form-item>
           <el-form-item class="jueseName" label="广告名称">
-            <el-input v-model="jueSeName" size="small" autocomplete="off"></el-input>
+            <el-input v-model="jueSeName" size="small" autocomplete="off">
+            </el-input>
           </el-form-item>
           <el-form-item class="jueseName" label="广告图类型">
-            <el-input v-model="jueSeName" size="small" autocomplete="off"></el-input>
+            <el-input v-model="jueSeName" size="small" autocomplete="off">
+            </el-input>
           </el-form-item>
           <el-form-item class="jueseName" label="广告图片">
-            <el-input v-model="jueSeName" size="small" autocomplete="off"></el-input>
+            <el-input v-model="jueSeName" size="small" autocomplete="off">
+            </el-input>
           </el-form-item>
           <el-form-item class="jueseName" label="跳转商品ID">
-            <el-input v-model="jueSeName" size="small" autocomplete="off"></el-input>
+            <el-input v-model="jueSeName" size="small" autocomplete="off">
+            </el-input>
           </el-form-item>
           <el-form-item class="jueseName" label="是否上架">
             <!-- <el-input v-model="jueSeName" size="small" autocomplete="off"></el-input> -->
@@ -123,10 +134,11 @@
       </el-dialog>
       <!-- 添加广告图模态 -->
       <el-dialog width="40%" title="新增角色" :visible.sync="addAdvertVisible">
-        <el-form :model="ruleForm" status-icon ref="ruleForm" label-width="100px"
-          class="demo-ruleForm">
+        <el-form :model="ruleForm" status-icon ref="ruleForm"
+          label-width="100px" class="demo-ruleForm">
           <el-form-item class="jueseName" label="广告名称">
-            <el-input v-model="jueSeName" size="small" autocomplete="off"></el-input>
+            <el-input v-model="jueSeName" size="small" autocomplete="off">
+            </el-input>
           </el-form-item>
           <el-form-item class="jueseName" label="广告图类型">
             <el-select v-model="isGrounding">
@@ -136,13 +148,16 @@
             </el-select>
           </el-form-item>
           <el-form-item class="jueseName" label="广告图片链接">
-            <el-input v-model="jueSeName" size="small" autocomplete="off"></el-input>
+            <el-input v-model="jueSeName" size="small" autocomplete="off">
+            </el-input>
           </el-form-item>
           <el-form-item class="jueseName" label="跳转商品ID">
-            <el-input v-model="jueSeName" size="small" autocomplete="off"></el-input>
+            <el-input v-model="jueSeName" size="small" autocomplete="off">
+            </el-input>
           </el-form-item>
           <el-form-item class="jueseName" label="排序">
-            <el-input v-model="jueSeName" size="small" autocomplete="off"></el-input>
+            <el-input v-model="jueSeName" size="small" autocomplete="off">
+            </el-input>
           </el-form-item>
           <el-form-item class="jueseName" label="是否上架">
             <!-- <el-input v-model="jueSeName" size="small" autocomplete="off"></el-input> -->

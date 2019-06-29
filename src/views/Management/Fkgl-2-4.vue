@@ -26,7 +26,7 @@
       </el-row>
       <el-table ref="multipleTable" :data="tableData" border stripe style="width: 100%">
         <el-table-column prop="character" class-name="selectTableHeader" width="200px">
-          <template slot="header" slot-scope="scope">
+          <template slot="header" slot-scope="{}">
             <el-select v-model="fan_kui_status" size="mini" placeholder="反馈状态">
               <el-option label="问题" value="1">
               </el-option>
@@ -50,7 +50,7 @@
         <el-table-column prop="character" label="绑定商家">
         </el-table-column>
         <el-table-column prop="character" class-name="selectTableHeader" width="200px">
-          <template slot="header" slot-scope="scope">
+          <template slot="header" slot-scope="{}">
             <el-select v-model="tableSelectValue" size="mini" placeholder="处理状态">
               <el-option label="处理状态" key="1" value="1">
               </el-option>

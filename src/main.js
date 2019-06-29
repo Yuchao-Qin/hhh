@@ -37,7 +37,8 @@ import { Option,
          DatePicker,
          Divider,
          Popover,
-         Upload
+         Upload,
+         Tag
         //  Dropdown,
         //  DropdownMenu,
         //  DropdownItem
@@ -81,6 +82,7 @@ Vue.use(Select);
 Vue.use(Collapse);
 Vue.use(Popover);
 Vue.use(Upload);
+Vue.use(Tag);
 // Vue.use(Dropdown);
 // Vue.use(DropdownMenu);
 // Vue.use(DropdownItem);

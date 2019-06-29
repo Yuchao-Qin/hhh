@@ -58,9 +58,9 @@ export default new Router({
         components:  {default1:()=>import("./views/Content/Cdgl-3-3")}
       },
       {
-        path:'Content/Jxth-3-4',
-        name:'Jxth-3-4',
-        components:  {default1:()=>import("./views/Content/Jxth-3-4")}
+        path:'Content/Ztgl-3-4',
+        name:'Ztgl-3-4',
+        components:  {default1:()=>import("./views/Content/Ztgl-3-4")}
       },
       {
         path:'Content/Qtgl-3-5',
@@ -91,6 +91,16 @@ export default new Router({
         path:'Management/Yhgl-2-2/userManager',
         name:'userManager',
         components:  {default1:()=>import("./views/Management/inPage/userManager")},
+      },
+      {
+        path:'Content/Ztgl-3-4/ProdectManage',
+        name:'ProdectManage',
+        components:  {default1:()=>import("./views/Content/inPage/ProdectManage")},
+      },
+      {
+        path:'Content/Ztgl-3-4/MenuManage',
+        name:'MenuManage',
+        components:  {default1:()=>import("./views/Content/inPage/MenuManage")},
       },
     ]
     }

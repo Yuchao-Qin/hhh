@@ -65,7 +65,7 @@ export default {
             { name: '广告管理', index: 'gggl-3-1' },
             { name: '导航管理', index: 'dhgl-3-2' },
             { name: '菜单管理', index: 'cdgl-3-3' },
-            { name: '精选特惠', index: 'jxth-3-4' },
+            { name: '专题管理', index: 'ztgl-3-4' },
             { name: '其他管理', index: 'qtgl-3-5' }
           ]
         },
