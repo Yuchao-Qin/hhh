@@ -49,7 +49,7 @@
         <el-table-column prop="character" label="绑定商家">
         </el-table-column>
         <el-table-column prop="character" width="200px">
-          <template slot="header" slot-scope="scope">
+          <template slot="header" slot-scope="{}">
             <el-select v-model="tableSelectValue" size="mini" placeholder="禁用状态">
               <el-option label="未禁用" value="未禁用">
               </el-option>

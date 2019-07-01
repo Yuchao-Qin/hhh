@@ -1,9 +1,14 @@
 <template>
   <div class="breadcrumb-box">
     <el-breadcrumb separator-class="el-icon-arrow-right">
-
-      <el-breadcrumb-item v-for="(item,index) in crumData.breadItem"
-        :key="index">{{item.name}}</el-breadcrumb-item>
+      <span class="el-breadcrumb__item_box"
+        v-for="(item,index) in crumData.breadItem" :key="index">
+        <el-breadcrumb-item v-if="item.bits" :to="{name:item.bits}">
+          {{item.name}}
+        </el-breadcrumb-item>
+        <el-breadcrumb-item v-else>{{item.name}}
+        </el-breadcrumb-item>
+      </span>
     </el-breadcrumb>
     <div>
       <input class="fileInput" accept=".csv" type="file" name="file" ref="file"
@@ -90,6 +95,27 @@ export default {
 
 .fileInput {
   display: none;
+}
+</style>
+
+<style>
+.el-breadcrumb__item:last-child .el-breadcrumb__separator {
+  display: inline;
+}
+
+.el-breadcrumb__item_box:last-child .el-breadcrumb__inner_box:hover {
+  font-weight: 400;
+  color: #606266;
+  cursor: text;
+}
+
+.el-breadcrumb__inner.is-link {
+ font-weight: 700 !important;
+}
+.el-breadcrumb__inner.is-link:hover {
+ font-weight: 700 !important;
+    color: #409EFF !important;
+    cursor: pointer !important;
 }
 </style>
 

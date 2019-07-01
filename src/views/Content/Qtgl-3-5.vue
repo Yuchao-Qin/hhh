@@ -1,153 +1,417 @@
 <template>
-  <div class="table_box">
-    <div class="btn" style="text-align: left;">
-      <el-button type="primary" @click="addItem">新增</el-button>
+  <div class="page">
+    <!-- 面包屑 -->
+    <Breadcrumb :crumData="crumData"></Breadcrumb>
+    <!-- tab -->
+    <div class="headGroup">
+      <el-radio-group v-model="radio1" size="small">
+        <el-radio-button label="搜索管理"></el-radio-button>
+        <el-radio-button label="帮助中心管理"></el-radio-button>
+      </el-radio-group>
     </div>
-    <el-table :data="list" border :summary-method="getSummaries" show-summary style="width: 100%;" stripe height="260">
-      <el-table-column label="序号" width="80px" align='center'>
-        <template slot-scope="scope">
-          <span>{{ scope.$index +1 }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="最喜欢吃" align='center'>
-        <template slot-scope="scope">
-          <span v-if="!scope.row.isEgdit">{{['橙子','橘子','榴莲'][scope.row.fruitSort-1]}}</span>
-          <el-select placeholder="请选择" v-if="scope.row.isEgdit" v-model="scope.row.fruitSort">
-            <el-option v-for="(item, index) in ['橙子','橘子','榴莲']" :key="index+1" :label="item" :value="index+1">
-            </el-option>
-          </el-select>
-        </template>
-      </el-table-column>
-      <el-table-column prop="firstNum" label="第一周吃的数量" align='center'>
-        <template slot-scope="scope">
-          <span v-if="!scope.row.isEgdit">{{scope.row.firstNum}}</span>
-          <el-input v-if="scope.row.isEgdit" v-model="scope.row.firstNum"></el-input>
-        </template>
-      </el-table-column>
-      <el-table-column prop="secondNum" label="第二周吃的数量" align='center'>
-        <template slot-scope="scope">
-          <span v-if="!scope.row.isEgdit">{{scope.row.secondNum}}</span>
-          <el-input v-if="scope.row.isEgdit" v-model="scope.row.secondNum"></el-input>
-        </template>
-      </el-table-column>
-      <el-table-column prop="thirdNum" label="第三周吃的数量" align='center'>
-        <template slot-scope="scope">
-          <span v-if="!scope.row.isEgdit">{{scope.row.thirdNum}}</span>
-          <el-input v-if="scope.row.isEgdit" v-model="scope.row.thirdNum"></el-input>
-        </template>
-      </el-table-column>
-      <el-table-column prop="fourthNum" label="第四周吃的数量" align='center'>
-        <template slot-scope="scope">
-          <span v-if="!scope.row.isEgdit">{{scope.row.fourthNum}}</span>
-          <el-input v-if="scope.row.isEgdit" v-model="scope.row.fourthNum"></el-input>
-        </template>
-      </el-table-column>
-      <el-table-column fixed="right" label="操作" align='center'>
-        <template slot-scope="scope">
-          <el-button v-if="!scope.row.isEgdit" type="primary" size="small" @click='edit(scope.$index,scope.row)' icon="el-icon-edit" circle></el-button>
-          <el-button v-if="scope.row.isEgdit" type="success" size="small" @click='editSuccess(scope.$index,scope.row)' icon="el-icon-check" circle></el-button>
-          <el-button @click.native.prevent="deleteItem(scope.$index, list)" type="danger" size="small" icon="el-icon-delete" circle></el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <div style="margin-top: 30px;">
-      <el-button type="primary" @click="goNextPage">跳转页面</el-button>
+    <!-- 账户管理 -->
+    <div v-show="radio1 === '搜索管理'" class="tableContainer">
+      <el-row :gutter="3" class="tableTitle">
+        <el-col :span="6">
+          <el-form size="mini" :model="ruleForm" ref="ruleForm"
+            label-width="100px">
+            <el-form-item label="搜索框文字">
+              <!-- <el-input v-if="findFont" placeholder="请输入内容" label="发现文字"
+                v-model="ruleForm.searchValue"  class="searchInput"  :disabled="true">
+              </el-input> -->
+              <el-input placeholder="请输入内容" label="发现文字"
+                v-model="ruleForm.searchValue" class="searchInput">
+              </el-input>
+            </el-form-item>
+          </el-form>
+        </el-col>
+        <el-col :span="3">
+          <el-button type="primary" size="mini" @click="findFont = !findFont">编辑</el-button>
+        </el-col>
+        <el-col :span="6">
+          <el-button size="mini" type="primary">删除选中项</el-button>
+          <el-button size="mini" type="primary"
+            @click="dialogFormVisible = true">+ 添加搜索发现文字</el-button>
+        </el-col>
+      </el-row>
+      <el-table :data="tableData" border stripe style="width: 100%">
+        <el-table-column type="selection" width="55" label="账号">
+        </el-table-column>
+        <el-table-column type="index" width="55" label="排序">
+        </el-table-column>
+        <el-table-column prop="character" label="文本内容">
+        </el-table-column>
+        <el-table-column prop="name" label="文本颜色">
+        </el-table-column>
+        <el-table-column prop="operating" label="操作">
+          <el-button type="text" size="small" class="delet" @click="FontEditVisible = true">编辑</el-button>
+          <el-button type="text" size="small">删除</el-button>
+        </el-table-column>
+      </el-table>
+      <!-- 模态 -->
+      <el-dialog width="30%" title="添加搜索发现文字" :visible.sync="dialogFormVisible">
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"
+          label-width="100px" class="demo-ruleForm">
+          <el-form-item label="排序" prop="account">
+            <el-input v-model="ruleForm.account" size="small"
+              autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="文本内容" prop="pass">
+            <el-input type="password" size="small" v-model="ruleForm.pass"
+              autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="文本颜色" prop="checkPass">
+            <el-input type="password" size="small" v-model="ruleForm.checkPass"
+              autocomplete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="confirm('ruleForm')">确认添加
+          </el-button>
+        </div>
+      </el-dialog>
+      <!-- 编辑模态 -->
+      <el-dialog width="30%" title="添加搜索发现文字" :visible.sync="FontEditVisible">
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"
+          label-width="100px" class="demo-ruleForm">
+          <el-form-item label="排序" prop="account">
+            <el-input v-model="ruleForm.account" size="small"
+              autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="文本内容" prop="pass">
+            <el-input type="password" size="small" v-model="ruleForm.pass"
+              autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="文本颜色" prop="checkPass">
+            <el-input type="password" size="small" v-model="ruleForm.checkPass"
+              autocomplete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="FontEditVisible = false">取 消</el-button>
+          <el-button type="primary" @click="confirm('ruleForm')">确认添加
+          </el-button>
+        </div>
+      </el-dialog>
+      <!-- 分页 -->
+      <el-pagination class="pagination" background layout="prev, pager, next"
+        :pager-count='17' :total="1000">
+      </el-pagination>
+    </div>
+    <!-- 权限管理 -->
+    <div v-show="radio1 === '帮助中心管理'" class="tableContainer">
+      <el-row :gutter="5" class="tableTitle">
+        <el-col class="tableName" :span="16"><span>权限列表</span></el-col>
+        <el-col class="addAccount" :span="8">
+          <el-button size="small" type="primary"
+            @click="dialogTableVisible = true">+
+            新增用户</el-button>
+        </el-col>
+      </el-row>
+      <el-collapse v-model="activeNames">
+        <el-collapse-item name="1">
+          <template slot="title">
+            <!-- <el-checkbox v-model="checked"></el-checkbox> -->
+            <div class="collapseItem"><span>序号：</span><span>1</span>
+            </div>
+            <div class="collapseItem"><span>标题及内容：</span><span>xxxxxxxxx</span>
+            </div>
+            <div class="collapseItem"><span>
+                <el-button type="text" @click.stop="dialogEditVisible = true">编辑</el-button>
+                <el-button type="text">删除</el-button>
+              </span>
+            </div>
+          </template>
+          <el-input type="textarea" v-model="text.desc" :disabled="true"></el-input>
+        </el-collapse-item>
+        <el-collapse-item title="反馈 Feedback" name="2">
+          <template slot="title">
+            <!-- <el-checkbox v-model="checked"></el-checkbox> -->
+            <div class="collapseItem"><span>序号：</span><span>1</span>
+            </div>
+            <div class="collapseItem"><span>标题及内容：</span><span>xxxxxxxxx</span>
+            </div>
+            <div class="collapseItem"><span>
+                <el-button type="text" @click.stop="dialogEditVisible = true">编辑</el-button>
+                <el-button type="text">删除</el-button>
+              </span>
+            </div>
+          </template>
+          <el-input type="textarea" v-model="text.desc" :disabled="true"></el-input>
+        </el-collapse-item>
+        <el-collapse-item title="效率 Efficiency" name="3">
+          <template slot="title">
+            <!-- <el-checkbox v-model="checked"></el-checkbox> -->
+            <div class="collapseItem"><span>序号：</span><span>1</span>
+            </div>
+            <div class="collapseItem"><span>标题及内容：</span><span>xxxxxxxxx</span>
+            </div>
+            <div class="collapseItem"><span>
+                <el-button type="text" @click.stop="dialogEditVisible = true">编辑</el-button>
+                <el-button type="text">删除</el-button>
+              </span>
+            </div>
+          </template>
+          <el-input type="textarea" v-model="text.desc" :disabled="true"></el-input>
+        </el-collapse-item>
+      </el-collapse>
+      <!-- 模态 -->
+      <el-dialog width="50%" title="添加帮助内容" :visible.sync="dialogTableVisible">
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"
+          label-width="100px" class="demo-ruleForm">
+          <el-form-item class="jueseName" label="标题">
+            <el-input v-model="jueSeName" size="small" autocomplete="off">
+            </el-input>
+          </el-form-item>
+          <el-form-item class="jueseName" label="内容">
+            <el-input v-model="jueSeName" size="small" autocomplete="off">
+            </el-input>
+          </el-form-item>
+          <el-form-item class="jueseName" label="排序">
+            <el-input v-model="jueSeName" size="small" autocomplete="off">
+            </el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogTableVisible = false">取 消</el-button>
+          <el-button type="primary" @click="confirm('ruleForm')">确 定</el-button>
+        </div>
+      </el-dialog>
+      <!-- 编辑模态框 -->
+      <el-dialog width="50%" title="添加帮助内容" :visible.sync="dialogEditVisible">
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"
+          label-width="100px" class="demo-ruleForm">
+          <el-form-item class="jueseName" label="排序">
+            <el-input v-model="jueSeName" size="small" autocomplete="off">
+            </el-input>
+          </el-form-item>
+          <el-form-item class="jueseName" label="标题">
+            <el-input v-model="jueSeName" size="small" autocomplete="off">
+            </el-input>
+          </el-form-item>
+          <el-form-item class="jueseName" label="内容">
+            <el-input type="textarea" v-model="text.desc" ></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogEditVisible = false">取 消</el-button>
+          <el-button type="primary" @click="confirm('ruleForm')">确 定</el-button>
+        </div>
+      </el-dialog>
+      <!-- 分页 -->
+      <el-pagination class="pagination" background layout="prev, pager, next"
+        :pager-count='17' :total="1000">
+      </el-pagination>
     </div>
   </div>
 </template>
 <script>
+import Breadcrumb from '@/components/Breadcrumb.vue'
 export default {
   data() {
+    var validateAccount = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入账号'))
+      } else if (!/^[a-zA-Z0-9]{6,18}$/.test(value)) {
+        callback(new Error('请输入6~18位可由字母和数字组成的账号'))
+      } else {
+        if (this.ruleForm.checkPass !== '') {
+          this.$refs.ruleForm.validateField('checkPass')
+        }
+        callback()
+      }
+    }
+
+    var validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'))
+      } else if (!/^(?=.*[0-9])(?=.*[a-zA-Z])(.{8,})$/.test(value)) {
+        callback(new Error('请输入至少8位数字字母组成的密码'))
+      } else {
+        if (this.ruleForm.checkPass !== '') {
+          this.$refs.ruleForm.validateField('checkPass')
+        }
+        callback()
+      }
+    }
+
+    var validatePass2 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'))
+      } else if (value !== this.ruleForm.pass) {
+        callback(new Error('两次输入密码不一致!'))
+      } else {
+        callback()
+      }
+    }
     return {
-      list: [{
-        id: 1,
-        fruitSort: 1,
-        firstNum: 10,
-        secondNum: 3,
-        thirdNum: 4,
-        fourthNum: 6,
-      }, {
-        id: 2,
-        fruitSort: 2,
-        firstNum: 7,
-        secondNum: 6,
-        thirdNum: 8,
-        fourthNum: 2,
-      }, {
-        id: 3,
-        fruitSort: 3,
-        firstNum: 5,
-        secondNum: 6,
-        thirdNum: 8,
-        fourthNum: 9,
-      }, {
-        id: 4,
-        fruitSort: 3,
-        firstNum: 10,
-        secondNum: 3,
-        thirdNum: 4,
-        fourthNum: 6,
-      }],
+      radio1: '搜索管理',
+      dialogEditVisible:false,
+      FontEditVisible:false,
+      findFont:true,
+      activeNames: '',
+      overView: [],
+      management: [],
+      content: [],
+      setting: [],
+      text:{desc:null},
+      jueSeName: '',
+      crumData: {
+        breadItem: [{ name: '设置' }, { name: '账户权限' }, { name: '账户管理' }],
+        leadingIn: false,
+        leadingOut: false
+      },
+      tableData: [
+        {
+          accountNumber: '2016-05-02',
+          character: '管理员',
+          name: '王小虎',
+          phoneNumber: '13888888888',
+          staus: 200
+        },
+        {
+          accountNumber: '2016-05-04',
+          character: '管理员',
+          name: '王小虎',
+          phoneNumber: '13888888888',
+          staus: 200
+        },
+        {
+          accountNumber: '2016-05-01',
+          character: '管理员',
+          name: '王小虎',
+          phoneNumber: '13888888888',
+          staus: 200
+        },
+        {
+          accountNumber: '2016-05-03',
+          character: '管理员',
+          name: '王小虎',
+          phoneNumber: '13888888888',
+          staus: 200
+        }
+      ],
+      JueseTableData: [
+        {
+          character: '管理员',
+          havePower: '王小虎'
+        },
+        {
+          character: '管理员',
+          havePower: '王小虎'
+        },
+        {
+          character: '管理员',
+          havePower: '王小虎'
+        },
+        {
+          character: '管理员',
+          havePower: '王小虎'
+        }
+      ],
+      dialogFormVisible: false,
+      dialogTableVisible: false,
+      ruleForm: {
+        pass: '',
+        checkPass: '',
+        account: ''
+      },
+      rules: {
+        account: [{ required: true, validator: validateAccount, trigger: 'blur' }],
+        pass: [{ required: true, validator: validatePass, trigger: 'blur' }],
+        checkPass: [{ required: true, validator: validatePass2, trigger: 'blur' }],
+        region: [{ required: true, message: '请选择活动区域', trigger: 'change' }]
+      },
+      formLabelWidth: '120px'
+    }
+  },
+  watch: {
+    radio1(newValue) {
+      this.crumData.breadItem.splice(this.crumData.breadItem.length - 1, 1, { name: newValue })
     }
   },
   methods: {
-    //合计 表格每一列需要带上prop
-    getSummaries(param) {
-      const { columns, data } = param;
-      const sums = [];
-      columns.forEach((column, index) => {
-        if (index === 0) {
-          sums[index] = '总数量';
-          return;
-        }
-        const values = data.map(item => Number(item[column.property]));
-        if (!values.every(value => isNaN(value))) {
-          sums[index] = values.reduce((prev, curr) => {
-            const value = Number(curr);
-            if (!isNaN(value)) {
-              return prev + curr;
-            } else {
-              return prev;
-            }
-          }, 0);
-          sums[index] += '(个)';
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+    },
+    confirm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          alert('submit!')
+          this.dialogFormVisible = false
         } else {
-          sums[index] = '';
+          console.log('error submit!!')
+          return false
+          this.dialogFormVisible = true
         }
-      });
-
-      return sums;
-    },
-    //新增数据
-    addItem() {
-      let item = {
-        id: null,
-        fruitSort: null,
-        firstNum: null,
-        secondNum: null,
-        thirdNum: null,
-        fourthNum: null,
-        isEgdit: true
-      }
-      this.list.push(item)
-    },
-    //删除数据
-    deleteItem(index, list) {
-      list.splice(index, 1);
-    },
-    //编辑数据
-    edit(index, row) {
-      this.$set(row, 'isEgdit', true)
-    },
-    //编辑成功
-    editSuccess(index, row) {
-      this.$set(row, 'isEgdit', false)
-    },
-    //跳转下一页面
-    goNextPage() {
-      this.$router.push({ name: 'echartTest' })
+      })
     }
+  },
+  mounted() {
+    console.log(1)
+  },
+  components: {
+    Breadcrumb
   }
-
 }
 </script>
+
+<style lang="scss" scoped>
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.headGroup {
+  padding-top: 20px;
+}
+
+.tableContainer {
+  padding: 0 15px;
+  flex: 1;
+  position: relative;
+  .tableTitle {
+    // display: flex;
+    padding: 10px;
+  }
+}
+
+.tableName {
+  font-weight: bold;
+  align-self: flex-end;
+  text-align: left;
+}
+.addAccount {
+  text-align: left;
+}
+.delet {
+  color: red;
+}
+
+.pagination {
+  position: absolute;
+  bottom: 75px;
+  left: calc(50% - 505px);
+}
+
+.el-select {
+  width: 100%;
+}
+
+.el-checkbox-group {
+  text-align: left;
+}
+
+.jueseName {
+  width: 40%;
+  text-align: left;
+}
+
+.collapseItem {
+  margin-right: 30px;
+}
+</style>
+
+

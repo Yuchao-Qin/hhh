@@ -31,7 +31,7 @@
         </el-table-column>
         <el-table-column prop="operating" label="操作">
           <el-button type="text" size="small" class="delet">删除</el-button>
-          <el-button type="text" size="small">修改</el-button>
+          <el-button type="text" size="small" @click="zhuanghu_manage_edit = true">修改</el-button>
         </el-table-column>
       </el-table>
       <!-- 模态 -->
@@ -64,12 +64,41 @@
           <el-button type="primary" @click="confirm('ruleForm')">确 定</el-button>
         </div>
       </el-dialog>
+      <el-dialog width="30%" title="修改" :visible.sync="zhuanghu_manage_edit">
+        <el-form :model="zhanghu_manage_from" status-icon ref="zhuanghu_manage_from"
+          label-width="100px" class="demo-ruleForm">
+          <!-- <el-form-item label="状态" >
+            <el-input v-model="zhanghu_manage_from.account" size="small" autocomplete="off"></el-input>
+          </el-form-item> -->
+          <el-form-item label="姓名" >
+            <el-input type="password" size="small" v-model="zhanghu_manage_from.pass"
+              autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="手机号">
+            <el-input type="password" size="small" v-model="zhanghu_manage_from.checkPass"
+              autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="角色" size="small" >
+            <el-select v-model="zhanghu_manage_from.region" autocomplete="off" placeholder="请选择角色">
+              <el-option label="管理员" value="manager"></el-option>
+              <el-option label="产品部" value="producter"></el-option>
+              <el-option label="市场部" value="market"></el-option>
+              <el-option label="运营部" value="yunYing"></el-option>
+              <el-option label="开发部" value="dever"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="zhuanghu_manage_edit = false">取 消</el-button>
+          <el-button type="primary" @click="confirm('ruleForm')">确 定</el-button>
+        </div>
+      </el-dialog>
       <!-- 分页 -->
       <el-pagination class="pagination" background layout="prev, pager, next"
         :pager-count='17' :total="1000">
       </el-pagination>
     </div>
-    <!-- 权限管理 -->
+    <!-- 权限管理修改页 -->
     <div v-show="radio1 === '权限管理'" class="tableContainer">
       <el-row :gutter="5" class="tableTitle">
         <el-col class="tableName" :span="16"><span>权限列表</span></el-col>
@@ -85,9 +114,32 @@
         </el-table-column>
         <el-table-column prop="operating" label="操作">
           <el-button type="text" size="small" class="delet">删除</el-button>
-          <el-button type="text" size="small">修改</el-button>
+          <el-button type="text" size="small" @click="powerVisible = true">修改</el-button>
         </el-table-column>
       </el-table>
+      <!-- 模态 -->
+      <el-dialog width="50%" title="修改" :visible.sync="powerVisible">
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"
+          label-width="100px" class="demo-ruleForm">
+          <el-form-item label="角色" size="small" >
+            <el-select v-model="zhanghu_manage_from.region" autocomplete="off" placeholder="请选择角色">
+              <el-option label="管理员" value="manager"></el-option>
+              <el-option label="产品部" value="producter"></el-option>
+              <el-option label="市场部" value="market"></el-option>
+              <el-option label="运营部" value="yunYing"></el-option>
+              <el-option label="开发部" value="dever"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="概况" prop="type">
+            <el-input label="所拥有权限" v-model="owenPower"></el-input>
+          </el-form-item>
+
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="powerVisible = false">取 消</el-button>
+          <el-button type="primary" @click="confirm('ruleForm')">确 定</el-button>
+        </div>
+      </el-dialog>
       <!-- 模态 -->
       <el-dialog width="50%" title="新增角色" :visible.sync="dialogTableVisible">
         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"
@@ -172,7 +224,10 @@ export default {
       }
     }
     return {
+      powerVisible:false,
+      owenPower:'',
       radio1: '账户管理',
+      zhuanghu_manage_edit:false,
       overView: [],
       management: [],
       content: [],
@@ -237,6 +292,12 @@ export default {
         pass: '',
         checkPass: '',
         account: ''
+      },
+      zhanghu_manage_from: {
+        pass: '',
+        checkPass: '',
+        account: '',
+        region:''
       },
       rules: {
         account: [{ required: true, validator: validateAccount, trigger: 'blur' }],

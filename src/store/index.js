@@ -1,13 +1,18 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import user from "./modules/user";
+import routeName from "./modules/routeName";
 import getters from "./getters";
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
+  state:{
+    x:'1'
+  },
   modules: {
-    user
+    user,
+    routeName
   },
   getters
 });

@@ -40,8 +40,9 @@
       </el-row>
       <el-row :gutter="10" class="tableTitle">
         <el-col :span="6">
-          <el-date-picker size="mini" v-model="value1" type="daterange" class="calendar"
-            range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+          <el-date-picker size="mini" v-model="value1" type="daterange"
+            class="calendar" range-separator="至" start-placeholder="开始日期"
+            end-placeholder="结束日期">
           </el-date-picker>
         </el-col>
         <el-col :span="4">
@@ -50,7 +51,8 @@
           <!-- </el-input> -->
         </el-col>
         <el-col :span="10">
-          <el-button class="allSerch" size="mini" type="primary">查看全部</el-button>
+          <el-button class="allSerch" size="mini" type="primary">查看全部
+          </el-button>
         </el-col>
       </el-row>
       <el-table :data="tableData" border stripe style="width: 100%">
@@ -82,9 +84,8 @@ import request from '@/utils/request.js'
 export default {
   data() {
     return {
-      radio1: '账户管理',
       crumData: {
-        breadItem: [{ name: '设置' }, { name: '账户权限' }, { name: '账户管理' }],
+        breadItem: [{ name: '数据查看' }, { name: '数据查看' }],
         leadingIn: false,
         leadingOut: false
       },
@@ -123,17 +124,12 @@ export default {
       searchValue: ''
     }
   },
-  watch: {
-    radio1(newValue) {
-      this.crumData = [{ name: '设置' }, { name: '账户权限' }, { name: newValue }]
-    }
+  mounted() {
+    const url = this.$route.name
   },
   methods: {
     newAccount() {},
     search() {
-      // request.post('post/accesstoken ', { accesstoken: '413e3ed3-56c5-469a-ab6d-3b8f6a704ec2' }).then(response => {
-      //   console.log(response)
-      // })
       request({
         url: 'post/accesstoken',
         method: 'post',

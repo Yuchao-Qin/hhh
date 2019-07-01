@@ -15,7 +15,7 @@
     <el-row class="content" type="flex" justify="space-between">
       <el-col class="contentNav">
         <el-scrollbar>
-          <el-menu class="el-menu-vertical-demo"
+          <el-menu :default-active="refreshActive.routeName" class="el-menu-vertical-demo"
             @open="handleOpen" @select="handleSelect" :collapse="isCollapse">
             <el-submenu v-for="(titleItem, titleIndex) in menuData" :key="titleIndex"
               :index="(titleIndex + 1).toString()">
@@ -40,11 +40,12 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 export default {
   data() {
     return {
       isCollapse: false,
+      refreshActive:this.$store.state.routeName,
       menuData: [
         { title: '数据查看', icon: 'el-icon-pie-chart', item: [{ name: '数据查看', index: 'sjck-1-1' }] },
         {
@@ -54,7 +55,7 @@ export default {
             { name: '用户管理', index: 'yhgl-2-1' },
             { name: '商家管理', index: 'sjgl-2-2' },
             { name: '卡券管理', index: 'kqgl-2-3' },
-            { name: '反馈管理', index: 'Fkgl-2-4' }
+            { name: '反馈管理', index: 'fkgl-2-4' }
           ]
         },
         {
@@ -80,6 +81,14 @@ export default {
   computed: {
     ...mapGetters(['userInfo'])
   },
+  mounted () {
+    this.set_routeName(this.$route.name);
+  },
+  computed: {
+    zh() {
+
+    }
+  },
   methods: {
     handleOpen(key, keyPath) {
       console.log(key, keyPath)
@@ -94,7 +103,9 @@ export default {
       this.$store.dispatch('logOut').then(() => {
         location.reload() // 为了重新实例化vue-router对象 避免bug
       })
-    }
+    },
+    ...mapMutations(['set_routeName'])
+    // 'modulePath', []|{}
   }
 }
 </script>

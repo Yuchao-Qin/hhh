@@ -14,7 +14,8 @@
     <!-- 账户管理 -->
     <div class="tableContainer">
       <el-row :gutter="5" class="tableTitle">
-        <el-col class="tableName" :span="20"><span>用户ID：xxxxxxxxxx</span><span>用户昵称：xxxxxxxx</span></el-col>
+        <el-col class="tableName" :span="20">
+          <span>用户ID：xxxxxxxxxx</span><span>用户昵称：xxxxxxxx</span></el-col>
       </el-row>
       <el-table :data="tableData" border stripe style="width: 100%">
         <el-table-column prop="accountNumber" label="时间">
@@ -24,8 +25,8 @@
         <el-table-column prop="name">
           <template slot="header" slot-scope="">
             <el-select v-model="tableSelectValue" size="mini" placeholder="请选择">
-              <el-option v-for="item in options" :key="item.value" :label="item.label"
-                :value="item.value">
+              <el-option v-for="item in options" :key="item.value"
+                :label="item.label" :value="item.value">
               </el-option>
             </el-select>
           </template>
@@ -36,7 +37,7 @@
         </el-table-column>
         <el-table-column prop="staus" v-if="chong_zhi" label="卡密">
         </el-table-column>
-        <el-table-column prop="staus"  v-if="xiao_fei" label="优惠券链接">
+        <el-table-column prop="staus" v-if="xiao_fei" label="优惠券链接">
         </el-table-column>
       </el-table>
       <!-- 分页 -->
@@ -52,7 +53,6 @@ import DatePicker from '@/components/DatePicker.vue'
 export default {
   data() {
     return {
-      radio1: '账户管理',
       overView: [],
       management: [],
       content: [],
@@ -60,8 +60,8 @@ export default {
       jueSeName: '',
       chong_zhi: '',
       xiao_fei: '',
-            crumData: {
-        breadItem: [{ name: '设置' }, { name: '账户权限' }, { name: '账户管理' }],
+      crumData: {
+        breadItem: [{ name: '设置' }, { name: '用户管理',bits:'Yhgl-2-1' }, { name: '账单详情' }],
         leadingIn: false,
         leadingOut: false
       },
@@ -161,8 +161,6 @@ export default {
   flex-direction: column;
   height: 100%;
 }
-
-
 
 .headGroup {
   padding: 0 15px;

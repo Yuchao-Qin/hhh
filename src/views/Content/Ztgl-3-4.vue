@@ -241,6 +241,10 @@ export default {
 .jueseName {
   width: 60%;
 }
+
+.collapseItem {
+  margin-right: 30px;
+}
 </style>
 
 <style>

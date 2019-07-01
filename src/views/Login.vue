@@ -1,17 +1,11 @@
 <template>
-  <div>
-    <div>test</div>
-    <div>
-      <div>
-        <label for="name">用户名</label>
-        <input type="text" name="name" v-model="user.name">
-      </div>
-      <div>
-        <label for="password">密码</label>
-        <input type="password" name="password" v-model="user.password">
-      </div>
-      <button @click="userLogin">登录</button>
-      <div>{{token}}</div>
+  <div class="page">
+    <div class="pageContent">
+      <h1>logo</h1>
+      <h2>渠道商管理平台</h2>
+      <el-input placeholder="账号"></el-input>
+      <el-input placeholder="账户密码"></el-input>
+      <el-button type="primary">登录</el-button>
     </div>
   </div>
 </template>
@@ -42,3 +36,24 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+h1, h2 {
+  margin: 0;
+}
+.page {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  // justify-content:center;
+  justify-content: center;
+  align-items: center;
+}
+.pageContent {
+  width: 500px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+</style>
+

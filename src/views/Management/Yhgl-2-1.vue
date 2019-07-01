@@ -7,8 +7,9 @@
     <div class="tableContainer">
       <el-row :gutter="3" class="tableTitle">
         <el-col :span="6" class="calendarContainer">
-          <el-date-picker size="mini" v-model="value1" type="daterange" class="calendar"
-            range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+          <el-date-picker size="mini" v-model="value1" type="daterange"
+            class="calendar" range-separator="至" start-placeholder="开始日期"
+            end-placeholder="结束日期">
           </el-date-picker>
           <div class="el-input-group__append">
             <el-button class="calendarButton" icon="el-icon-search"></el-button>
@@ -16,9 +17,10 @@
 
         </el-col>
         <el-col :span="12" class="searchContainer">
-          <el-input size="mini" placeholder="请输入内容" v-model="searchValue" class="searchInput">
-            <el-select v-model="searchSelect" slot="prepend" class="searchSelect"
-              placeholder="请选择">
+          <el-input size="mini" placeholder="请输入内容" v-model="searchValue"
+            class="searchInput">
+            <el-select v-model="searchSelect" slot="prepend"
+              class="searchSelect" placeholder="请选择">
               <el-option label="餐厅名" value="1"></el-option>
               <el-option label="订单号" value="2"></el-option>
               <el-option label="用户电话" value="3"></el-option>
@@ -52,9 +54,11 @@
         <el-table-column prop="character" label="账户内余额">
         </el-table-column>
         <el-table-column prop="operating" label="操作">
-          <el-button type="text" size="small" @click="dialogFormVisible = true">编辑</el-button>
+          <el-button type="text" size="small" @click="dialogFormVisible = true">
+            编辑</el-button>
           <el-button type="text" size="small" class="delet">删除</el-button>
-          <el-button type="text" size="small" @click="toBillDetail">账单详情</el-button>
+          <el-button type="text" size="small" @click="toBillDetail">账单详情
+          </el-button>
         </el-table-column>
 
       </el-table>
@@ -69,7 +73,8 @@
       <el-form :model="ruleForm" status-icon ref="ruleForm" label-width="100px"
         class="demo-ruleForm">
         <el-form-item label="微信昵称" prop="nickName">
-          <el-input v-model="ruleForm.account" size="small" autocomplete="off"></el-input>
+          <el-input v-model="ruleForm.account" size="small" autocomplete="off">
+          </el-input>
         </el-form-item>
         <el-form-item label="手机号" prop="phoneNumber">
           <el-input type="password" size="small" v-model="ruleForm.pass"
@@ -95,9 +100,8 @@ export default {
     return {
       dialogFormVisible: false,
       dialogTableVisible: false,
-      radio1: '账户管理',
-            crumData: {
-        breadItem: [{ name: '设置' }, { name: '账户权限' }, { name: '账户管理' }],
+      crumData: {
+        breadItem: [{ name: '设置' }, { name: '用户管理' }],
         leadingIn: false,
         leadingOut: false
       },
@@ -143,11 +147,6 @@ export default {
       }
     }
   },
-  watch: {
-    radio1(newValue) {
-      this.crumData = [{ name: '设置' }, { name: '账户权限' }, { name: newValue }]
-    }
-  },
   methods: {
     newAccount() {},
     handleSelectionChange(val) {
@@ -175,7 +174,6 @@ export default {
   flex-direction: column;
   height: 100%;
 }
-
 
 .headGroup {
   padding-top: 20px;
