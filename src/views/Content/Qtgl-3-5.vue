@@ -11,31 +11,28 @@
     </div>
     <!-- 账户管理 -->
     <div v-show="radio1 === '搜索管理'" class="tableContainer">
-      <el-row :gutter="3" class="tableTitle">
-        <el-col :span="6">
-          <el-form size="mini" :model="ruleForm" ref="ruleForm"
-            label-width="100px">
-            <el-form-item label="搜索框文字">
-              <!-- <el-input v-if="findFont" placeholder="请输入内容" label="发现文字"
-                v-model="ruleForm.searchValue"  class="searchInput"  :disabled="true">
-              </el-input> -->
-              <el-input placeholder="请输入内容" label="发现文字"
-                v-model="ruleForm.searchValue" class="searchInput">
-              </el-input>
-            </el-form-item>
-          </el-form>
-        </el-col>
-        <el-col :span="3">
-          <el-button type="primary" size="mini" @click="findFont = !findFont">编辑</el-button>
-        </el-col>
-        <el-col :span="6">
+      <div :gutter="3" class="tableTitle">
+        <span :span="6">
+            <el-form size="mini" :model="ruleForm" ref="ruleForm"
+              label-width="100px">
+              <el-form-item label="搜索框文字">
+                <el-input placeholder="请输入内容" label="发现文字"
+                  v-model="ruleForm.searchValue" class="searchInput">
+                </el-input>
+              </el-form-item>
+            </el-form>
+            <el-button class="headEdit" type="primary" size="mini" @click="findFont = !findFont">
+              编辑
+            </el-button>
+        </span>
+        <span :span="6">
           <el-button size="mini" type="primary">删除选中项</el-button>
           <el-button size="mini" type="primary"
             @click="dialogFormVisible = true">+ 添加搜索发现文字</el-button>
-        </el-col>
-      </el-row>
-      <el-table :data="tableData" border stripe style="width: 100%">
-        <el-table-column type="selection" width="55" label="账号">
+        </span>
+      </div>
+      <el-table :data="tableData" size="mini" max-height="550" border stripe style="width: 100%">
+        <el-table-column type="selection" width="55">
         </el-table-column>
         <el-table-column type="index" width="55" label="排序">
         </el-table-column>
@@ -44,7 +41,8 @@
         <el-table-column prop="name" label="文本颜色">
         </el-table-column>
         <el-table-column prop="operating" label="操作">
-          <el-button type="text" size="small" class="delet" @click="FontEditVisible = true">编辑</el-button>
+          <el-button type="text" size="small" class="delet"
+            @click="FontEditVisible = true">编辑</el-button>
           <el-button type="text" size="small">删除</el-button>
         </el-table-column>
       </el-table>
@@ -101,14 +99,14 @@
     </div>
     <!-- 权限管理 -->
     <div v-show="radio1 === '帮助中心管理'" class="tableContainer">
-      <el-row :gutter="5" class="tableTitle">
-        <el-col class="tableName" :span="16"><span>权限列表</span></el-col>
-        <el-col class="addAccount" :span="8">
+      <div :gutter="5" class="tableTitle">
+        <span class="tableName" :span="16"><span>权限列表</span></span>
+        <span class="addAccount" :span="8">
           <el-button size="small" type="primary"
             @click="dialogTableVisible = true">+
             新增用户</el-button>
-        </el-col>
-      </el-row>
+        </span>
+      </div>
       <el-collapse v-model="activeNames">
         <el-collapse-item name="1">
           <template slot="title">
@@ -118,12 +116,14 @@
             <div class="collapseItem"><span>标题及内容：</span><span>xxxxxxxxx</span>
             </div>
             <div class="collapseItem"><span>
-                <el-button type="text" @click.stop="dialogEditVisible = true">编辑</el-button>
+                <el-button type="text" @click.stop="dialogEditVisible = true">编辑
+                </el-button>
                 <el-button type="text">删除</el-button>
               </span>
             </div>
           </template>
-          <el-input type="textarea" v-model="text.desc" :disabled="true"></el-input>
+          <el-input type="textarea" v-model="text.desc" :disabled="true">
+          </el-input>
         </el-collapse-item>
         <el-collapse-item title="反馈 Feedback" name="2">
           <template slot="title">
@@ -133,12 +133,14 @@
             <div class="collapseItem"><span>标题及内容：</span><span>xxxxxxxxx</span>
             </div>
             <div class="collapseItem"><span>
-                <el-button type="text" @click.stop="dialogEditVisible = true">编辑</el-button>
+                <el-button type="text" @click.stop="dialogEditVisible = true">编辑
+                </el-button>
                 <el-button type="text">删除</el-button>
               </span>
             </div>
           </template>
-          <el-input type="textarea" v-model="text.desc" :disabled="true"></el-input>
+          <el-input type="textarea" v-model="text.desc" :disabled="true">
+          </el-input>
         </el-collapse-item>
         <el-collapse-item title="效率 Efficiency" name="3">
           <template slot="title">
@@ -148,12 +150,14 @@
             <div class="collapseItem"><span>标题及内容：</span><span>xxxxxxxxx</span>
             </div>
             <div class="collapseItem"><span>
-                <el-button type="text" @click.stop="dialogEditVisible = true">编辑</el-button>
+                <el-button type="text" @click.stop="dialogEditVisible = true">编辑
+                </el-button>
                 <el-button type="text">删除</el-button>
               </span>
             </div>
           </template>
-          <el-input type="textarea" v-model="text.desc" :disabled="true"></el-input>
+          <el-input type="textarea" v-model="text.desc" :disabled="true">
+          </el-input>
         </el-collapse-item>
       </el-collapse>
       <!-- 模态 -->
@@ -191,7 +195,7 @@
             </el-input>
           </el-form-item>
           <el-form-item class="jueseName" label="内容">
-            <el-input type="textarea" v-model="text.desc" ></el-input>
+            <el-input type="textarea" v-model="text.desc"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -247,18 +251,18 @@ export default {
     }
     return {
       radio1: '搜索管理',
-      dialogEditVisible:false,
-      FontEditVisible:false,
-      findFont:true,
+      dialogEditVisible: false,
+      FontEditVisible: false,
+      findFont: true,
       activeNames: '',
       overView: [],
       management: [],
       content: [],
       setting: [],
-      text:{desc:null},
+      text: { desc: null },
       jueSeName: '',
       crumData: {
-        breadItem: [{ name: '设置' }, { name: '账户权限' }, { name: '账户管理' }],
+        breadItem: [{ name: '内容' }, { name: '其他管理' }],
         leadingIn: false,
         leadingOut: false
       },
@@ -326,11 +330,6 @@ export default {
       formLabelWidth: '120px'
     }
   },
-  watch: {
-    radio1(newValue) {
-      this.crumData.breadItem.splice(this.crumData.breadItem.length - 1, 1, { name: newValue })
-    }
-  },
   methods: {
     handleSelectionChange(val) {
       this.multipleSelection = val
@@ -370,10 +369,7 @@ export default {
 
 .tableContainer {
   padding: 0 15px;
-  flex: 1;
-  position: relative;
   .tableTitle {
-    // display: flex;
     padding: 10px;
   }
 }
@@ -390,11 +386,6 @@ export default {
   color: red;
 }
 
-.pagination {
-  position: absolute;
-  bottom: 75px;
-  left: calc(50% - 505px);
-}
 
 .el-select {
   width: 100%;
@@ -411,6 +402,10 @@ export default {
 
 .collapseItem {
   margin-right: 30px;
+}
+
+.headEdit {
+  margin-left: 10px; 
 }
 </style>
 

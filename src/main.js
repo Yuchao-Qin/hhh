@@ -5,7 +5,7 @@ import store from "./store/index";
 import 'element-ui/lib/theme-chalk/index.css';
 import axios from "axios";
 import VueCropper from 'vue-cropper' 
-
+import "./publicStyle/public.css";
 
 // import "@/permission"; //路由访问权限
 import { Option, 

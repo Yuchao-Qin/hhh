@@ -8,18 +8,21 @@
     </h3>
     <!-- 账户管理 -->
     <div class="tableContainer">
-      <el-row :gutter="3" class="tableTitle">
-        <el-col :span="24">
-          <el-button size="mini" type="primary">删除所有选项</el-button>
-          <el-button size="mini" type="primary">设为今日推荐</el-button>
+      <div :gutter="3" class="tableTitle">
+        <span :span="24">
           <el-select v-model="productSelect" size="mini">
-            <el-option>全部商品</el-option>
-            <el-option>今日推荐商品</el-option>
-            <el-option>其他商品</el-option>
+            <el-option value="1" label="全部商品"></el-option>
+            <el-option value="2" label="今日推荐商品"></el-option>
+            <el-option value="3" label="其他商品"></el-option>
           </el-select>
-        </el-col>
-      </el-row>
-      <el-table :data="tableData" border stripe style="width: 100%">
+        </span>
+        <span>
+          <el-button size="mini" type="primary">设为今日推荐</el-button>
+          <el-button size="mini" type="primary">删除所有选项</el-button>
+        </span>
+      </div>
+      <el-table size="mini" max-height="550" :data="tableData" border stripe
+        style="width: 100%">
         <el-table-column type="selection" width="55">
         </el-table-column>
         <el-table-column type="index" width="50" label="序号">
@@ -99,11 +102,11 @@ import Breadcrumb from '@/components/Breadcrumb.vue'
 export default {
   data() {
     return {
-      productSelect:'',
+      productSelect: '',
       addSubject: false,
       radio1: '账户管理',
       crumData: {
-        breadItem: [{ name: '设置' }, { name: '账户权限' }, { name: '账户管理' }],
+        breadItem: [{ name: '内容' }, { name: '菜单管理', bits: 'Cdgl-3-3' }, { name: '商品管理' }],
         leadingIn: false,
         leadingOut: true
       },
@@ -176,8 +179,6 @@ export default {
 .tableContainer {
   text-align: left;
   padding: 0 15px;
-  flex: 1;
-  position: relative;
   .tableTitle {
     display: flex;
     padding: 10px 0;
@@ -194,16 +195,6 @@ export default {
 }
 .delet {
   color: red;
-}
-
-.pagination {
-  position: absolute;
-  bottom: 75px;
-  left: calc(50% - 505px);
-}
-
-.searchInput {
-  width: 80%;
 }
 
 .calendar {

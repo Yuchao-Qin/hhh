@@ -4,8 +4,8 @@ const routeName = {
   },
   mutations: {
     set_routeName: (state, name) => {
-      console.log(name)
-      state.routeName = name.slice(0, 1).toLowerCase() +  name.slice(1);
+      const nameTostring = name.toString()
+      state.routeName = nameTostring.slice(0, 1).toLowerCase() +  nameTostring.slice(1);
     }
   }
 }

@@ -82,8 +82,9 @@ export default {
 .breadcrumb-box {
   border: 1px solid #e1e1e1;
   padding: 15px;
-  border-right: none;
-  border-left: none;
+  height: 28px;
+  border-right: 0;
+  border-left: 0;
   display: flex;
   justify-content: space-between;
 }
@@ -110,12 +111,12 @@ export default {
 }
 
 .el-breadcrumb__inner.is-link {
- font-weight: 700 !important;
+  font-weight: 700 !important;
 }
 .el-breadcrumb__inner.is-link:hover {
- font-weight: 700 !important;
-    color: #409EFF !important;
-    cursor: pointer !important;
+  font-weight: 700 !important;
+  color: #409eff !important;
+  cursor: pointer !important;
 }
 </style>
 

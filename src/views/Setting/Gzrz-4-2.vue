@@ -5,22 +5,22 @@
     <Breadcrumb :crumData="crumData"></Breadcrumb>
     <!-- 账户管理 -->
     <div class="tableContainer">
-      <el-row :gutter="3" class="tableTitle">
-        <el-col :span="6">
+      <div :gutter="3" class="tableTitle">
+        <span :span="6">
           <el-date-picker size="mini" v-model="value1" type="daterange" class="calendar"
             range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
           </el-date-picker>
-        </el-col>
-        <el-col :span="6">
+        </span>
+        <span :span="6">
           <el-input size="mini" placeholder="请输入内容" v-model="searchValue" class="searchInput">
             <el-button slot="append" icon="el-icon-search"></el-button>
           </el-input>
-        </el-col>
-        <el-col :span="8">
+        </span>
+        <span :span="8">
           <el-button size="mini" type="primary">查看全部</el-button>
-        </el-col>
-      </el-row>
-      <el-table :data="tableData" border stripe style="width: 100%">
+        </span>
+      </div>
+      <el-table size="mini" max-height="550" :data="tableData" border stripe style="width: 100%">
         <el-table-column prop="accountNumber" label="操作日期">
         </el-table-column>
         <el-table-column prop="character" label="用户">
@@ -61,7 +61,6 @@ export default {
   data() {
     return {
       dialogFormVisible:false,
-      radio1: '账户管理',
       ruleForm:{
         account:''
       },
@@ -105,11 +104,6 @@ export default {
       searchValue: ''
     }
   },
-  watch: {
-    radio1(newValue) {
-      this.crumData = [{ name: '设置' }, { name: '账户权限' }, { name: newValue }]
-    }
-  },
   methods: {
     newAccount() {}
   },
@@ -137,8 +131,6 @@ export default {
 .tableContainer {
   text-align: left;
   padding: 0 15px;
-  flex: 1;
-  position: relative;
   .tableTitle {
     display: flex;
     padding: 10px 0;
@@ -157,11 +149,7 @@ export default {
   color: red;
 }
 
-.pagination {
-  position: absolute;
-  bottom: 75px;
-  left: calc(50% - 505px);
-}
+
 
 .searchInput {
   width: 80%;

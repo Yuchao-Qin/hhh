@@ -1,0 +1,22 @@
+.tableContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.pagination {
+  padding-top: 20px;
+  text-align: center;
+}
+
+.tableContainer .tableTitle {
+  display: flex;
+  justify-content: space-between;
+} 
+
+.addSubjectTitle .el-dialog__header {
+  text-align: center;
+}
+
+.tableTitle .el-form {
+  display: inline-block;
+}

@@ -5,52 +5,62 @@
     <Breadcrumb :crumData="crumData"></Breadcrumb>
     <!-- 账户管理 -->
     <div class="tableContainer">
-      <el-row :gutter="3" class="tableTitle">
-        <el-col :span="6" class="calendarContainer">
-          <div class="ji_huo_Time">激活时间：</div>
-          <el-date-picker size="mini" v-model="value1" type="daterange" class="calendar"
-            range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
-          </el-date-picker>
-          <div class="el-input-group__append">
-            <el-button class="calendarButton" icon="el-icon-search"></el-button>
-          </div>
-        </el-col>
-        <el-col :span="6" class="searchContainer">
-          <el-input size="mini" placeholder="请输入内容" v-model="searchValue" class="searchInput">
-            <el-select v-model="searchSelect" slot="prepend" class="searchSelect"
-              placeholder="请选择" >
-              <el-option label="激活用户ID" value="1"></el-option>
-              <el-option label="所属商家ID" value="2"></el-option>
-              <el-option label="所属商家名称" value="3"></el-option>
-            </el-select>
-            <el-button slot="append" icon="el-icon-search"></el-button>
-          </el-input>
-        </el-col>
-        <el-col :span="6" class="searchContainer">
-          <div class="headerSelect">
-            <el-select v-model="searchSelect" class="searchSelect" size="mini" placeholder="请选择">
-              <el-option label="激活用户ID" value="1"></el-option>
-              <el-option label="所属商家ID" value="2"></el-option>
-              <el-option label="所属商家名称" value="3"></el-option>
-            </el-select>
-          </div>
+      <div class="tableTitle">
+        <!-- <div :gutter="3"> -->
+          <span :span="6" class="calendarContainer">
+            <div class="ji_huo_Time">激活时间：</div>
+            <el-date-picker size="mini" v-model="value1" type="daterange"
+              class="calendar" range-separator="至" start-placeholder="开始日期"
+              end-placeholder="结束日期">
+            </el-date-picker>
+            <div class="el-input-group__append">
+              <el-button class="calendarButton" icon="el-icon-search">
+              </el-button>
+            </div>
+          </span>
+          <span :span="6" class="searchContainer">
+            <el-input size="mini" placeholder="请输入内容" v-model="searchValue"
+              class="searchInput">
+              <el-select v-model="searchSelect" slot="prepend"
+                class="searchSelect" placeholder="请选择">
+                <el-option label="激活用户ID" value="1"></el-option>
+                <el-option label="所属商家ID" value="2"></el-option>
+                <el-option label="所属商家名称" value="3"></el-option>
+              </el-select>
+              <el-button slot="append" icon="el-icon-search"></el-button>
+            </el-input>
+          </span>
+          <span :span="6" class="searchContainer">
+            <div class="headerSelect">
+              <el-select v-model="searchSelect" class="searchSelect" size="mini"
+                placeholder="请选择">
+                <el-option label="激活用户ID" value="1"></el-option>
+                <el-option label="所属商家ID" value="2"></el-option>
+                <el-option label="所属商家名称" value="3"></el-option>
+              </el-select>
+            </div>
+          </span>
+          <span :span="8">
+            <el-button size="mini" type="primary">清除筛选</el-button>
+            <el-button size="mini" type="primary">导出</el-button>
+          </span>
+        <!-- </div> -->
+      </div>
 
-        </el-col>
-        <el-col :span="8">
-          <el-button size="mini" type="primary">清除筛选</el-button>
-          <el-button size="mini" type="primary">导出</el-button>
-        </el-col>
-      </el-row>
       <el-collapse v-model="activeNames" @change="handleChange">
         <el-collapse-item name="1">
           <template slot="title">
             <el-checkbox v-model="checked"></el-checkbox>
-            <div class="collapseItem"><span>商家名称：</span><span>xxxxxxxxx</span></div>
-            <div class="collapseItem"><span>优惠卡数量：</span><span>xxxxxxxxx</span></div>
-            <div class="collapseItem"><span>优惠卡总金额：</span><span>xxxxxxxxx</span></div>
+            <div class="collapseItem"><span>商家名称：</span><span>xxxxxxxxx</span>
+            </div>
+            <div class="collapseItem"><span>优惠卡数量：</span><span>xxxxxxxxx</span>
+            </div>
+            <div class="collapseItem"><span>优惠卡总金额：</span><span>xxxxxxxxx</span>
+            </div>
           </template>
-          <el-table ref="multipleTable" @selection-change="handleSelectionChange"
-            :data="tableData" border stripe style="width: 100%">
+          <el-table ref="multipleTable"
+            @selection-change="handleSelectionChange" :data="tableData" border
+            stripe style="width: 100%">
             <el-table-column type="selection" width="55">
             </el-table-column>
             <el-table-column prop="accountNumber" label="编号">
@@ -70,12 +80,16 @@
         <el-collapse-item title="反馈 Feedback" name="2">
           <template slot="title">
             <el-checkbox v-model="checked"></el-checkbox>
-            <div class="collapseItem"><span>商家名称：</span><span>xxxxxxxxx</span></div>
-            <div class="collapseItem"><span>优惠卡数量：</span><span>xxxxxxxxx</span></div>
-            <div class="collapseItem"><span>优惠卡总金额：</span><span>xxxxxxxxx</span></div>
+            <div class="collapseItem"><span>商家名称：</span><span>xxxxxxxxx</span>
+            </div>
+            <div class="collapseItem"><span>优惠卡数量：</span><span>xxxxxxxxx</span>
+            </div>
+            <div class="collapseItem"><span>优惠卡总金额：</span><span>xxxxxxxxx</span>
+            </div>
           </template>
-          <el-table ref="multipleTable" @selection-change="handleSelectionChange"
-            :data="tableData" border stripe style="width: 100%">
+          <el-table ref="multipleTable"
+            @selection-change="handleSelectionChange" :data="tableData" border
+            stripe style="width: 100%">
             <el-table-column type="selection" width="55">
             </el-table-column>
             <el-table-column prop="accountNumber" label="编号">
@@ -95,12 +109,16 @@
         <el-collapse-item title="效率 Efficiency" name="3">
           <template slot="title">
             <el-checkbox v-model="checked"></el-checkbox>
-            <div class="collapseItem"><span>商家名称：</span><span>xxxxxxxxx</span></div>
-            <div class="collapseItem"><span>优惠卡数量：</span><span>xxxxxxxxx</span></div>
-            <div class="collapseItem"><span>优惠卡总金额：</span><span>xxxxxxxxx</span></div>
+            <div class="collapseItem"><span>商家名称：</span><span>xxxxxxxxx</span>
+            </div>
+            <div class="collapseItem"><span>优惠卡数量：</span><span>xxxxxxxxx</span>
+            </div>
+            <div class="collapseItem"><span>优惠卡总金额：</span><span>xxxxxxxxx</span>
+            </div>
           </template>
-          <el-table ref="multipleTable" @selection-change="handleSelectionChange"
-            :data="tableData" border stripe style="width: 100%">
+          <el-table ref="multipleTable"
+            @selection-change="handleSelectionChange" :data="tableData" border
+            stripe style="width: 100%">
             <el-table-column type="selection" width="55">
             </el-table-column>
             <el-table-column prop="accountNumber" label="编号">
@@ -129,7 +147,8 @@
       <el-form :model="ruleForm" status-icon ref="ruleForm" label-width="100px"
         class="demo-ruleForm">
         <el-form-item label="微信昵称" prop="nickName">
-          <el-input v-model="ruleForm.account" size="small" autocomplete="off"></el-input>
+          <el-input v-model="ruleForm.account" size="small" autocomplete="off">
+          </el-input>
         </el-form-item>
         <el-form-item label="手机号" prop="phoneNumber">
           <el-input type="password" size="small" v-model="ruleForm.pass"
@@ -158,8 +177,8 @@ export default {
       dialogTableVisible: false,
       radio1: '账户管理',
       activeNames: '',
-            crumData: {
-        breadItem: [{ name: '设置' }, { name: '账户权限' }, { name: '账户管理' }],
+      crumData: {
+        breadItem: [{ name: '管理' }, { name: '卡券管理' }],
         leadingIn: false,
         leadingOut: false
       },
@@ -241,13 +260,6 @@ export default {
   height: 100%;
 }
 
-.breadcrumb-box {
-  border: 1px solid #e1e1e1;
-  padding: 20px;
-  border-right: none;
-  border-left: none;
-}
-
 .headGroup {
   padding-top: 20px;
   text-align: left;
@@ -256,8 +268,6 @@ export default {
 .tableContainer {
   text-align: left;
   padding: 0 15px;
-  flex: 1;
-  position: relative;
   .tableTitle {
     display: flex;
     padding: 10px 0;
@@ -274,16 +284,6 @@ export default {
 }
 .delet {
   color: red;
-}
-
-.pagination {
-  position: absolute;
-  bottom: 75px;
-  left: calc(50% - 505px);
-}
-
-.searchInput {
-  width: 80%;
 }
 
 .calendar {

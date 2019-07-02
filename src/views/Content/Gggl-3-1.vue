@@ -4,21 +4,21 @@
     <Breadcrumb :crumData="crumData"></Breadcrumb>
     <!-- tab -->
     <div class="headGroup">
-      <el-radio-group v-model="radio1" size="small">
+      <el-radio-group v-model="radio1" size="mini">
         <el-radio-button label="广告图分类"></el-radio-button>
         <el-radio-button label="广告图管理"></el-radio-button>
       </el-radio-group>
     </div>
     <!-- 账户管理 -->
     <div v-show="radio1 === '广告图分类'" class="tableContainer">
-      <el-row :gutter="5" class="tableTitle">
-        <el-col class="addAccount" :span="4">
-          <el-button size="small" type="primary"
+      <div :gutter="5" class="tableTitle">
+        <span class="addAccount" :span="4">
+          <el-button size="mini" type="primary"
             @click="AdvertisingClass = true">+
             添加广告类别</el-button>
-        </el-col>
-      </el-row>
-      <el-table :data="tableData" border stripe style="width: 100%">
+        </span>
+      </div>
+      <el-table size="mini" max-height="550" :data="tableData" border stripe style="width: 100%">
         <el-table-column prop="accountNumber" label="广告图类名">
         </el-table-column>
         <el-table-column prop="operating" label="操作">
@@ -48,25 +48,25 @@
     </div>
     <!-- 权限管理 -->
     <div v-show="radio1 === '广告图管理'" class="tableContainer">
-      <el-row class="tableTitle">
-        <el-col :span="4">
+      <div class="tableTitle">
+        <span :span="4">
           <el-select size="mini" v-model="pictureClass">
             <el-option value="1" label="全部类型"></el-option>
             <el-option value="2" label="轮播banner图"></el-option>
             <el-option value="3" label="'我的'页广告图"></el-option>
             <el-option value="4" label="'完善信息页'广告图"></el-option>
           </el-select>
-        </el-col>
-        <el-col :span="4">
+        </span>
+        <span :span="4">
           <el-button size="mini" type="primary">删除选中项</el-button>
-        </el-col>
-        <el-col :span="4">
+        </span>
+        <span :span="4">
           <el-button size="mini" type="primary"
             @click="addAdvertVisible = true">+
             添加广告图</el-button>
-        </el-col>
-      </el-row>
-      <el-table :data="JueseTableData" border stripe style="width: 100%"
+        </span>
+      </div>
+      <el-table size="mini" max-height="550" :data="JueseTableData" border stripe style="width: 100%"
         @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55">
         </el-table-column>
@@ -196,7 +196,7 @@ export default {
       jueSeName: '',
       multipleSelection: '',
       crumData: {
-        breadItem: [{ name: '设置' }, { name: '账户权限' }, { name: '账户管理' }],
+        breadItem: [{ name: '内容' }, { name: '广告管理' }],
         leadingIn: false,
         leadingOut: false
       },
@@ -301,8 +301,6 @@ export default {
 
 .tableContainer {
   padding: 0 15px;
-  flex: 1;
-  position: relative;
   .tableTitle {
     display: flex;
     padding: 10px;
@@ -321,11 +319,7 @@ export default {
   color: red;
 }
 
-.pagination {
-  position: absolute;
-  bottom: 75px;
-  left: calc(50% - 505px);
-}
+
 
 .el-select {
   width: 100%;

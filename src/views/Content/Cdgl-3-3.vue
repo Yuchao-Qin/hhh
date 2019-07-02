@@ -5,19 +5,17 @@
     <Breadcrumb :crumData="crumData"></Breadcrumb>
     <!-- 账户管理 -->
     <div class="tableContainer">
-      <el-row :gutter="3" class="tableTitle">
-        <el-col :span="6">
+      <div :gutter="3" class="tableTitle">
+        <span :span="6">
           <span class="hidetitle">当前菜单栏模块状态为--显示/隐藏</span>
-        </el-col>
-        <el-col :span="6">
           <el-button size="mini" type="primary">菜单栏模块设为显示/隐藏</el-button>
-        </el-col>
-        <el-col :span="8">
+        </span>
+        <span :span="8">
           <el-button size="mini" type="primary" @click="addSubject=true">+添加菜单
           </el-button>
-        </el-col>
-      </el-row>
-      <el-table :data="tableData" border stripe style="width: 100%">
+        </span>
+      </div>
+      <el-table size="mini" max-height="550" :data="tableData" border stripe style="width: 100%">
         <el-table-column prop="accountNumber" type="index" width="50"
           label="排序">
         </el-table-column>
@@ -121,9 +119,8 @@ export default {
     return {
       addSubject: false,
       menuDialogVisible: false,
-      radio1: '账户管理',
       crumData: {
-        breadItem: [{ name: '设置' }, { name: '账户权限' }, { name: '账户管理' }],
+        breadItem: [{ name: '内容' }, { name: '菜单管理' }],
         leadingIn: false,
         leadingOut: false
       },
@@ -198,10 +195,9 @@ export default {
 .tableContainer {
   text-align: left;
   padding: 0 15px;
-  flex: 1;
-  position: relative;
   .tableTitle {
     display: flex;
+    justify-content: space-between;
     padding: 10px 0;
   }
 }
@@ -218,11 +214,6 @@ export default {
   color: red;
 }
 
-.pagination {
-  position: absolute;
-  bottom: 75px;
-  left: calc(50% - 505px);
-}
 
 .searchInput {
   width: 80%;
@@ -235,6 +226,7 @@ export default {
 .hidetitle {
   color: red;
   font-size: 14px;
+  margin-right:50px; 
 }
 
 .jueseName {

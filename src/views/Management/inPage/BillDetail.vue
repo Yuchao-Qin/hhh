@@ -5,19 +5,15 @@
     <!-- tab -->
     <h3 class="title">账单详情</h3>
     <div class="headGroup">
-      <!-- <el-radio-group v-model="radio1" size="small">
-        <el-radio-button label="账户管理"></el-radio-button>
-        <el-radio-button label="权限管理"></el-radio-button>
-      </el-radio-group> -->
-      <DatePicker></DatePicker>
+      <DatePicker @Datepicker="DateP = $event"></DatePicker>
     </div>
     <!-- 账户管理 -->
     <div class="tableContainer">
-      <el-row :gutter="5" class="tableTitle">
-        <el-col class="tableName" :span="20">
-          <span>用户ID：xxxxxxxxxx</span><span>用户昵称：xxxxxxxx</span></el-col>
-      </el-row>
-      <el-table :data="tableData" border stripe style="width: 100%">
+      <div :gutter="5" class="tableTitle">
+        <span class="tableName" :span="20">
+          <span>用户ID：xxxxxxxxxx</span><span>用户昵称：xxxxxxxx</span></span>
+      </div>
+      <el-table  size="mini" max-height="550" :data="tableData" border stripe style="width: 100%">
         <el-table-column prop="accountNumber" label="时间">
         </el-table-column>
         <el-table-column prop="character" label="金额">
@@ -61,7 +57,7 @@ export default {
       chong_zhi: '',
       xiao_fei: '',
       crumData: {
-        breadItem: [{ name: '设置' }, { name: '用户管理',bits:'Yhgl-2-1' }, { name: '账单详情' }],
+        breadItem: [{ name: '设置' }, { name: '用户管理', bits: 'Yhgl-2-1' }, { name: '账单详情' }],
         leadingIn: false,
         leadingOut: false
       },
@@ -113,9 +109,9 @@ export default {
     }
   },
   watch: {
-    radio1(newValue) {
-      this.crumData = [{ name: '设置' }, { name: '账户权限' }, { name: newValue }]
-    }
+    // radio1(newValue) {
+    //   this.crumData = [{ name: '设置' }, { name: '账户权限' }, { name: newValue }]
+    // }
   },
   watch: {
     tableSelectValue(newValue) {
@@ -168,8 +164,6 @@ export default {
 
 .tableContainer {
   padding: 0 15px;
-  flex: 1;
-  position: relative;
   .tableTitle {
     display: flex;
     padding: 10px;
@@ -191,11 +185,6 @@ export default {
   color: red;
 }
 
-.pagination {
-  position: absolute;
-  bottom: 75px;
-  left: calc(50% - 505px);
-}
 
 .el-select {
   width: 100%;

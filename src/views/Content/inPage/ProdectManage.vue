@@ -8,12 +8,12 @@
     </h3>
     <!-- 账户管理 -->
     <div class="tableContainer">
-      <el-row :gutter="3" class="tableTitle">
-        <el-col :span="6">
+      <div :gutter="3" class="tableTitle">
+        <span :span="6">
           <el-button size="mini" type="primary">删除所有选项</el-button>
-        </el-col>
-      </el-row>
-      <el-table :data="tableData" border stripe style="width: 100%">
+        </span>
+      </div>
+      <el-table size="mini" max-height="550" :data="tableData" border stripe style="width: 100%">
         <el-table-column type="selection" width="55">
         </el-table-column>
         <el-table-column type="index" width="50" label="序号">
@@ -96,7 +96,7 @@ export default {
       addSubject: false,
       radio1: '账户管理',
       crumData: {
-        breadItem: [{ name: '设置' }, { name: '账户权限' }, { name: '账户管理' }],
+        breadItem: [{ name: '内容' }, { name: '专题管理',bits:'Ztgl-3-4' }, { name: '商品管理' }],
         leadingIn: false,
         leadingOut: true
       },
@@ -139,9 +139,6 @@ export default {
     }
   },
   watch: {
-    radio1(newValue) {
-      this.crumData = [{ name: '设置' }, { name: '账户权限' }, { name: newValue }]
-    }
   },
   methods: {
     newAccount() {}
@@ -169,8 +166,6 @@ export default {
 .tableContainer {
   text-align: left;
   padding: 0 15px;
-  flex: 1;
-  position: relative;
   .tableTitle {
     display: flex;
     padding: 10px 0;
@@ -189,11 +184,7 @@ export default {
   color: red;
 }
 
-.pagination {
-  position: absolute;
-  bottom: 75px;
-  left: calc(50% - 505px);
-}
+
 
 .searchInput {
   width: 80%;

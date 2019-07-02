@@ -14,11 +14,13 @@
       <el-row :gutter="5" class="tableTitle">
         <el-col class="tableName" :span="20"><span>账户列表</span></el-col>
         <el-col class="addAccount" :span="4">
-          <el-button size="small" type="primary" @click="dialogFormVisible = true">+
+          <el-button size="small" type="primary"
+            @click="dialogFormVisible = true">+
             新增用户</el-button>
         </el-col>
       </el-row>
-      <el-table :data="tableData" border stripe style="width: 100%">
+      <el-table size="small" :data="tableData" border stripe max-height="550"
+        style="width: 100%">
         <el-table-column prop="accountNumber" label="账号">
         </el-table-column>
         <el-table-column prop="character" label="角色">
@@ -31,7 +33,8 @@
         </el-table-column>
         <el-table-column prop="operating" label="操作">
           <el-button type="text" size="small" class="delet">删除</el-button>
-          <el-button type="text" size="small" @click="zhuanghu_manage_edit = true">修改</el-button>
+          <el-button type="text" size="small"
+            @click="zhuanghu_manage_edit = true">修改</el-button>
         </el-table-column>
       </el-table>
       <!-- 模态 -->
@@ -39,7 +42,8 @@
         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"
           label-width="100px" class="demo-ruleForm">
           <el-form-item label="账号" prop="account">
-            <el-input v-model="ruleForm.account" size="small" autocomplete="off"></el-input>
+            <el-input v-model="ruleForm.account" size="small"
+              autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="密码" prop="pass">
             <el-input type="password" size="small" v-model="ruleForm.pass"
@@ -50,7 +54,8 @@
               autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="账户角色" size="small" prop="region">
-            <el-select v-model="ruleForm.region" autocomplete="off" placeholder="请选择角色">
+            <el-select v-model="ruleForm.region" autocomplete="off"
+              placeholder="请选择角色">
               <el-option label="管理员" value="manager"></el-option>
               <el-option label="产品部" value="producter"></el-option>
               <el-option label="市场部" value="market"></el-option>
@@ -65,21 +70,23 @@
         </div>
       </el-dialog>
       <el-dialog width="30%" title="修改" :visible.sync="zhuanghu_manage_edit">
-        <el-form :model="zhanghu_manage_from" status-icon ref="zhuanghu_manage_from"
-          label-width="100px" class="demo-ruleForm">
+        <el-form :model="zhanghu_manage_from" status-icon
+          ref="zhuanghu_manage_from" label-width="100px" class="demo-ruleForm">
           <!-- <el-form-item label="状态" >
             <el-input v-model="zhanghu_manage_from.account" size="small" autocomplete="off"></el-input>
           </el-form-item> -->
-          <el-form-item label="姓名" >
-            <el-input type="password" size="small" v-model="zhanghu_manage_from.pass"
-              autocomplete="off"></el-input>
+          <el-form-item label="姓名">
+            <el-input type="password" size="small"
+              v-model="zhanghu_manage_from.pass" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="手机号">
-            <el-input type="password" size="small" v-model="zhanghu_manage_from.checkPass"
-              autocomplete="off"></el-input>
+            <el-input type="password" size="small"
+              v-model="zhanghu_manage_from.checkPass" autocomplete="off">
+            </el-input>
           </el-form-item>
-          <el-form-item label="角色" size="small" >
-            <el-select v-model="zhanghu_manage_from.region" autocomplete="off" placeholder="请选择角色">
+          <el-form-item label="角色" size="small">
+            <el-select v-model="zhanghu_manage_from.region" autocomplete="off"
+              placeholder="请选择角色">
               <el-option label="管理员" value="manager"></el-option>
               <el-option label="产品部" value="producter"></el-option>
               <el-option label="市场部" value="market"></el-option>
@@ -103,7 +110,8 @@
       <el-row :gutter="5" class="tableTitle">
         <el-col class="tableName" :span="16"><span>权限列表</span></el-col>
         <el-col class="addAccount" :span="8">
-          <el-button size="small" type="primary" @click="dialogTableVisible = true">+
+          <el-button size="small" type="primary"
+            @click="dialogTableVisible = true">+
             新增用户</el-button>
         </el-col>
       </el-row>
@@ -114,15 +122,17 @@
         </el-table-column>
         <el-table-column prop="operating" label="操作">
           <el-button type="text" size="small" class="delet">删除</el-button>
-          <el-button type="text" size="small" @click="powerVisible = true">修改</el-button>
+          <el-button type="text" size="small" @click="powerVisible = true">修改
+          </el-button>
         </el-table-column>
       </el-table>
       <!-- 模态 -->
       <el-dialog width="50%" title="修改" :visible.sync="powerVisible">
         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"
           label-width="100px" class="demo-ruleForm">
-          <el-form-item label="角色" size="small" >
-            <el-select v-model="zhanghu_manage_from.region" autocomplete="off" placeholder="请选择角色">
+          <el-form-item label="角色" size="small">
+            <el-select v-model="zhanghu_manage_from.region" autocomplete="off"
+              placeholder="请选择角色">
               <el-option label="管理员" value="manager"></el-option>
               <el-option label="产品部" value="producter"></el-option>
               <el-option label="市场部" value="market"></el-option>
@@ -145,7 +155,8 @@
         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"
           label-width="100px" class="demo-ruleForm">
           <el-form-item class="jueseName" label="角色名称">
-            <el-input v-model="jueSeName" size="small" autocomplete="off"></el-input>
+            <el-input v-model="jueSeName" size="small" autocomplete="off">
+            </el-input>
           </el-form-item>
           <el-form-item label="概况" prop="type">
             <el-checkbox-group v-model="overView">
@@ -224,17 +235,17 @@ export default {
       }
     }
     return {
-      powerVisible:false,
-      owenPower:'',
+      powerVisible: false,
+      owenPower: '',
       radio1: '账户管理',
-      zhuanghu_manage_edit:false,
+      zhuanghu_manage_edit: false,
       overView: [],
       management: [],
       content: [],
       setting: [],
       jueSeName: '',
       crumData: {
-        breadItem: [{ name: '设置' }, { name: '账户权限' }, { name: '账户管理' }],
+        breadItem: [{ name: '设置' }, { name: '工作日志' }],
         leadingIn: false,
         leadingOut: false
       },
@@ -248,6 +259,34 @@ export default {
         },
         {
           accountNumber: '2016-05-04',
+          character: '管理员',
+          name: '王小虎',
+          phoneNumber: '13888888888',
+          staus: 200
+        },
+        {
+          accountNumber: '2016-05-02',
+          character: '管理员',
+          name: '王小虎',
+          phoneNumber: '13888888888',
+          staus: 200
+        },
+        {
+          accountNumber: '2016-05-04',
+          character: '管理员',
+          name: '王小虎',
+          phoneNumber: '13888888888',
+          staus: 200
+        },
+        {
+          accountNumber: '2016-05-01',
+          character: '管理员',
+          name: '王小虎',
+          phoneNumber: '13888888888',
+          staus: 200
+        },
+        {
+          accountNumber: '2016-05-03',
           character: '管理员',
           name: '王小虎',
           phoneNumber: '13888888888',
@@ -297,7 +336,7 @@ export default {
         pass: '',
         checkPass: '',
         account: '',
-        region:''
+        region: ''
       },
       rules: {
         account: [{ required: true, validator: validateAccount, trigger: 'blur' }],
@@ -310,7 +349,7 @@ export default {
   },
   watch: {
     radio1(newValue) {
-      this.crumData = [{ name: '设置' }, { name: '账户权限' }, { name: newValue }]
+      this.crumData.breadItem.splice(this.crumData.breadItem.length - 1, 1, { name: newValue })
     }
   },
   methods: {
@@ -343,16 +382,12 @@ export default {
   height: 100%;
 }
 
-
-
 .headGroup {
   padding-top: 20px;
 }
 
 .tableContainer {
   padding: 0 15px;
-  flex: 1;
-  position: relative;
   .tableTitle {
     display: flex;
     padding: 10px;
@@ -371,11 +406,11 @@ export default {
   color: red;
 }
 
-.pagination {
-  position: absolute;
-  bottom: 75px;
-  left: calc(50% - 505px);
-}
+// .pagination {
+//   position: absolute;
+//   bottom: 75px;
+//   left: calc(50% - 505px);
+// }
 
 .el-select {
   width: 100%;
@@ -390,5 +425,11 @@ export default {
   text-align: left;
 }
 </style>
+
+
+<style lang="scss">
+
+</style>
+
 
 

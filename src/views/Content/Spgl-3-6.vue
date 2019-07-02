@@ -5,17 +5,12 @@
     <Breadcrumb :crumData="crumData"></Breadcrumb>
     <!-- 账户管理 -->
     <div class="tableContainer">
-      <el-row :gutter="3" class="tableTitle">
-        <el-col :span="4" class="calendarContainer">
-          <el-date-picker size="mini" v-model="value1" type="daterange" class="calendar"
-            range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
-          </el-date-picker>
-          <div class="el-input-group__append">
-            <el-button class="calendarButton" icon="el-icon-search"></el-button>
-          </div>
+      <div :gutter="3" class="tableTitle">
+        <span :span="4" class="calendarContainer">
+          <DatePicker @Datepicker="DateP = $event"></DatePicker>
 
-        </el-col>
-        <el-col :span="6" class="searchContainer">
+        </span>
+        <span :span="6" class="searchContainer">
           <el-input size="mini" placeholder="请输入内容" v-model="searchValue" class="searchInput">
             <el-select v-model="searchSelect" slot="prepend" class="searchSelect"
               placeholder="请选择">
@@ -25,8 +20,8 @@
             </el-select>
             <el-button slot="append" icon="el-icon-search"></el-button>
           </el-input>
-        </el-col>
-        <el-col :span="8">
+        </span>
+        <span :span="8">
           <el-button size="mini" type="primary">查看全部</el-button>
           <el-button size="mini" type="primary">删除选中项</el-button>
           <el-popover class="popoverButton" placement="left" width="200"
@@ -57,9 +52,9 @@
             <el-button slot="reference" size="mini" type="primary">添加至菜单</el-button>
           </el-popover>
 
-        </el-col>
-      </el-row>
-      <el-table ref="multipleTable" @selection-change="handleSelectionChange"
+        </span>
+      </div>
+      <el-table size="mini" max-height="550" ref="multipleTable" @selection-change="handleSelectionChange"
         :data="tableData" border stripe style="width: 100%">
         <el-table-column type="selection" width="55">
         </el-table-column>
@@ -125,6 +120,7 @@
 </template>
 <script>
 import Breadcrumb from '@/components/Breadcrumb.vue'
+import DatePicker from '@/components/DatePicker.vue'
 export default {
   data() {
     return {
@@ -132,7 +128,7 @@ export default {
       dialogTableVisible: false,
       radio1: '账户管理',
       crumData: {
-        breadItem: [{ name: '设置' }, { name: '账户权限' }, { name: '账户管理' }],
+        breadItem: [{ name: '内容' }, { name: '商品管理' }],
         leadingIn: true,
         leadingOut: true
       },
@@ -203,7 +199,8 @@ export default {
     console.log(1)
   },
   components: {
-    Breadcrumb
+    Breadcrumb,
+    DatePicker
   }
 }
 </script>
@@ -218,8 +215,6 @@ export default {
   height: 100%;
 }
 
-
-
 .headGroup {
   padding-top: 20px;
   text-align: left;
@@ -228,8 +223,6 @@ export default {
 .tableContainer {
   text-align: left;
   padding: 0 15px;
-  flex: 1;
-  position: relative;
   .tableTitle {
     display: flex;
     padding: 10px 0;
@@ -246,12 +239,6 @@ export default {
 }
 .delet {
   color: red;
-}
-
-.pagination {
-  position: absolute;
-  bottom: 75px;
-  left: calc(50% - 505px);
 }
 
 .searchInput {

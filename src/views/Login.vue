@@ -37,13 +37,19 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-h1, h2 {
+h1,
+h2 {
   margin: 0;
 }
 .page {
   display: flex;
   height: 100vh;
   flex-direction: column;
+  background-color: #fad961;
+  background-image: linear-gradient(86deg, #fad961 0%, #f76b1c 100%);
+  background-image: -webkit-linear-gradient(86deg, #fad961 0%, #f76b1c 100%);
+  background-image: -moz-linear-gradient(86deg, #fad961 0%, #f76b1c 100%);
+  background-image: -o-linear-gradient(86deg, #fad961 0%, #f76b1c 100%);
   // justify-content:center;
   justify-content: center;
   align-items: center;

@@ -6,27 +6,30 @@
     <h3 class="title">商家绑定用户管理</h3>
     <!-- 账户管理 -->
     <div class="tableContainer">
-      <el-row :gutter="5" class="tableTitle">
-        <el-col class="tableName" :span="20"><span>商家ID：xxxxxxxxxx</span><span>商家名称：xxxxxxxx</span></el-col>
-        <el-col class="addAccount" :span="4">
-          <el-button size="small" type="primary" @click="dialogIDVisible = true">+
+      <div :gutter="5" class="tableTitle">
+        <span class="tableName" :span="20">
+          <span>商家ID：xxxxxxxxxx</span><span>商家名称：xxxxxxxx</span></span>
+        <span class="addAccount" :span="4">
+          <el-button size="small" type="primary"
+            @click="dialogIDVisible = true">+
             添加用户ID</el-button>
-        </el-col>
-      </el-row>
-      <el-table :data="tableData" border stripe style="width: 100%">
+        </span>
+      </div>
+      <el-table size="mini" max-height="550" :data="tableData" border stripe style="width: 100%">
         <el-table-column type="index" label="编号" width="50">
         </el-table-column>
         <el-table-column prop="character" label="用户ID">
         </el-table-column>
         <el-table-column prop="phoneNumber" label="操作">
-          <el-button type="text" size="small" @click="dialogEditIDVisible = true">编辑</el-button>
+          <el-button type="text" size="small"
+            @click="dialogEditIDVisible = true">编辑</el-button>
           <el-button type="text" size="small" class="delet">删除</el-button>
         </el-table-column>
       </el-table>
       <!-- 添加ID模态框 -->
       <el-dialog width="30%" title="添加用户ID" :visible.sync="dialogIDVisible">
-        <el-form :model="ruleForm" status-icon ref="ruleForm" label-width="100px"
-          class="demo-ruleForm">
+        <el-form :model="ruleForm" status-icon ref="ruleForm"
+          label-width="100px" class="demo-ruleForm">
           <el-form-item label="用户ID">
             <el-input v-model="ruleForm.account" size="small" autocomplete="off"
               placeholder="添加用户ID">
@@ -40,8 +43,8 @@
       </el-dialog>
       <!-- 编辑模态框 -->
       <el-dialog width="30%" title="编辑用户ID" :visible.sync="dialogEditIDVisible">
-        <el-form :model="ruleForm" status-icon ref="ruleForm" label-width="100px"
-          class="demo-ruleForm">
+        <el-form :model="ruleForm" status-icon ref="ruleForm"
+          label-width="100px" class="demo-ruleForm">
           <el-form-item label="用户ID">
             <el-input v-model="ruleForm.account" size="small" autocomplete="off"
               placeholder="编辑用户ID">
@@ -75,8 +78,8 @@ export default {
       dialogIDVisible: false,
       dialogEditIDVisible: false,
       ruleForm: { account: '' },
-            crumData: {
-        breadItem: [{ name: '设置' }, { name: '账户权限' }, { name: '账户管理' }],
+      crumData: {
+        breadItem: [{ name: '管理' }, { name: '商家管理', bits: 'Sjgl-2-2' }, { name: '账户管理' }],
         leadingIn: false,
         leadingOut: false
       },
@@ -112,11 +115,7 @@ export default {
       ]
     }
   },
-  watch: {
-    radio1(newValue) {
-      this.crumData = [{ name: '设置' }, { name: '账户权限' }, { name: newValue }]
-    }
-  },
+  watch: {},
   methods: {
     confirm(formName) {
       this.$refs[formName].validate(valid => {
@@ -149,16 +148,12 @@ export default {
   height: 100%;
 }
 
-
-
 .headGroup {
   padding: 0 15px;
 }
 
 .tableContainer {
   padding: 0 15px;
-  flex: 1;
-  position: relative;
   .tableTitle {
     display: flex;
     padding: 10px;
@@ -180,11 +175,6 @@ export default {
   color: red;
 }
 
-.pagination {
-  position: absolute;
-  bottom: 75px;
-  left: calc(50% - 505px);
-}
 
 .el-select {
   width: 100%;

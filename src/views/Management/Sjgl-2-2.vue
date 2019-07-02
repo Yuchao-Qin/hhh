@@ -5,15 +5,15 @@
     <Breadcrumb :crumData="crumData"></Breadcrumb>
     <!-- 账户管理 -->
     <div class="tableContainer">
-      <el-row :gutter="3" class="tableTitle">
-        <el-col :span="6" class="calendarContainer">
+      <div class="tableTitle">
+        <span :span="6" class="calendarContainer">
           <DatePicker @Datepicker="DateP = $event"></DatePicker>
-
-        </el-col>
-        <el-col :span="12" class="searchContainer">
-          <el-input size="mini" placeholder="请输入内容" v-model="searchValue" class="searchInput">
-            <el-select v-model="searchSelect" slot="prepend" class="searchSelect"
-              placeholder="请选择">
+        </span>
+        <span :span="12" class="searchContainer">
+          <el-input size="mini" placeholder="请输入内容" v-model="searchValue"
+            class="searchInput">
+            <el-select v-model="searchSelect" slot="prepend"
+              class="searchSelect" placeholder="请选择">
               <el-option label="商家ID" value="1"></el-option>
               <el-option label="商家名称" value="2"></el-option>
               <el-option label="联系人姓名" value="3"></el-option>
@@ -22,16 +22,19 @@
             </el-select>
             <el-button slot="append" icon="el-icon-search"></el-button>
           </el-input>
-        </el-col>
-        <el-col :span="8">
+        </span>
+        <span :span="8">
           <el-button size="mini" type="primary">查看全部</el-button>
-          <el-button size="mini" type="primary" @click="dialogBatchCard = true">批量生成优惠卡</el-button>
-          <el-button size="mini" type="primary" @click="dialogFormVisible = true">
+          <el-button size="mini" type="primary" @click="dialogBatchCard = true">
+            批量生成优惠卡</el-button>
+          <el-button size="mini" type="primary"
+            @click="dialogFormVisible = true">
             + 添加商家</el-button>
-        </el-col>
-      </el-row>
-      <el-table ref="multipleTable" @selection-change="handleSelectionChange"
-        :data="tableData" border stripe style="width: 100%">
+        </span>
+      </div>
+      <el-table size="mini" ref="multipleTable" max-height="550"
+        @selection-change="handleSelectionChange" :data="tableData" border
+        stripe style="width: 100%">
         <el-table-column type="selection" width="35">
         </el-table-column>
         <el-table-column prop="accountNumber" label="编号">
@@ -50,7 +53,8 @@
         </el-table-column>
         <el-table-column prop="character" width="200px">
           <template slot="header" slot-scope="{}">
-            <el-select v-model="tableSelectValue" size="mini" placeholder="禁用状态">
+            <el-select v-model="tableSelectValue" size="mini"
+              placeholder="禁用状态">
               <el-option label="未禁用" value="未禁用">
               </el-option>
               <el-option label="禁用" value="禁用">
@@ -59,9 +63,12 @@
           </template>
         </el-table-column>
         <el-table-column prop="operating" label="操作">
-          <el-button type="text" size="small" @click="dialogFormVisible = true">编辑</el-button>
-          <el-button type="text" size="small" @click="dialogCardVisible = true">生成优惠卡</el-button>
-          <el-button type="text" size="small" @click="toUserManager">绑定用户管理</el-button>
+          <el-button type="text" size="small" @click="dialogFormVisible = true">
+            编辑</el-button>
+          <el-button type="text" size="small" @click="dialogCardVisible = true">
+            生成优惠卡</el-button>
+          <el-button type="text" size="small" @click="toUserManager">绑定用户管理
+          </el-button>
         </el-table-column>
 
       </el-table>
@@ -77,13 +84,16 @@
         class="demo-ruleForm">
         <!-- 商家名称、联系人姓名、手机号、门店地址、禁用状态 -->
         <el-form-item label="商家名称" prop="nickName">
-          <el-input v-model="ruleForm.account" size="small" autocomplete="off"></el-input>
+          <el-input v-model="ruleForm.account" size="small" autocomplete="off">
+          </el-input>
         </el-form-item>
         <el-form-item label="联系人姓名" prop="phoneNumber">
-          <el-input size="small" v-model="ruleForm.pass" autocomplete="off"></el-input>
+          <el-input size="small" v-model="ruleForm.pass" autocomplete="off">
+          </el-input>
         </el-form-item>
         <el-form-item label="联系人手机号" prop="bangding">
-          <el-input size="small" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+          <el-input size="small" v-model="ruleForm.checkPass"
+            autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="门店地址" prop="bangding">
           <el-input type="textarea" size="small" v-model="ruleForm.checkPass"
@@ -138,7 +148,8 @@
         </el-table-column>
         <el-table-column label="单张卡金额">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.accountNumber " placeholder="请输入卡金额"></el-input>
+            <el-input v-model="scope.row.accountNumber " placeholder="请输入卡金额">
+            </el-input>
           </template>
         </el-table-column>
         <el-table-column label="单张卡金额">
@@ -168,8 +179,8 @@ export default {
       tabtest: true,
       radio1: '账户管理',
       tableSelectValue: '',
-            crumData: {
-        breadItem: [{ name: '设置' }, { name: '账户权限' }, { name: '账户管理' }],
+      crumData: {
+        breadItem: [{ name: '管理' }, { name: '商家管理' }],
         leadingIn: false,
         leadingOut: false
       },
@@ -263,8 +274,6 @@ export default {
   height: 100%;
 }
 
-
-
 .headGroup {
   padding-top: 20px;
   text-align: left;
@@ -273,8 +282,6 @@ export default {
 .tableContainer {
   text-align: left;
   padding: 0 15px;
-  flex: 1;
-  position: relative;
   .tableTitle {
     display: flex;
     padding: 10px 0;
@@ -291,16 +298,6 @@ export default {
 }
 .delet {
   color: red;
-}
-
-.pagination {
-  position: absolute;
-  bottom: 75px;
-  left: calc(50% - 505px);
-}
-
-.searchInput {
-  width: 80%;
 }
 
 .calendar {

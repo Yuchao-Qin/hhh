@@ -5,19 +5,20 @@
     <Breadcrumb :crumData="crumData"></Breadcrumb>
     <!-- 账户管理 -->
     <div class="tableContainer">
-      <el-row :gutter="3" class="tableTitle">
-        <el-col :span="6">
+      <div :gutter="3" class="tableTitle">
+        <span :span="6">
           <span class="hidetitle">当前专题栏模块状态为--显示/隐藏</span>
-        </el-col>
-        <el-col :span="6">
-          <el-button size="mini" type="primary">专题栏模块设为显示/隐藏</el-button>
-        </el-col>
-        <el-col :span="8">
+           <el-button size="mini" type="primary">专题栏模块设为显示/隐藏</el-button>
+        </span>
+        <span :span="6">
+         
+        </span>
+        <span :span="8">
           <el-button size="mini" type="primary" @click="addSubject=true">+添加专题
           </el-button>
-        </el-col>
-      </el-row>
-      <el-table :data="tableData" border stripe style="width: 100%">
+        </span>
+      </div>
+      <el-table size="mini" max-height="550" :data="tableData" border stripe style="width: 100%">
         <el-table-column prop="accountNumber" label="专题类型名">
         </el-table-column>
         <el-table-column prop="character" label="首页专题图片">
@@ -169,7 +170,7 @@ export default {
   },
   watch: {
     radio1(newValue) {
-      this.crumData = [{ name: '设置' }, { name: '账户权限' }, { name: newValue }]
+      this.crumData = [{ name: '内容' }, { name: '专题管理' }]
     }
   },
   methods: {
@@ -199,8 +200,6 @@ export default {
 .tableContainer {
   text-align: left;
   padding: 0 15px;
-  flex: 1;
-  position: relative;
   .tableTitle {
     display: flex;
     padding: 10px 0;
@@ -219,15 +218,6 @@ export default {
   color: red;
 }
 
-.pagination {
-  position: absolute;
-  bottom: 75px;
-  left: calc(50% - 505px);
-}
-
-.searchInput {
-  width: 80%;
-}
 
 .calendar {
   width: 90%;
@@ -236,6 +226,7 @@ export default {
 .hidetitle {
   color: red;
   font-size: 14px;
+  margin-right: 50px;
 }
 
 .jueseName {

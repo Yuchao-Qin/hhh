@@ -5,8 +5,9 @@
     <Breadcrumb :crumData="crumData"></Breadcrumb>
     <!-- 账户管理 -->
     <div class="tableContainer">
-      <el-row :gutter="3" class="tableTitle">
-        <el-col :span="6" class="calendarContainer">
+      <div :gutter="3" class="tableTitle">
+        <!-- <el-col :span="6" class="calendarContainer"> -->
+        <span class="calendarContainer">
           <el-date-picker size="mini" v-model="value1" type="daterange"
             class="calendar" range-separator="至" start-placeholder="开始日期"
             end-placeholder="结束日期">
@@ -14,9 +15,10 @@
           <div class="el-input-group__append">
             <el-button class="calendarButton" icon="el-icon-search"></el-button>
           </div>
-
-        </el-col>
-        <el-col :span="12" class="searchContainer">
+        </span>
+        <!-- </el-col> -->
+        <!-- <el-col :span="8" > -->
+        <span class="searchContainer">
           <el-input size="mini" placeholder="请输入内容" v-model="searchValue"
             class="searchInput">
             <el-select v-model="searchSelect" slot="prepend"
@@ -27,13 +29,18 @@
             </el-select>
             <el-button slot="append" icon="el-icon-search"></el-button>
           </el-input>
-        </el-col>
-        <el-col :span="8">
+        </span>
+
+        <!-- </el-col> -->
+        <!-- <el-col :span="8"> -->
+        <span  class="headerButtonGroup">
           <el-button size="mini" type="primary">查看全部</el-button>
           <el-button size="mini" type="primary">删除选中项</el-button>
-        </el-col>
-      </el-row>
-      <el-table ref="multipleTable" @selection-change="handleSelectionChange"
+        </span>
+
+        <!-- </el-col> -->
+      </div>
+      <el-table size="mini" max-height="550" ref="multipleTable" @selection-change="handleSelectionChange"
         :data="tableData" border stripe style="width: 100%">
         <el-table-column type="selection" width="55">
         </el-table-column>
@@ -101,7 +108,7 @@ export default {
       dialogFormVisible: false,
       dialogTableVisible: false,
       crumData: {
-        breadItem: [{ name: '设置' }, { name: '用户管理' }],
+        breadItem: [{ name: '管理' }, { name: '用户管理' }],
         leadingIn: false,
         leadingOut: false
       },
@@ -183,10 +190,9 @@ export default {
 .tableContainer {
   text-align: left;
   padding: 0 15px;
-  flex: 1;
-  position: relative;
   .tableTitle {
     display: flex;
+    justify-content: space-between;
     padding: 10px 0;
   }
 }
@@ -203,15 +209,6 @@ export default {
   color: red;
 }
 
-.pagination {
-  position: absolute;
-  bottom: 75px;
-  left: calc(50% - 505px);
-}
-
-.searchInput {
-  width: 80%;
-}
 
 .calendar {
   max-width: 200px;
@@ -240,6 +237,10 @@ export default {
 
 .vue-cropper {
   height: 100px;
+}
+
+.headerButtonGroup {
+  text-align: right;
 }
 </style>
 

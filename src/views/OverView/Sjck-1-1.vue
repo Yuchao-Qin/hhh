@@ -38,23 +38,15 @@
           <h3>每日数据</h3>
         </el-col>
       </el-row>
-      <el-row :gutter="10" class="tableTitle">
-        <el-col :span="6">
-          <el-date-picker size="mini" v-model="value1" type="daterange"
-            class="calendar" range-separator="至" start-placeholder="开始日期"
-            end-placeholder="结束日期">
-          </el-date-picker>
-        </el-col>
-        <el-col :span="4">
-          <!-- <el-input size="mini" placeholder="请输入内容" v-model="searchValue" class="searchInput"> -->
-          <el-button size="mini" type="primary" @click="search">查询</el-button>
-          <!-- </el-input> -->
-        </el-col>
-        <el-col :span="10">
+      <div :gutter="10" class="tableTitle">
+        <span :span="6">
+          <DatePicker @Datepicker="DateP = $event"></DatePicker>
+        </span>
+        <span :span="10">
           <el-button class="allSerch" size="mini" type="primary">查看全部
           </el-button>
-        </el-col>
-      </el-row>
+        </span>
+      </div>
       <el-table :data="tableData" border stripe style="width: 100%">
         <el-table-column prop="Date" label="日期">
         </el-table-column>
@@ -81,6 +73,7 @@
 <script>
 import Breadcrumb from '@/components/Breadcrumb.vue'
 import request from '@/utils/request.js'
+import DatePicker from '@/components/DatePicker.vue'
 export default {
   data() {
     return {
@@ -141,7 +134,8 @@ export default {
     console.log(1)
   },
   components: {
-    Breadcrumb
+    Breadcrumb,
+    DatePicker
   }
 }
 </script>
@@ -160,8 +154,6 @@ export default {
 
 .tableContainer {
   padding: 0 15px;
-  flex: 1;
-  position: relative;
   .tableTitle {
     text-align: left;
     display: flex;
@@ -180,16 +172,6 @@ export default {
 }
 .delet {
   color: red;
-}
-
-.pagination {
-  position: absolute;
-  bottom: 75px;
-  left: calc(50% - 505px);
-}
-
-.searchInput {
-  width: 80%;
 }
 
 .calendar {

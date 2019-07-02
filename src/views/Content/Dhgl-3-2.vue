@@ -5,8 +5,8 @@
     <Breadcrumb :crumData="crumData"></Breadcrumb>
     <!-- 账户管理 -->
     <div class="tableContainer">
-      <el-row :gutter="3" class="tableTitle">
-        <el-col :span="6" class="searchContainer">
+      <div :gutter="3" class="tableTitle">
+        <span :span="6" class="searchContainer">
           <el-input size="mini" placeholder="请输入内容" v-model="searchValue" class="searchInput">
             <el-select v-model="searchSelect" slot="prepend" class="searchSelect"
               placeholder="请选择">
@@ -18,9 +18,9 @@
             </el-select>
             <el-button slot="append" icon="el-icon-search"></el-button>
           </el-input>
-        </el-col>
-      </el-row>
-      <el-table ref="multipleTable" @selection-change="handleSelectionChange"
+        </span>
+      </div>
+      <el-table size="mini" max-height="550" ref="multipleTable" @selection-change="handleSelectionChange"
         :data="tableData" border stripe style="width: 100%">
         <el-table-column type="index" width="55" label="序号">
         </el-table-column>
@@ -73,13 +73,75 @@ export default {
     return {
       dialogFormVisible: false,
       dialogTableVisible: false,
-      radio1: '账户管理',
       crumData: {
-        breadItem: [{ name: '设置' }, { name: '账户权限' }, { name: '账户管理' }],
+        breadItem: [{ name: '内容' }, { name: '导航管理' }],
         leadingIn: true,
         leadingOut: true
       },
       tableData: [
+        {
+          accountNumber: '2016-05-02',
+          character: '管理员',
+          name: '王小虎',
+          phoneNumber: '13888888888',
+          staus: 200
+        },
+        {
+          accountNumber: '2016-05-04',
+          character: '管理员',
+          name: '王小虎',
+          phoneNumber: '13888888888',
+          staus: 200
+        },
+        {
+          accountNumber: '2016-05-01',
+          character: '管理员',
+          name: '王小虎',
+          phoneNumber: '13888888888',
+          staus: 200
+        },
+        {
+          accountNumber: '2016-05-02',
+          character: '管理员',
+          name: '王小虎',
+          phoneNumber: '13888888888',
+          staus: 200
+        },
+        {
+          accountNumber: '2016-05-04',
+          character: '管理员',
+          name: '王小虎',
+          phoneNumber: '13888888888',
+          staus: 200
+        },
+        {
+          accountNumber: '2016-05-01',
+          character: '管理员',
+          name: '王小虎',
+          phoneNumber: '13888888888',
+          staus: 200
+        },
+        {
+          accountNumber: '2016-05-02',
+          character: '管理员',
+          name: '王小虎',
+          phoneNumber: '13888888888',
+          staus: 200
+        },
+        {
+          accountNumber: '2016-05-04',
+          character: '管理员',
+          name: '王小虎',
+          phoneNumber: '13888888888',
+          staus: 200
+        },
+        {
+          accountNumber: '2016-05-01',
+          character: '管理员',
+          name: '王小虎',
+          phoneNumber: '13888888888',
+          staus: 200
+        },
         {
           accountNumber: '2016-05-02',
           character: '管理员',
@@ -126,9 +188,6 @@ export default {
     }
   },
   watch: {
-    radio1(newValue) {
-      this.crumData = [{ name: '设置' }, { name: '账户权限' }, { name: newValue }]
-    }
   },
   methods: {
     newAccount() {},
@@ -171,8 +230,6 @@ export default {
 .tableContainer {
   text-align: left;
   padding: 0 15px;
-  flex: 1;
-  position: relative;
   .tableTitle {
     display: flex;
     padding: 10px 0;
@@ -189,16 +246,6 @@ export default {
 }
 .delet {
   color: red;
-}
-
-.pagination {
-  position: absolute;
-  bottom: 75px;
-  left: calc(50% - 505px);
-}
-
-.searchInput {
-  width: 80%;
 }
 
 .calendar {

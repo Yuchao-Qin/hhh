@@ -15,10 +15,10 @@
     <el-row class="content" type="flex" justify="space-between">
       <el-col class="contentNav">
         <el-scrollbar>
-          <el-menu :default-active="refreshActive.routeName" class="el-menu-vertical-demo"
+          <el-menu :default-active="refreshActive" class="el-menu-vertical-demo"
             @open="handleOpen" @select="handleSelect" :collapse="isCollapse">
-            <el-submenu v-for="(titleItem, titleIndex) in menuData" :key="titleIndex"
-              :index="(titleIndex + 1).toString()">
+            <el-submenu v-for="(titleItem, titleIndex) in menuData"
+              :key="titleIndex" :index="(titleIndex + 1).toString()">
               <template slot="title">
                 <i :class="titleItem.icon"></i>
                 <span slot="title" v-html="titleItem.title"></span>
@@ -40,12 +40,12 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters } from 'vuex'
+import Storage from '@/utils/storage.js'
 export default {
   data() {
     return {
       isCollapse: false,
-      refreshActive:this.$store.state.routeName,
       menuData: [
         { title: '数据查看', icon: 'el-icon-pie-chart', item: [{ name: '数据查看', index: 'sjck-1-1' }] },
         {
@@ -79,15 +79,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['userInfo'])
-  },
-  mounted () {
-    this.set_routeName(this.$route.name);
-  },
-  computed: {
-    zh() {
-
+    ...mapGetters(['userInfo']),
+    refreshActive() {
+      return Storage.get('routeName')
     }
+  },
+  mounted() {
+    this.$router.push({ name:'Sjck-1-1' })
   },
   methods: {
     handleOpen(key, keyPath) {
@@ -96,16 +94,14 @@ export default {
     handleSelect(index, indexPath, e) {
       const name = index.slice(0, 1).toUpperCase() + index.slice(1)
       this.$router.push({ name })
-
-      // this.$router.push({ name })
+      Storage.set('routeName',index)
     },
     userLogout() {
       this.$store.dispatch('logOut').then(() => {
         location.reload() // 为了重新实例化vue-router对象 避免bug
       })
-    },
-    ...mapMutations(['set_routeName'])
-    // 'modulePath', []|{}
+    }
+    // ...mapMutations(['set_routeName'])
   }
 }
 </script>
@@ -141,7 +137,7 @@ export default {
 }
 
 .contentNav {
-  width: 206px;;
+  width: 206px;
 }
 
 .contentContainer {

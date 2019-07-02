@@ -5,11 +5,11 @@
     <Breadcrumb :crumData="crumData"></Breadcrumb>
     <!-- 账户管理 -->
     <div class="tableContainer">
-      <el-row :gutter="3" class="tableTitle">
-        <el-col :span="6" class="calendarContainer">
+      <div :gutter="3" class="tableTitle">
+        <span :span="6" class="calendarContainer">
           <DatePicker @Datepicker="DateP = $event"></DatePicker>
-        </el-col>
-        <el-col :span="12" class="searchContainer">
+        </span>
+        <span :span="12" class="searchContainer">
           <el-input size="mini" placeholder="请输入内容" v-model="searchValue" class="searchInput">
             <el-select v-model="searchSelect" slot="prepend" class="searchSelect"
               placeholder="请选择">
@@ -19,12 +19,12 @@
             </el-select>
             <el-button slot="append" icon="el-icon-search"></el-button>
           </el-input>
-        </el-col>
-        <el-col :span="8">
+        </span>
+        <span :span="8">
           <el-button size="mini" type="primary">清楚筛选</el-button>
-        </el-col>
-      </el-row>
-      <el-table ref="multipleTable" :data="tableData" border stripe style="width: 100%">
+        </span>
+      </div>
+      <el-table ref="multipleTable" size="mini" max-height="550" :data="tableData" border stripe style="width: 100%">
         <el-table-column prop="character" class-name="selectTableHeader" width="200px">
           <template slot="header" slot-scope="{}">
             <el-select v-model="fan_kui_status" size="mini" placeholder="反馈状态">
@@ -97,7 +97,7 @@ export default {
       radio1: '账户管理',
       tableSelectValue: '',
       crumData: {
-        breadItem: [{ name: '设置' }, { name: '账户权限' }, { name: '账户管理' }],
+        breadItem: [{ name: '管理' }, { name: '反馈管理'}],
         leadingIn: false,
         leadingOut: false
       },
@@ -180,7 +180,6 @@ export default {
 .tableContainer {
   text-align: left;
   padding: 0 15px;
-  flex: 1;
   position: relative;
   .tableTitle {
     display: flex;
@@ -200,15 +199,6 @@ export default {
   color: red;
 }
 
-.pagination {
-  position: absolute;
-  bottom: 75px;
-  left: calc(50% - 505px);
-}
-
-.searchInput {
-  width: 80%;
-}
 
 .calendar {
   max-width: 200px;
