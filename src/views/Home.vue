@@ -73,7 +73,7 @@ export default {
         {
           title: '设&emsp;&emsp;置',
           icon: 'el-icon-setting',
-          item: [{ name: '账户权限', index: 'zhqx-4-1' }, { name: '工作日志', index: 'gzrz-4-2' }]
+          item: [{ name: '账户管理', index: 'zhqx-4-1' }, { name: '工作日志', index: 'gzrz-4-2' }, {name:'权限管理', index:'tjqx-4-3'}]
         }
       ]
     }
@@ -85,7 +85,7 @@ export default {
     }
   },
   mounted() {
-    this.$router.push({ name:'Sjck-1-1' })
+    // this.$router.push({ name:'Sjck-1-1' })
   },
   methods: {
     handleOpen(key, keyPath) {

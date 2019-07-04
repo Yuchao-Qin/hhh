@@ -7,23 +7,25 @@
       <el-radio-group v-model="radio1" size="small">
         <el-radio-button label="搜索管理"></el-radio-button>
         <el-radio-button label="帮助中心管理"></el-radio-button>
+        <el-radio-button label="完善信息赠送管理"></el-radio-button>
       </el-radio-group>
     </div>
-    <!-- 账户管理 -->
+    <!-- 搜索管理 -->
     <div v-show="radio1 === '搜索管理'" class="tableContainer">
       <div :gutter="3" class="tableTitle">
         <span :span="6">
-            <el-form size="mini" :model="ruleForm" ref="ruleForm"
-              label-width="100px">
-              <el-form-item label="搜索框文字">
-                <el-input placeholder="请输入内容" label="发现文字"
-                  v-model="ruleForm.searchValue" class="searchInput">
-                </el-input>
-              </el-form-item>
-            </el-form>
-            <el-button class="headEdit" type="primary" size="mini" @click="findFont = !findFont">
-              编辑
-            </el-button>
+          <el-form size="mini" :model="ruleForm" ref="ruleForm"
+            label-width="100px">
+            <el-form-item label="搜索框文字">
+              <el-input placeholder="请输入内容" label="发现文字"
+                v-model="ruleForm.searchValue" class="searchInput">
+              </el-input>
+            </el-form-item>
+          </el-form>
+          <el-button class="headEdit" type="primary" size="mini"
+            @click="findFont = !findFont">
+            编辑
+          </el-button>
         </span>
         <span :span="6">
           <el-button size="mini" type="primary">删除选中项</el-button>
@@ -31,7 +33,8 @@
             @click="dialogFormVisible = true">+ 添加搜索发现文字</el-button>
         </span>
       </div>
-      <el-table :data="tableData" size="mini" max-height="550" border stripe style="width: 100%">
+      <el-table :data="tableData" size="mini" max-height="550" border stripe
+        style="width: 100%">
         <el-table-column type="selection" width="55">
         </el-table-column>
         <el-table-column type="index" width="55" label="排序">
@@ -97,7 +100,7 @@
         :pager-count='17' :total="1000">
       </el-pagination>
     </div>
-    <!-- 权限管理 -->
+    <!-- 帮助中心管理 -->
     <div v-show="radio1 === '帮助中心管理'" class="tableContainer">
       <div :gutter="5" class="tableTitle">
         <span class="tableName" :span="16"><span>权限列表</span></span>
@@ -208,6 +211,34 @@
         :pager-count='17' :total="1000">
       </el-pagination>
     </div>
+    <!-- 完善信息赠送管理 -->
+    <div v-show="radio1 === '完善信息赠送管理'">
+      <div class="fromPage">
+        <el-form size="mini" :model="ruleForm" ref="ruleForm"
+          label-width="100px">
+          <el-form-item label="图片">
+            <el-input placeholder="请输入内容" label="发现文字"
+              v-model="ruleForm.searchValue" class="searchInput">
+            </el-input>
+          </el-form-item>
+          <el-form-item label="赠送金额">
+            <el-input placeholder="请输入内容" label="发现文字"
+              v-model="ruleForm.searchValue" class="searchInput">
+            </el-input>
+          </el-form-item>
+          <el-form-item label="显示状态">
+            <!-- <el-input placeholder="请输入内容" label="发现文字"
+              v-model="ruleForm.searchValue" class="searchInput">
+            </el-input> -->
+            <el-select v-model="Show">
+              <el-option label="显示" value="1"></el-option>
+              <el-option label="不显示" value="2"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+      </div>
+
+    </div>
   </div>
 </template>
 <script>
@@ -251,6 +282,7 @@ export default {
     }
     return {
       radio1: '搜索管理',
+      Show:'1',
       dialogEditVisible: false,
       FontEditVisible: false,
       findFont: true,
@@ -386,7 +418,6 @@ export default {
   color: red;
 }
 
-
 .el-select {
   width: 100%;
 }
@@ -405,7 +436,15 @@ export default {
 }
 
 .headEdit {
-  margin-left: 10px; 
+  margin-left: 10px;
+}
+
+.fromPage {
+  padding: 25px;
+  width: 30%;
+  margin: auto;
+  position: relative;
+  left: -43px;
 }
 </style>
 

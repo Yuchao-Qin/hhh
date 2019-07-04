@@ -1,12 +1,13 @@
 <template>
   <div class="page">
     <!-- 面包屑 -->
+
     <Breadcrumb :crumData="crumData"></Breadcrumb>
     <!-- tab -->
     <div class="headGroup">
       <el-radio-group v-model="radio1" size="small">
         <el-radio-button label="账户管理"></el-radio-button>
-        <el-radio-button label="权限管理"></el-radio-button>
+        <el-radio-button label="角色管理"></el-radio-button>
       </el-radio-group>
     </div>
     <!-- 账户管理 -->
@@ -16,7 +17,7 @@
         <el-col class="addAccount" :span="4">
           <el-button size="small" type="primary"
             @click="dialogFormVisible = true">+
-            新增用户</el-button>
+            新增管理员</el-button>
         </el-col>
       </el-row>
       <el-table size="small" :data="tableData" border stripe max-height="550"
@@ -37,7 +38,7 @@
             @click="zhuanghu_manage_edit = true">修改</el-button>
         </el-table-column>
       </el-table>
-      <!-- 模态 -->
+      <!-- 新增用户模态 -->
       <el-dialog width="30%" title="新增用户" :visible.sync="dialogFormVisible">
         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"
           label-width="100px" class="demo-ruleForm">
@@ -53,6 +54,14 @@
             <el-input type="password" size="small" v-model="ruleForm.checkPass"
               autocomplete="off"></el-input>
           </el-form-item>
+          <el-form-item label="姓名" prop="personName">
+            <el-input type="password" size="small" v-model="ruleForm.personName"
+              autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="手机号" prop="phoneNumber">
+            <el-input type="password" size="small"
+              v-model="ruleForm.phoneNumber" autocomplete="off"></el-input>
+          </el-form-item>
           <el-form-item label="账户角色" size="small" prop="region">
             <el-select v-model="ruleForm.region" autocomplete="off"
               placeholder="请选择角色">
@@ -66,7 +75,8 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="confirm('ruleForm')">确 定</el-button>
+          <el-button type="primary" @click="
+          confirm('ruleForm')">确 定</el-button>
         </div>
       </el-dialog>
       <el-dialog width="30%" title="修改" :visible.sync="zhuanghu_manage_edit">
@@ -76,12 +86,13 @@
             <el-input v-model="zhanghu_manage_from.account" size="small" autocomplete="off"></el-input>
           </el-form-item> -->
           <el-form-item label="姓名">
-            <el-input type="password" size="small"
-              v-model="zhanghu_manage_from.pass" autocomplete="off"></el-input>
+            <el-input type="personName" size="small"
+              v-model="zhanghu_manage_from.personName" autocomplete="off">
+            </el-input>
           </el-form-item>
           <el-form-item label="手机号">
-            <el-input type="password" size="small"
-              v-model="zhanghu_manage_from.checkPass" autocomplete="off">
+            <el-input type="phoneNumber" size="small"
+              v-model="zhanghu_manage_from.phoneNumber" autocomplete="off">
             </el-input>
           </el-form-item>
           <el-form-item label="角色" size="small">
@@ -97,7 +108,8 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="zhuanghu_manage_edit = false">取 消</el-button>
-          <el-button type="primary" @click="confirm('ruleForm')">确 定</el-button>
+          <el-button type="primary" @click="confirm('ruleForm')">确 定
+          </el-button>
         </div>
       </el-dialog>
       <!-- 分页 -->
@@ -106,28 +118,34 @@
       </el-pagination>
     </div>
     <!-- 权限管理修改页 -->
-    <div v-show="radio1 === '权限管理'" class="tableContainer">
+    <div v-show="radio1 === '角色管理'" class="tableContainer">
       <el-row :gutter="5" class="tableTitle">
-        <el-col class="tableName" :span="16"><span>权限列表</span></el-col>
+        <el-col class="tableName" :span="16"><span>角色列表</span></el-col>
         <el-col class="addAccount" :span="8">
           <el-button size="small" type="primary"
             @click="dialogTableVisible = true">+
-            新增用户</el-button>
+            新增角色</el-button>
         </el-col>
       </el-row>
       <el-table :data="JueseTableData" border stripe style="width: 100%">
-        <el-table-column prop="character" label="角色">
+        <el-table-column prop="role_name" label="角色">
         </el-table-column>
-        <el-table-column prop="havePower" label="所拥有权限">
+        <el-table-column prop="permissions_name" label="所拥有权限">
         </el-table-column>
         <el-table-column prop="operating" label="操作">
-          <el-button type="text" size="small" class="delet">删除</el-button>
-          <el-button type="text" size="small" @click="powerVisible = true">修改
-          </el-button>
+          <template slot-scope="scope">
+            <el-button type="text" size="small" class="delet">删除</el-button>
+            <el-button type="text" size="small" @click="powerVisible = true">
+              修改
+            </el-button>
+            <el-button type="text" size="small"
+              @click="permissionsHandel(scope.$index, scope.row)">权限分配
+            </el-button>
+          </template>
         </el-table-column>
       </el-table>
-      <!-- 模态 -->
-      <el-dialog width="50%" title="修改" :visible.sync="powerVisible">
+      <!-- 修改模态 -->
+      <el-dialog width="30%" title="修改" :visible.sync="powerVisible">
         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"
           label-width="100px" class="demo-ruleForm">
           <el-form-item label="角色" size="small">
@@ -140,14 +158,14 @@
               <el-option label="开发部" value="dever"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="概况" prop="type">
+          <!-- <el-form-item label="概况" prop="type">
             <el-input label="所拥有权限" v-model="owenPower"></el-input>
-          </el-form-item>
-
+          </el-form-item> -->
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="powerVisible = false">取 消</el-button>
-          <el-button type="primary" @click="confirm('ruleForm')">确 定</el-button>
+          <el-button type="primary" @click="confirm('ruleForm')">确 定
+          </el-button>
         </div>
       </el-dialog>
       <!-- 模态 -->
@@ -185,7 +203,8 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogTableVisible = false">取 消</el-button>
-          <el-button type="primary" @click="confirm('ruleForm')">确 定</el-button>
+          <el-button type="primary" @click="confirm('ruleForm')">确 定
+          </el-button>
         </div>
       </el-dialog>
       <!-- 分页 -->
@@ -203,7 +222,7 @@ export default {
       if (value === '') {
         callback(new Error('请输入账号'))
       } else if (!/^[a-zA-Z0-9]{6,18}$/.test(value)) {
-        callback(new Error('请输入6~18位可由字母和数字组成的账号'))
+        callback(new Error('请输入6~18位可由字母或数字组成的账号'))
       } else {
         if (this.ruleForm.checkPass !== '') {
           this.$refs.ruleForm.validateField('checkPass')
@@ -212,11 +231,35 @@ export default {
       }
     }
 
+    var validatepersonName = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入姓名'))
+      } else {
+        if (this.ruleForm.personName !== '') {
+          this.$ref.ruleForm.validateField('personName')
+        }
+      }
+    }
+    //  if (this.ruleForm.personName !== '') {
+    //           this.$ref.ruleForm.validateField('phoneNumber')
+    //         }
+    var validatephoneNumber = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入手机号'))
+      } else if (!/^1(3|4|5|6|7|8|9)\d{9}$/.test(value)) {
+        callback(new Error('请输入正确手机号'))
+      } else {
+        if (this.ruleForm.phoneNumber !== '') {
+          this.$ref.ruleForm.validateField('phoneNumber')
+        }
+      }
+    }
+
     var validatePass = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请输入密码'))
       } else if (!/^(?=.*[0-9])(?=.*[a-zA-Z])(.{8,})$/.test(value)) {
-        callback(new Error('请输入至少8位数字字母组成的密码'))
+        callback(new Error('请输入至少字母和数字共同组成的密码'))
       } else {
         if (this.ruleForm.checkPass !== '') {
           this.$refs.ruleForm.validateField('checkPass')
@@ -330,19 +373,25 @@ export default {
       ruleForm: {
         pass: '',
         checkPass: '',
-        account: ''
+        account: '',
+        phoneNumber: '',
+        personName: ''
       },
       zhanghu_manage_from: {
         pass: '',
         checkPass: '',
         account: '',
-        region: ''
+        region: '',
+        personName: '',
+        phoneNumber: ''
       },
       rules: {
         account: [{ required: true, validator: validateAccount, trigger: 'blur' }],
         pass: [{ required: true, validator: validatePass, trigger: 'blur' }],
         checkPass: [{ required: true, validator: validatePass2, trigger: 'blur' }],
-        region: [{ required: true, message: '请选择活动区域', trigger: 'change' }]
+        region: [{ required: true, message: '请选择活动区域', trigger: 'change' }],
+        personName: [{ required: true, validator: validatepersonName, message: '请填写姓名', trigger: 'change' }],
+        phoneNumber: [{ required: true, validator: validatephoneNumber, message: '填写手机号', trigger: 'change' }]
       },
       formLabelWidth: '120px'
     }
@@ -352,11 +401,36 @@ export default {
       this.crumData.breadItem.splice(this.crumData.breadItem.length - 1, 1, { name: newValue })
     }
   },
+  mounted() {
+    this.$http({
+      method: 'get',
+      url: '/auth/roleList'
+    }).then(res => {
+      console.log(res.data.data)
+      this.JueseTableData = res.data.data
+    })
+    // 有关tab项
+    try {
+      console.log(this.$route.params.radio2)
+      if (this.$route.params.radio2) {
+        this.radio1 = this.$route.params.radio2;
+      }
+    } catch (error) {
+      console.log('error')
+    }
+  },
   methods: {
     confirm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          alert('submit!')
+          this.$http({
+            method: 'post',
+            parmas: {
+              admin_account_number: this.account,
+              password: this.pass,
+              confirm_password: this.checkPass
+            }
+          })
           this.dialogFormVisible = false
         } else {
           console.log('error submit!!')
@@ -364,10 +438,11 @@ export default {
           this.dialogFormVisible = true
         }
       })
+    },
+    permissionsHandel(index, row) {
+      console.log(index, row)
+      this.$router.push({ name: 'permissions', params: { id: row.id, name: row.role_name } })
     }
-  },
-  mounted() {
-    console.log(1)
   },
   components: {
     Breadcrumb
@@ -428,7 +503,6 @@ export default {
 
 
 <style lang="scss">
-
 </style>
 
 

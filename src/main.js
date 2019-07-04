@@ -3,10 +3,14 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store/index";
 import 'element-ui/lib/theme-chalk/index.css';
-import axios from "axios";
-import VueCropper from 'vue-cropper' 
+import VueCropper from 'vue-cropper';
 import "./publicStyle/public.css";
+import Request from '@/utils/request.js';
+import { Message } from 'element-ui';
 
+Vue.prototype.$message = Message;
+window.$message = Message;
+Vue.prototype.$http = Request;
 // import "@/permission"; //路由访问权限
 import { Option, 
          Select,
@@ -39,15 +43,12 @@ import { Option,
          Popover,
          Upload,
          Tag
-        //  Dropdown,
-        //  DropdownMenu,
-        //  DropdownItem
         } from "element-ui";
         
 Vue.config.productionTip = false;
 
 // 注册组件
-Vue.use(VueCropper)
+Vue.use(VueCropper);
 Vue.use(Option);
 Vue.use(Select);
 Vue.use(Input);
@@ -58,7 +59,6 @@ Vue.use(Checkbox);
 Vue.use(Row);
 Vue.use(Col);
 Vue.use(Icon);
-// Vue.use(Radio);
 Vue.use(Collapse);
 Vue.use(CollapseItem);
 Vue.use(RadioGroup);
@@ -83,10 +83,6 @@ Vue.use(Collapse);
 Vue.use(Popover);
 Vue.use(Upload);
 Vue.use(Tag);
-// Vue.use(Dropdown);
-// Vue.use(DropdownMenu);
-// Vue.use(DropdownItem);
-
 
 
 new Vue({

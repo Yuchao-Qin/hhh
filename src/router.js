@@ -83,6 +83,11 @@ export default new Router({
         components:  {default1:()=>import("./views/Setting/Gzrz-4-2")}
       },
       {
+        path:'Setting/Tjqx-4-3',
+        name:'Tjqx-4-3',
+        components:  {default1:()=>import("./views/Setting/Tjqx-4-3")}
+      },
+      {
         path:'Management/Yhgl-2-1/BillDetail',
         name:'BillDetail',
         components:  {default1:()=>import("./views/Management/inPage/BillDetail")},
@@ -101,6 +106,11 @@ export default new Router({
         path:'Content/Ztgl-3-4/MenuManage',
         name:'MenuManage',
         components:  {default1:()=>import("./views/Content/inPage/MenuManage")},
+      },
+      {
+        path:'Content/Zhqx-4-1/permissions/:id/:name',
+        name:'permissions',
+        components:  {default1:()=>import("./views/Setting/inPage/permissions")},
       },
     ]
     }

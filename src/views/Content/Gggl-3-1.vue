@@ -9,7 +9,7 @@
         <el-radio-button label="广告图管理"></el-radio-button>
       </el-radio-group>
     </div>
-    <!-- 账户管理 -->
+    <!-- 广告图分类 -->
     <div v-show="radio1 === '广告图分类'" class="tableContainer">
       <div :gutter="5" class="tableTitle">
         <span class="addAccount" :span="4">
@@ -18,8 +18,9 @@
             添加广告类别</el-button>
         </span>
       </div>
-      <el-table size="mini" max-height="550" :data="tableData" border stripe style="width: 100%">
-        <el-table-column prop="accountNumber" label="广告图类名">
+      <el-table row-key="id" size="mini" max-height="550" :data="tableData"
+        border stripe style="width: 100%">
+        <el-table-column prop="name" label="广告图类名">
         </el-table-column>
         <el-table-column prop="operating" label="操作">
           <el-button type="text" size="small" class="delet"
@@ -46,7 +47,7 @@
         :pager-count='17' :total="1000">
       </el-pagination>
     </div>
-    <!-- 权限管理 -->
+    <!-- 广告图管理 -->
     <div v-show="radio1 === '广告图管理'" class="tableContainer">
       <div class="tableTitle">
         <span :span="4">
@@ -66,8 +67,8 @@
             添加广告图</el-button>
         </span>
       </div>
-      <el-table size="mini" max-height="550" :data="JueseTableData" border stripe style="width: 100%"
-        @selection-change="handleSelectionChange">
+      <el-table size="mini" max-height="550" :data="JueseTableData" border
+        stripe style="width: 100%" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55">
         </el-table-column>
         <el-table-column type="index" label="排序" width="50">
@@ -75,19 +76,19 @@
         <el-table-column prop="character" label="广告名称">
         </el-table-column>
         <el-table-column class="jueseName" label="广告图类型">
-          <template slot="header" slot-scope="{}">
-            <el-select v-model="isGrounding" size="mini">
-              <el-option value="1" label="轮播banner图"></el-option>
-              <el-option value="2" label="'我的'页广告图"></el-option>
-              <el-option value="3" label="'完善信息页'广告图"></el-option>
-            </el-select>
-          </template>
+
         </el-table-column>
         <el-table-column prop="havePower" label="广告图片">
         </el-table-column>
         <el-table-column prop="havePower" label="跳转商品ID">
         </el-table-column>
         <el-table-column prop="havePower" label="是否上架">
+          <template slot="header" slot-scope="{}">
+            <el-select v-model="isGrounding" size="mini">
+              <el-option value="1" label="上架"></el-option>
+              <el-option value="2" label="下架"></el-option>
+            </el-select>
+          </template>
         </el-table-column>
         <el-table-column prop="operating" label="操作">
           <el-button type="text" size="small" class="delet"
@@ -159,7 +160,7 @@
             <el-input v-model="jueSeName" size="small" autocomplete="off">
             </el-input>
           </el-form-item>
-          <el-form-item class="jueseName" label="是否上架">
+          <el-form-item class="jueseName">
             <!-- <el-input v-model="jueSeName" size="small" autocomplete="off"></el-input> -->
             <el-select v-model="isGrounding">
               <el-option value="1" label="是"></el-option>
@@ -200,36 +201,7 @@ export default {
         leadingIn: false,
         leadingOut: false
       },
-      tableData: [
-        {
-          accountNumber: '2016-05-02',
-          character: '管理员',
-          name: '王小虎',
-          phoneNumber: '13888888888',
-          staus: 200
-        },
-        {
-          accountNumber: '2016-05-04',
-          character: '管理员',
-          name: '王小虎',
-          phoneNumber: '13888888888',
-          staus: 200
-        },
-        {
-          accountNumber: '2016-05-01',
-          character: '管理员',
-          name: '王小虎',
-          phoneNumber: '13888888888',
-          staus: 200
-        },
-        {
-          accountNumber: '2016-05-03',
-          character: '管理员',
-          name: '王小虎',
-          phoneNumber: '13888888888',
-          staus: 200
-        }
-      ],
+      tableData: [],
       JueseTableData: [
         {
           character: '管理员',
@@ -250,7 +222,7 @@ export default {
       ],
       dialogFormVisible: false,
       dialogTableVisible: false,
-      pictureClass: '',
+      pictureClass: '1',
       ruleForm: {
         AdvertisingClassName: ''
       },
@@ -279,8 +251,11 @@ export default {
       })
     }
   },
-  mounted() {
-    console.log(1)
+  beforeCreate() {
+    this.$http.get('/ad/type/list').then(request => {
+      console.log(request)
+      this.tableData = request.data
+    })
   },
   components: {
     Breadcrumb
@@ -318,8 +293,6 @@ export default {
 .delet {
   color: red;
 }
-
-
 
 .el-select {
   width: 100%;

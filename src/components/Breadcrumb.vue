@@ -3,7 +3,8 @@
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <span class="el-breadcrumb__item_box"
         v-for="(item,index) in crumData.breadItem" :key="index">
-        <el-breadcrumb-item v-if="item.bits" :to="{name:item.bits}">
+        <el-breadcrumb-item v-if="item.bits"
+          :to="{name:item.bits,params:item.params}">
           {{item.name}}
         </el-breadcrumb-item>
         <el-breadcrumb-item v-else>{{item.name}}

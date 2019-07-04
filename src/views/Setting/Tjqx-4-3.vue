@@ -6,48 +6,37 @@
     <!-- 账户管理 -->
     <div class="tableContainer">
       <div :gutter="3" class="tableTitle">
-        <span :span="6">
-          <el-date-picker size="mini" v-model="value1" type="daterange" class="calendar"
-            range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
-          </el-date-picker>
-        </span>
-        <span :span="6">
-          <el-input size="mini" placeholder="请输入内容" v-model="searchValue" class="searchInput">
-            <el-button slot="append" icon="el-icon-search"></el-button>
-          </el-input>
-        </span>
         <span :span="8">
-          <el-button size="mini" type="primary">查看全部</el-button>
+          <el-button size="mini" type="primary"
+            @click="permissionsManageVisible = true">+ 添加权限管理</el-button>
         </span>
       </div>
-      <el-table size="mini" max-height="550" :data="tableData" border stripe style="width: 100%">
-        <el-table-column prop="accountNumber" label="操作日期">
+      <el-table size="mini" max-height="550" :data="tableData" border stripe
+        style="width: 100%">
+        <el-table-column prop="accountNumber" label="权限名">
         </el-table-column>
-        <el-table-column prop="character" label="用户">
+        <el-table-column prop="character" label="操作控制器">
         </el-table-column>
-        <el-table-column prop="operating" label="操作">
-          <el-button type="text" size="small" class="delet">删除</el-button>
-          <el-button type="text" size="small" @click="dialogFormVisible = true">修改</el-button>
-        </el-table-column>
-        <el-table-column prop="FromIp" label="来源IP">
-        </el-table-column>
-
       </el-table>
 
-      <el-dialog width="30%" title="新增用户" :visible.sync="dialogFormVisible">
-      <el-form :model="ruleForm" status-icon ref="ruleForm" label-width="100px"
-        class="demo-ruleForm">
-        <el-form-item label="用户" prop="nickName">
-          <el-input v-model="ruleForm.account" size="small" autocomplete="off">
-          </el-input>
-        </el-form-item>
-      </el-form>
-      <vueCropper>111111</vueCropper>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="confirm('ruleForm')">确 定</el-button>
-      </div>
-    </el-dialog>
+      <el-dialog width="30%" title="新增用户"
+        :visible.sync="permissionsManageVisible">
+        <el-form status-icon label-width="100px" class="demo-ruleForm">
+          <el-form-item class="jueseName" label="权限名" size="mini">
+            <el-input v-model="permissions_name" size="small"
+              autocomplete="off">
+            </el-input>
+          </el-form-item>
+          <el-form-item class="jueseName" label="操作控制器" size="mini">
+            <el-input v-model="controllers" size="small" autocomplete="off">
+            </el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="permissionsManageVisible = false">取 消</el-button>
+          <el-button type="primary" @click="confirm()">确 定</el-button>
+        </div>
+      </el-dialog>
       <!-- 分页 -->
       <el-pagination class="pagination" background layout="prev, pager, next"
         :pager-count='17' :total="1000">
@@ -60,12 +49,11 @@ import Breadcrumb from '@/components/Breadcrumb.vue'
 export default {
   data() {
     return {
-      dialogFormVisible:false,
-      ruleForm:{
-        account:''
-      },
+      permissionsManageVisible: false,
+      controllers: '',
+      permissions_name: '',
       crumData: {
-        breadItem: [{ name: '设置' }, { name: '工作日志' }],
+        breadItem: [{ name: '设置' }, { name: '权限管理' }],
         leadingIn: false,
         leadingOut: false
       },
@@ -105,7 +93,19 @@ export default {
     }
   },
   methods: {
-    newAccount() {}
+    newAccount() {},
+    confirm() {
+      this.$http({
+        method: 'post',
+        url: '/auth/permissions',
+        params: {
+          controllers: this.controllers,
+          permissions_name: this.permissions_name
+        }
+      }).then(request => {
+        console.log(request)
+      })
+    }
   },
   mounted() {
     console.log(1)
@@ -148,8 +148,6 @@ export default {
 .delet {
   color: red;
 }
-
-
 
 .searchInput {
   width: 80%;
