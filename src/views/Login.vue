@@ -3,9 +3,9 @@
     <div class="pageContent">
       <h1>logo</h1>
       <h2>渠道商管理平台</h2>
-      <el-input placeholder="账号"></el-input>
-      <el-input placeholder="账户密码"></el-input>
-      <el-button type="primary">登录</el-button>
+      <el-input placeholder="账号" v-model="user.admin_account_number"></el-input>
+      <el-input placeholder="账户密码" v-model="user.password"></el-input>
+      <el-button type="primary" @click="userLogin">登录</el-button>
     </div>
   </div>
 </template>
@@ -17,9 +17,10 @@ export default {
   data() {
     return {
       user: {
-        name: '',
+        admin_account_number: '',
         password: ''
-      }
+      },
+      redirect:'/'
     }
   },
   computed: {
@@ -29,7 +30,8 @@ export default {
     async userLogin() {
       let res = await userApi.login(this.user)
       if (res) {
-        this.$store.dispatch('setToken', res.result.token)
+        this.$store.dispatch('setToken', res.data.token)
+        this.$store.commit("SET_USER_INFO", res.data);
         this.$router.push({ path: this.redirect || '/' })
       }
     }

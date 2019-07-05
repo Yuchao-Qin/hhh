@@ -6,12 +6,26 @@ import 'element-ui/lib/theme-chalk/index.css';
 import VueCropper from 'vue-cropper';
 import "./publicStyle/public.css";
 import Request from '@/utils/request.js';
-import { Message } from 'element-ui';
+import { Message,Loading } from 'element-ui';
+import { pre } from "@/permission"; //路由访问权限
+pre();
+let loading = null;
+Vue.prototype.$startLoading = function () {
+  loading = Loading.service({
+    lock: true,
+    text: '加载中……',
+    background: 'rgba(0, 0, 0, 0.7)'
+  })
+}
 
+Vue.prototype.$endLoading = function () {
+  loading.close()
+}
 Vue.prototype.$message = Message;
-window.$message = Message;
 Vue.prototype.$http = Request;
-// import "@/permission"; //路由访问权限
+
+
+
 import { Option, 
          Select,
          Input,

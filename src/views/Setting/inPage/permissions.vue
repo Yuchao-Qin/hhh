@@ -158,13 +158,25 @@ export default {
       })
     },
     initData() {
-      this.$http({
-        method: 'get',
-        url: `/auth/role/permissionsList/${this.$route.params.id}`
-      }).then(res => {
-        this.tableData = res.data
-        this.loading = true
-      })
+      // this.$startLoading()
+      this.$http
+        .all([
+          this.$http.get(`/auth/role/permissionsList/${this.$route.params.id}`),
+          this.$http.get('/auth/permissions/lists')
+        ])
+        .then(
+          this.$http.spread((res1, res2) => {
+            if (res1.code == 200 && res2.code == 200) {
+              this.tableData = res1.data
+              this.permissionsList = res2.data
+              // this.$endLoading()
+            }else {
+              this.$message.error('出错啦')
+            }
+
+            
+          })
+        )
     },
     Tabledelet(row) {
       console.log(1111)
@@ -181,6 +193,7 @@ export default {
             message: res.message,
             type: 'success'
           })
+          this.initData()
         } else {
           this.$message.error(res.message)
         }
@@ -200,12 +213,6 @@ export default {
   },
   mounted() {
     this.initData()
-    this.$http({
-      method: 'get',
-      url: '/auth/permissions/lists'
-    }).then(res => {
-      this.permissionsList = res.data
-    })
   },
   components: {
     Breadcrumb

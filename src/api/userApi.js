@@ -2,12 +2,16 @@ import request from "@/utils/request";
 
 const user = {
   //登录
-  login({ name, password }) {
+  login({ admin_account_number, password }) {
+    console.log({
+      admin_account_number,
+      password
+    })
     return request({
-      url: "/login",
+      url: "/re/login",
       method: "post",
       params: {
-        name,
+        admin_account_number,
         password
       }
     });

@@ -22,24 +22,27 @@
       </el-row>
       <el-table size="small" :data="tableData" border stripe max-height="550"
         style="width: 100%">
-        <el-table-column prop="accountNumber" label="账号">
+        <el-table-column prop="admin_account_number" label="账号">
         </el-table-column>
-        <el-table-column prop="character" label="角色">
+        <el-table-column prop="role_name" label="角色">
         </el-table-column>
-        <el-table-column prop="name" label="姓名">
+        <el-table-column prop="admin_name" label="姓名">
         </el-table-column>
-        <el-table-column prop="phoneNumber" label="手机号">
+        <el-table-column prop="admin_phone" label="手机号">
         </el-table-column>
-        <el-table-column prop="staus" label="状态">
-        </el-table-column>
+        <!-- <el-table-column prop="staus" label="状态">
+        </el-table-column> -->
         <el-table-column prop="operating" label="操作">
-          <el-button type="text" size="small" class="delet">删除</el-button>
-          <el-button type="text" size="small"
-            @click="zhuanghu_manage_edit = true">修改</el-button>
+          <template slot-scope="scope">
+            <el-button type="text" size="small" class="delet"
+              @click="accountListDelet(scope.row)">删除</el-button>
+            <el-button type="text" size="small"
+              @click="zhuanghu_manage_edit = true">修改</el-button>
+          </template>
         </el-table-column>
       </el-table>
       <!-- 新增用户模态 -->
-      <el-dialog width="30%" title="新增用户" :visible.sync="dialogFormVisible">
+      <el-dialog width="30%" title="新增管理员" :visible.sync="dialogFormVisible">
         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"
           label-width="100px" class="demo-ruleForm">
           <el-form-item label="账号" prop="account">
@@ -55,21 +58,18 @@
               autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="姓名" prop="personName">
-            <el-input type="password" size="small" v-model="ruleForm.personName"
-              autocomplete="off"></el-input>
+            <el-input size="small" v-model="ruleForm.personName"></el-input>
           </el-form-item>
           <el-form-item label="手机号" prop="phoneNumber">
-            <el-input type="password" size="small"
-              v-model="ruleForm.phoneNumber" autocomplete="off"></el-input>
+            <el-input size="small" v-model="ruleForm.phoneNumber"
+              autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="账户角色" size="small" prop="region">
             <el-select v-model="ruleForm.region" autocomplete="off"
               placeholder="请选择角色">
-              <el-option label="管理员" value="manager"></el-option>
-              <el-option label="产品部" value="producter"></el-option>
-              <el-option label="市场部" value="market"></el-option>
-              <el-option label="运营部" value="yunYing"></el-option>
-              <el-option label="开发部" value="dever"></el-option>
+              <el-option v-for="(item ,index) in JueseSelectData"
+                :label="item.role_name" :value="item.id" :key="index">
+              </el-option>
             </el-select>
           </el-form-item>
         </el-form>
@@ -224,10 +224,10 @@ export default {
       } else if (!/^[a-zA-Z0-9]{6,18}$/.test(value)) {
         callback(new Error('请输入6~18位可由字母或数字组成的账号'))
       } else {
-        if (this.ruleForm.checkPass !== '') {
-          this.$refs.ruleForm.validateField('checkPass')
-        }
-        callback()
+        // if (this.ruleForm.account !== '') {
+        //   this.$refs.ruleForm.validateField('account')
+        // }
+        console.log(callback())
       }
     }
 
@@ -235,23 +235,20 @@ export default {
       if (value === '') {
         callback(new Error('请输入姓名'))
       } else {
-        if (this.ruleForm.personName !== '') {
-          this.$ref.ruleForm.validateField('personName')
-        }
+        // console.log(this.$ref.ruleForm,111)
+        // if (this.ruleForm.personName !== '') {
+        //   this.$ref.ruleForm.validateField('personName')
+        // }
+        callback()
       }
     }
-    //  if (this.ruleForm.personName !== '') {
-    //           this.$ref.ruleForm.validateField('phoneNumber')
-    //         }
     var validatephoneNumber = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请输入手机号'))
       } else if (!/^1(3|4|5|6|7|8|9)\d{9}$/.test(value)) {
         callback(new Error('请输入正确手机号'))
       } else {
-        if (this.ruleForm.phoneNumber !== '') {
-          this.$ref.ruleForm.validateField('phoneNumber')
-        }
+        callback()
       }
     }
 
@@ -259,7 +256,7 @@ export default {
       if (value === '') {
         callback(new Error('请输入密码'))
       } else if (!/^(?=.*[0-9])(?=.*[a-zA-Z])(.{8,})$/.test(value)) {
-        callback(new Error('请输入至少字母和数字共同组成的密码'))
+        callback(new Error('请输入至少字母和数字共同组成的8位密码'))
       } else {
         if (this.ruleForm.checkPass !== '') {
           this.$refs.ruleForm.validateField('checkPass')
@@ -279,6 +276,7 @@ export default {
     }
     return {
       powerVisible: false,
+      jueseSelectList: [],
       owenPower: '',
       radio1: '账户管理',
       zhuanghu_manage_edit: false,
@@ -292,82 +290,9 @@ export default {
         leadingIn: false,
         leadingOut: false
       },
-      tableData: [
-        {
-          accountNumber: '2016-05-02',
-          character: '管理员',
-          name: '王小虎',
-          phoneNumber: '13888888888',
-          staus: 200
-        },
-        {
-          accountNumber: '2016-05-04',
-          character: '管理员',
-          name: '王小虎',
-          phoneNumber: '13888888888',
-          staus: 200
-        },
-        {
-          accountNumber: '2016-05-02',
-          character: '管理员',
-          name: '王小虎',
-          phoneNumber: '13888888888',
-          staus: 200
-        },
-        {
-          accountNumber: '2016-05-04',
-          character: '管理员',
-          name: '王小虎',
-          phoneNumber: '13888888888',
-          staus: 200
-        },
-        {
-          accountNumber: '2016-05-01',
-          character: '管理员',
-          name: '王小虎',
-          phoneNumber: '13888888888',
-          staus: 200
-        },
-        {
-          accountNumber: '2016-05-03',
-          character: '管理员',
-          name: '王小虎',
-          phoneNumber: '13888888888',
-          staus: 200
-        },
-        {
-          accountNumber: '2016-05-01',
-          character: '管理员',
-          name: '王小虎',
-          phoneNumber: '13888888888',
-          staus: 200
-        },
-        {
-          accountNumber: '2016-05-03',
-          character: '管理员',
-          name: '王小虎',
-          phoneNumber: '13888888888',
-          staus: 200
-        }
-      ],
-      JueseTableData: [
-        {
-          character: '管理员',
-          havePower: '王小虎'
-        },
-        {
-          character: '管理员',
-          havePower: '王小虎'
-        },
-        {
-          character: '管理员',
-          havePower: '王小虎'
-        },
-        {
-          character: '管理员',
-          havePower: '王小虎'
-        }
-      ],
+      tableData: [],
+      JueseTableData: [],
+      JueseSelectData: [],
       dialogFormVisible: false,
       dialogTableVisible: false,
       ruleForm: {
@@ -375,7 +300,8 @@ export default {
         checkPass: '',
         account: '',
         phoneNumber: '',
-        personName: ''
+        personName: '',
+        region: ''
       },
       zhanghu_manage_from: {
         pass: '',
@@ -390,8 +316,12 @@ export default {
         pass: [{ required: true, validator: validatePass, trigger: 'blur' }],
         checkPass: [{ required: true, validator: validatePass2, trigger: 'blur' }],
         region: [{ required: true, message: '请选择活动区域', trigger: 'change' }],
-        personName: [{ required: true, validator: validatepersonName, message: '请填写姓名', trigger: 'change' }],
-        phoneNumber: [{ required: true, validator: validatephoneNumber, message: '填写手机号', trigger: 'change' }]
+        personName: [
+          { type: 'string', required: true, validator: validatepersonName, message: '请填写姓名', trigger: 'blur' }
+        ],
+        phoneNumber: [
+          { type: 'string', required: true, validator: validatephoneNumber, message: '填写手机号', trigger: 'blur' }
+        ]
       },
       formLabelWidth: '120px'
     }
@@ -402,43 +332,85 @@ export default {
     }
   },
   mounted() {
-    this.$http({
-      method: 'get',
-      url: '/auth/roleList'
-    }).then(res => {
-      console.log(res.data.data)
-      this.JueseTableData = res.data.data
-    })
+    this.initData()
     // 有关tab项
     try {
       console.log(this.$route.params.radio2)
       if (this.$route.params.radio2) {
-        this.radio1 = this.$route.params.radio2;
+        this.radio1 = this.$route.params.radio2
       }
     } catch (error) {
       console.log('error')
     }
   },
   methods: {
+    initData() {
+      this.$http({
+        method: 'get',
+        url: '/auth/roleList'
+      }).then(res => {
+        this.JueseTableData = res.data.data
+      })
+      this.$http({
+        method: 'get',
+        url: '/re/accNumber'
+      }).then(res => {
+        if (res.code == 200) {
+          console.log(res)
+          this.tableData = res.data.list.data
+        }
+      })
+      // 角色  不分页
+      this.$http({
+        method: 'get',
+        url: '/re/getRole'
+      }).then(res => {
+        if (res.code == 200) {
+          console.log(res)
+          this.JueseSelectData = res.data.role
+        }
+      })
+    },
+    accountListDelet(row) {
+      this.$http({
+        method: 'DELETE',
+        url: `/re/${row.id}`
+      }).then(res => {
+        this.$message(res.message)
+      })
+    },
     confirm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.$http({
             method: 'post',
-            parmas: {
-              admin_account_number: this.account,
-              password: this.pass,
-              confirm_password: this.checkPass
+            url: '/re/register',
+            params: {
+              admin_account_number: this.ruleForm.account,
+              password: this.ruleForm.pass,
+              confirm_password: this.ruleForm.checkPass,
+              admin_name: this.ruleForm.personName,
+              admin_phone: this.ruleForm.phoneNumber,
+              role_id: this.ruleForm.region,
+              confirm_password: this.ruleForm.checkPass
+            }
+          }).then(res => {
+            if (res.code == 200) {
+              this.dialogFormVisible = false
+              this.initData()
+              this.$message({ message: res.message, type: 'success' })
+            } else {
+              this.$message.error(res.message)
             }
           })
-          this.dialogFormVisible = false
         } else {
           console.log('error submit!!')
-          return false
           this.dialogFormVisible = true
+          return false
         }
       })
     },
+    // 权限分配按钮
     permissionsHandel(index, row) {
       console.log(index, row)
       this.$router.push({ name: 'permissions', params: { id: row.id, name: row.role_name } })

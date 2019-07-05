@@ -18,7 +18,7 @@ export default new Router({
       component: () => import("./views/Home.vue"),
       children: [
       {
-        path:'OverView/Sjck-1-1',
+        path:'/',
         name:'Sjck-1-1',
         components:  {default1:()=>import("./views/OverView/Sjck-1-1")}
       },
@@ -113,6 +113,18 @@ export default new Router({
         components:  {default1:()=>import("./views/Setting/inPage/permissions")},
       },
     ]
-    }
+    },
+    // {
+    //   path: '*',
+    //   name: 'home',
+    //   component: () => import("./views/Home.vue"),
+    //   children:[
+    //     {
+    //       path:'/',
+    //       name:'Sjck-1-1',
+    //       components:  {default1:()=>import("./views/OverView/Sjck-1-1")}
+    //     }
+    //   ]
+    // }
   ]
 })
