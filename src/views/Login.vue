@@ -12,6 +12,7 @@
 
 <script>
 import userApi from '@/api/userApi'
+import Storage from '@/utils/storage'
 import { mapGetters } from 'vuex'
 export default {
   data() {
@@ -20,7 +21,7 @@ export default {
         admin_account_number: '',
         password: ''
       },
-      redirect:'/'
+      redirect: '/'
     }
   },
   computed: {
@@ -30,9 +31,16 @@ export default {
     async userLogin() {
       let res = await userApi.login(this.user)
       if (res) {
-        this.$store.dispatch('setToken', res.data.token)
-        this.$store.commit("SET_USER_INFO", res.data);
-        this.$router.push({ path: this.redirect || '/' })
+        if (res.code == 200) {
+          this.$store.dispatch('setToken', res.data.token)
+          this.$store.commit('SET_USER_INFO', res.data)
+          Storage.set('userinfo',res.data)
+          this.$router.push({ path: this.redirect || '/' })
+        } else {
+          this.$message(
+            this.$message.error(res.message)
+          )
+        } 
       }
     }
   }

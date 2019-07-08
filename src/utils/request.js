@@ -1,6 +1,6 @@
 import axios from "axios";
 import store from "../store";
-import { Loading } from "element-ui";
+import { Loading, Message } from "element-ui";
 import Storage from "@/utils/storage";
 // import { pre } from "@/permission"; //路由访问权限
 import router from "@/router";
@@ -32,10 +32,12 @@ service.interceptors.request.use(
       // config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
       config.headers["authorization"] = store.getters.token;
     }
-    if (config.method === "post") {
-      config.data = config.params;
-      config.params = "";
-    }
+
+    // console.log(config.params)
+    // if (config.method === "post") {  ????
+    //   config.data = config.params;
+    //   config.params = "";
+    // }
     $startLoading()
     return config;
   },
@@ -59,22 +61,24 @@ service.interceptors.response.use(
     } else {
       $endLoading()
       return { data, result, message, code };
-     
     }
   },
   error => {
-    // console.log(error)
     console.log("err" + error); // for debug
+    
+    if (error.message == 'timeout of 5000ms exceeded') {
+      Message.error(error.message)
+      $endLoading()
+    }
     let { data, code,  message } = error.response.data
+    
     if (code == 401 && message == "无效的token") {
-      // console.log(112312321321)
       Storage.del('token');
       Storage.del('routeName');
       router.push({name:'Login'})
       // pre();
     }
     return Promise.reject(error);
-    // $endLoading()
   }
 );
 service.__proto__ = axios

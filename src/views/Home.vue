@@ -7,8 +7,8 @@
         <h3>后台管理平台</h3>
       </el-col>
       <el-col class="userName">
-        <i class="el-icon-user">xxx管理员</i>
-        <i class="el-icon-switch-button logOut">退出</i>
+        <i class="el-icon-user">{{userinfo.admin_name}}</i>
+        <i class="el-icon-switch-button logOut" @click="logOut">退出</i>
       </el-col>
     </el-row>
     <!-- content -->
@@ -46,6 +46,7 @@ export default {
   data() {
     return {
       isCollapse: false,
+      userinfo:'',
       menuData: [
         { title: '数据查看', icon: 'el-icon-pie-chart', item: [{ name: '数据查看', index: 'sjck-1-1' }] },
         {
@@ -73,19 +74,32 @@ export default {
         {
           title: '设&emsp;&emsp;置',
           icon: 'el-icon-setting',
-          item: [{ name: '账户管理', index: 'zhqx-4-1' }, { name: '工作日志', index: 'gzrz-4-2' }, {name:'权限管理', index:'tjqx-4-3'}]
+          item: [
+            { name: '账户管理', index: 'zhqx-4-1' },
+            { name: '工作日志', index: 'gzrz-4-2' },
+            { name: '权限管理', index: 'tjqx-4-3' }
+          ]
         }
       ]
     }
   },
   computed: {
-    ...mapGetters(['userInfo']),
+    // ...mapGetters(['userInfo']),
     refreshActive() {
       return Storage.get('routeName')
     }
   },
   mounted() {
     // this.$router.push({ name:'Sjck-1-1' })
+    this.userinfo = JSON.parse(Storage.get('userinfo'));
+    
+  },
+  beforeRouteEnter(to, from, next) {
+    console.log(from)
+    if (from.name == 'Login') {
+      Storage.set('routeName', 'sjck-1-1')
+    }
+    next()
   },
   methods: {
     handleOpen(key, keyPath) {
@@ -94,11 +108,27 @@ export default {
     handleSelect(index, indexPath, e) {
       const name = index.slice(0, 1).toUpperCase() + index.slice(1)
       this.$router.push({ name })
-      Storage.set('routeName',index)
+      Storage.set('routeName', index)
     },
     userLogout() {
       this.$store.dispatch('logOut').then(() => {
         location.reload() // 为了重新实例化vue-router对象 避免bug
+      })
+    },
+    logOut() {
+      this.$http({
+        url: '/re/logout',
+        method: 'POST'
+      }).then(res => {
+        if (res.code == 200) {
+          Storage.del('token')
+          Storage.del('routeName')
+          window.location.reload()
+          this.$message({
+            type: 'success',
+            message: '退出成功'
+          })
+        }
       })
     }
     // ...mapMutations(['set_routeName'])

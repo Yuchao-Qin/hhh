@@ -36,8 +36,9 @@
           <template slot-scope="scope">
             <el-button type="text" size="small" class="delet"
               @click="accountListDelet(scope.row)">删除</el-button>
-            <el-button type="text" size="small"
-              @click="zhuanghu_manage_edit = true">修改</el-button>
+            <el-button type="text" size="small" @click="manage_edit(scope.row)">
+              修改</el-button>
+            <!--  -->
           </template>
         </el-table-column>
       </el-table>
@@ -80,41 +81,42 @@
         </div>
       </el-dialog>
       <el-dialog width="30%" title="修改" :visible.sync="zhuanghu_manage_edit">
-        <el-form :model="zhanghu_manage_from" status-icon
-          ref="zhuanghu_manage_from" label-width="100px" class="demo-ruleForm">
-          <!-- <el-form-item label="状态" >
-            <el-input v-model="zhanghu_manage_from.account" size="small" autocomplete="off"></el-input>
-          </el-form-item> -->
-          <el-form-item label="姓名">
-            <el-input type="personName" size="small"
-              v-model="zhanghu_manage_from.personName" autocomplete="off">
-            </el-input>
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"
+          label-width="100px" class="demo-ruleForm">
+          <el-form-item label="密码" prop="pass">
+            <el-input type="password" size="small" v-model="ruleForm.pass"
+              autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="手机号">
-            <el-input type="phoneNumber" size="small"
-              v-model="zhanghu_manage_from.phoneNumber" autocomplete="off">
-            </el-input>
+          <el-form-item label="确认密码" prop="checkPass">
+            <el-input type="password" size="small" v-model="ruleForm.checkPass"
+              autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="角色" size="small">
-            <el-select v-model="zhanghu_manage_from.region" autocomplete="off"
+          <el-form-item label="姓名" prop="personName">
+            <el-input size="small" v-model="ruleForm.personName"></el-input>
+          </el-form-item>
+          <el-form-item label="手机号" prop="phoneNumber">
+            <el-input size="small" v-model="ruleForm.phoneNumber"
+              autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="账户角色" size="small" prop="region">
+            <el-select v-model="ruleForm.region" autocomplete="off"
               placeholder="请选择角色">
-              <el-option label="管理员" value="manager"></el-option>
-              <el-option label="产品部" value="producter"></el-option>
-              <el-option label="市场部" value="market"></el-option>
-              <el-option label="运营部" value="yunYing"></el-option>
-              <el-option label="开发部" value="dever"></el-option>
+              <el-option v-for="(item ,index) in JueseSelectData"
+                :label="item.role_name" :value="item.id" :key="index">
+              </el-option>
             </el-select>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="zhuanghu_manage_edit = false">取 消</el-button>
-          <el-button type="primary" @click="confirm('ruleForm')">确 定
+          <el-button type="primary" @click="manage_edit_confirm('ruleForm')">确 定
           </el-button>
         </div>
       </el-dialog>
       <!-- 分页 -->
-      <el-pagination class="pagination" background layout="prev, pager, next"
-        :pager-count='17' :total="1000">
+      <el-pagination v-if="total>10" @current-change="handleCurrentChange1"
+        :current-page.sync="currentPage1" class="pagination" background
+        layout="prev, pager, next" :total="total">
       </el-pagination>
     </div>
     <!-- 权限管理修改页 -->
@@ -127,14 +129,16 @@
             新增角色</el-button>
         </el-col>
       </el-row>
-      <el-table :data="JueseTableData" border stripe style="width: 100%">
+      <el-table size="mini" :data="JueseTableData" border stripe
+        style="width: 100%">
         <el-table-column prop="role_name" label="角色">
         </el-table-column>
         <el-table-column prop="permissions_name" label="所拥有权限">
         </el-table-column>
         <el-table-column prop="operating" label="操作">
           <template slot-scope="scope">
-            <el-button type="text" size="small" class="delet">删除</el-button>
+            <el-button type="text" size="small" class="delet"
+              @click="Juesedelet(scope.row)">删除</el-button>
             <el-button type="text" size="small" @click="powerVisible = true">
               修改
             </el-button>
@@ -158,58 +162,34 @@
               <el-option label="开发部" value="dever"></el-option>
             </el-select>
           </el-form-item>
-          <!-- <el-form-item label="概况" prop="type">
-            <el-input label="所拥有权限" v-model="owenPower"></el-input>
-          </el-form-item> -->
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="powerVisible = false">取 消</el-button>
-          <el-button type="primary" @click="confirm('ruleForm')">确 定
-          </el-button>
+          <template slot-scope="scope">
+            <el-button @click="powerVisible = false">取 消</el-button>
+            <el-button type="primary" @click="JueseRevise(scope.row)">确 定
+            </el-button>
+          </template>
+
         </div>
       </el-dialog>
-      <!-- 模态 -->
-      <el-dialog width="50%" title="新增角色" :visible.sync="dialogTableVisible">
-        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"
-          label-width="100px" class="demo-ruleForm">
+      <!-- 新增角色模态 -->
+      <el-dialog width="30%" title="新增角色" :visible.sync="dialogTableVisible">
+        <el-form status-icon label-width="100px" class="demo-ruleForm">
           <el-form-item class="jueseName" label="角色名称">
-            <el-input v-model="jueSeName" size="small" autocomplete="off">
+            <el-input v-model="role_name" size="small" autocomplete="off">
             </el-input>
-          </el-form-item>
-          <el-form-item label="概况" prop="type">
-            <el-checkbox-group v-model="overView">
-              <el-checkbox label="查看整体数据"></el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-          <el-form-item label="管理" prop="type">
-            <el-checkbox-group v-model="management">
-              <el-checkbox label="查看用户管理"></el-checkbox>
-              <el-checkbox label="查看商家管理"></el-checkbox>
-              <el-checkbox label="查看卡券管理"></el-checkbox>
-              <el-checkbox label="查看消息管理"></el-checkbox>
-              <el-checkbox label="查看用户管理"></el-checkbox>
-              <el-checkbox label="查看用户管理"></el-checkbox>
-              <el-checkbox label="查看用户管理"></el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-          <el-form-item label="内容" prop="type">
-            <el-checkbox-group v-model="content">
-            </el-checkbox-group>
-          </el-form-item>
-          <el-form-item label="设置" prop="type">
-            <el-checkbox-group v-model="setting">
-            </el-checkbox-group>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogTableVisible = false">取 消</el-button>
-          <el-button type="primary" @click="confirm('ruleForm')">确 定
+          <el-button type="primary" @click="JueseConfirm">确 定
           </el-button>
         </div>
       </el-dialog>
       <!-- 分页 -->
-      <el-pagination class="pagination" background layout="prev, pager, next"
-        :pager-count='17' :total="1000">
+      <el-pagination v-if="total2>10" @current-change="handleCurrentChange2"
+        :current-page.sync="currentPage2" class="pagination" background
+        layout="prev, pager, next" :total="total2">
       </el-pagination>
     </div>
   </div>
@@ -224,10 +204,7 @@ export default {
       } else if (!/^[a-zA-Z0-9]{6,18}$/.test(value)) {
         callback(new Error('请输入6~18位可由字母或数字组成的账号'))
       } else {
-        // if (this.ruleForm.account !== '') {
-        //   this.$refs.ruleForm.validateField('account')
-        // }
-        console.log(callback())
+        callback()
       }
     }
 
@@ -235,10 +212,6 @@ export default {
       if (value === '') {
         callback(new Error('请输入姓名'))
       } else {
-        // console.log(this.$ref.ruleForm,111)
-        // if (this.ruleForm.personName !== '') {
-        //   this.$ref.ruleForm.validateField('personName')
-        // }
         callback()
       }
     }
@@ -275,16 +248,17 @@ export default {
       }
     }
     return {
+      userId: '',
+      currentPage1: 1,
+      currentPage2: 1,
       powerVisible: false,
+      total: 0,
+      total2: 0,
       jueseSelectList: [],
       owenPower: '',
       radio1: '账户管理',
       zhuanghu_manage_edit: false,
-      overView: [],
-      management: [],
-      content: [],
-      setting: [],
-      jueSeName: '',
+      role_name: '',
       crumData: {
         breadItem: [{ name: '设置' }, { name: '工作日志' }],
         leadingIn: false,
@@ -345,10 +319,12 @@ export default {
   },
   methods: {
     initData() {
+      // 角色 分页
       this.$http({
         method: 'get',
         url: '/auth/roleList'
       }).then(res => {
+        this.total2 = res.data.total
         this.JueseTableData = res.data.data
       })
       this.$http({
@@ -356,8 +332,9 @@ export default {
         url: '/re/accNumber'
       }).then(res => {
         if (res.code == 200) {
-          console.log(res)
           this.tableData = res.data.list.data
+          this.total = res.data.list.total * 1
+          console.log(this.total)
         }
       })
       // 角色  不分页
@@ -376,7 +353,21 @@ export default {
         method: 'DELETE',
         url: `/re/${row.id}`
       }).then(res => {
-        this.$message(res.message)
+        if (res.code == 200) {
+          this.$message({ message: res.message, type: 'success' })
+          this.$http({
+            method: 'get',
+            url: '/re/accNumber'
+          }).then(res => {
+            if (res.code == 200) {
+              this.tableData = res.data.list.data
+              this.total = res.data.list.total * 1
+              console.log(this.total)
+            }
+          })
+        } else {
+          this.$message.error('出错啦！')
+        }
       })
     },
     confirm(formName) {
@@ -398,6 +389,7 @@ export default {
             if (res.code == 200) {
               this.dialogFormVisible = false
               this.initData()
+              this.currentPage1 = 1
               this.$message({ message: res.message, type: 'success' })
             } else {
               this.$message.error(res.message)
@@ -410,11 +402,104 @@ export default {
         }
       })
     },
+    JueseConfirm() {
+      this.$http
+        .post('/auth/role', {
+          role_name: this.role_name
+        })
+        .then(res => {
+          if (res.code == 200) {
+            this.$message({ message: res.message, type: 'success' })
+            this.currentPage2 = 1
+            this.dialogTableVisible = false
+            this.initData()
+          }
+        })
+    },
     // 权限分配按钮
     permissionsHandel(index, row) {
       console.log(index, row)
       this.$router.push({ name: 'permissions', params: { id: row.id, name: row.role_name } })
-    }
+    },
+    manage_edit(row) {
+      this.zhuanghu_manage_edit = true
+      this.userId = row.id
+    },
+    manage_edit_confirm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.$http({
+            url: '/re/accUpdate',
+            method: 'PUT',
+            params: {
+              user_id: this.userId,
+              password: this.ruleForm.pass,
+              confirm_password: this.ruleForm.checkPass,
+              admin_name: this.ruleForm.personName,
+              admin_phone: this.ruleForm.phoneNumber,
+              role_id: this.ruleForm.region,
+              confirm_password: this.ruleForm.checkPass
+            }
+          }).then(res => {
+            if (res.code == 200) {
+              this.$message({ type: 'success', message: res.message })
+              this.zhuanghu_manage_edit = false
+              this.$http({
+                method: 'get',
+                url: '/re/accNumber'
+              }).then(res => {
+                if (res.code == 200) {
+                  this.tableData = res.data.list.data
+                  
+                  console.log(this.total)
+                }
+              })
+            }
+          })
+        } else {
+          console.log('error submit!!')
+          this.dialogFormVisible = true
+          return false
+        }
+      })
+    },
+    handleCurrentChange1(val) {
+      this.$http({
+        method: 'get',
+        url: '/re/accNumber',
+        params: {
+          page: val
+        }
+      }).then(res => {
+        if (res.code == 200) {
+          this.tableData = res.data.list.data
+        }
+      })
+    },
+    handleCurrentChange2(val) {
+      this.$http({
+        method: 'get',
+        url: '/auth/roleList',
+        params: {
+          page: val
+        }
+      }).then(res => {
+        this.JueseTableData = res.data.data
+      })
+    },
+    Juesedelet(row) {
+      this.$http.delete(`/auth/role/${row.id}`).then(res => {
+        this.$http({
+          method: 'get',
+          url: '/auth/roleList'
+        }).then(res => {
+          this.total2 = res.total
+          this.JueseTableData = res.data.data
+          this.currentPage2 = 1
+        })
+      })
+    },
+    JueseRevise(row) {}
   },
   components: {
     Breadcrumb
@@ -468,7 +553,7 @@ export default {
 }
 
 .jueseName {
-  width: 40%;
+  min-width: 300px;
   text-align: left;
 }
 </style>

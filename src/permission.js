@@ -8,7 +8,6 @@ function pre() {
   return router.beforeEach((to, from, next) => {
     console.log(to,from);
     if (Storage.get("token")) {
-      console.log()
       if (to.path === "/login") {
         next({ path: "/" });
       } else {
@@ -18,14 +17,13 @@ function pre() {
         //   // store.commit("SET_USER_INFO", res.result.userInfo);
         //   next();
         // }
+        
         next();
       }
     } else {
       if (whiteList.indexOf(to.path) !== -1) {
-        console.log('why1')
         next();
       } else {
-        console.log('why2')
         next(`/login?redirect=${to.path}`); // 否则全部重定向到登录页
       }
     }
