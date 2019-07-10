@@ -66,18 +66,22 @@ service.interceptors.response.use(
   error => {
     console.log("err" + error); // for debug
     
-    if (error.message == 'timeout of 5000ms exceeded') {
-      Message.error(error.message)
-      $endLoading()
-    }
-    let { data, code,  message } = error.response.data
-    
+    // if (error.message == 'timeout of 5000ms exceeded') {
+    //   Message.error(error.message)
+    //   $endLoading()
+    // }
+    $endLoading()
+    let { data, code,  message, status} = error.response.data
+
     if (code == 401 && message == "无效的token") {
       Storage.del('token');
       Storage.del('routeName');
       router.push({name:'Login'})
       // pre();
+    } else {
+      Message.error('接口报错！')
     }
+    
     return Promise.reject(error);
   }
 );

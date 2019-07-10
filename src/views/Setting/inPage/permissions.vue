@@ -6,9 +6,9 @@
     <!-- 账户管理 -->
     <div class="tableContainer">
       <div :gutter="3" class="tableTitle">
-        <span class="titleName">{{`角色名字：${juese_name}`}}</span>
-        <span :span="8">
-          <el-button size="small" type="primary"
+        <span  class="titleName fl">{{`角色名字：${juese_name}`}}</span>
+        <span class="fr" :span="8">
+          <el-button  size="small" type="primary"
             @click="addDialogFormVisible = true">+ 添加权限</el-button>
         </span>
       </div>
@@ -35,37 +35,6 @@
           </template>
         </el-table-column>
       </el-table>
-      <!-- <div class="pagination">
-        <el-button>提交表格</el-button>
-      </div> -->
-      <!-- 修改 -->
-      <!-- <el-dialog width="30%" title="新增用户" :visible.sync="dialogFormVisible">
-        <el-form status-icon label-width="100px" class="editPermissions">
-          <el-form-item label="角色名字">
-            <el-input class="juese_name" v-model="juese_name" size="mini"
-              autocomplete="off" disabled>
-            </el-input>
-          </el-form-item>
-          <el-form-item label="添加权限">
-            <el-select v-model="ruleForm.account" size="mini"
-              autocomplete="off">
-            </el-select>
-          </el-form-item>
-          <el-form-item label="CURD权限">
-            <el-checkbox-group v-model="CURDlist">
-              <el-checkbox label="1">增</el-checkbox>
-              <el-checkbox label="删"></el-checkbox>
-              <el-checkbox label="改"></el-checkbox>
-              <el-checkbox label="查"></el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="confirm('ruleForm')">确 定</el-button>
-        </div>
-      </el-dialog> -->
-      <!-- <div></div> -->
       <!-- 增加 -->
       <el-dialog width="30%" title="新增用户" :visible.sync="addDialogFormVisible">
         <el-form status-icon label-width="100px" class="editPermissions">
@@ -236,7 +205,6 @@ export default {
   text-align: left;
   padding: 0 15px;
   .tableTitle {
-    display: flex;
     padding: 10px 0;
   }
 }

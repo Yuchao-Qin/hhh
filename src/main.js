@@ -56,7 +56,8 @@ import { Option,
          Divider,
          Popover,
          Upload,
-         Tag
+         Tag,
+         Image
         } from "element-ui";
         
 Vue.config.productionTip = false;
@@ -97,6 +98,8 @@ Vue.use(Collapse);
 Vue.use(Popover);
 Vue.use(Upload);
 Vue.use(Tag);
+Vue.use(Image);
+
 
 
 new Vue({

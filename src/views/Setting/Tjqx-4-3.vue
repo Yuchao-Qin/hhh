@@ -11,11 +11,17 @@
             @click="permissionsManageVisible = true">+ 添加权限管理</el-button>
         </span>
       </div>
-      <el-table size="mini" max-height="550" :data="tableData" border stripe
+      <el-table size="mini" max-height="530" :data="tableData" border stripe
         style="width: 100%">
-        <el-table-column prop="accountNumber" label="权限名">
+        <el-table-column prop="permissions_name" label="权限名">
         </el-table-column>
-        <el-table-column prop="character" label="操作控制器">
+        <el-table-column prop="controllers" label="操作控制器">
+        </el-table-column>
+        <el-table-column label="操作控制器">
+          <template slot-scope="scope">
+            <el-button type="text" size="small" class="delet"
+              @click="delet(scope.row)">删除</el-button>
+          </template>
         </el-table-column>
       </el-table>
 
@@ -38,9 +44,9 @@
         </div>
       </el-dialog>
       <!-- 分页 -->
-      <el-pagination class="pagination" background layout="prev, pager, next"
+      <!-- <el-pagination class="pagination" background layout="prev, pager, next"
         :pager-count='17' :total="1000">
-      </el-pagination>
+      </el-pagination> -->
     </div>
   </div>
 </template>
@@ -57,36 +63,7 @@ export default {
         leadingIn: false,
         leadingOut: false
       },
-      tableData: [
-        {
-          accountNumber: '2016-05-02',
-          character: '管理员',
-          name: '王小虎',
-          phoneNumber: '13888888888',
-          staus: 200
-        },
-        {
-          accountNumber: '2016-05-04',
-          character: '管理员',
-          name: '王小虎',
-          phoneNumber: '13888888888',
-          staus: 200
-        },
-        {
-          accountNumber: '2016-05-01',
-          character: '管理员',
-          name: '王小虎',
-          phoneNumber: '13888888888',
-          staus: 200
-        },
-        {
-          accountNumber: '2016-05-03',
-          character: '管理员',
-          name: '王小虎',
-          phoneNumber: '13888888888',
-          staus: 200
-        }
-      ],
+      tableData: [],
       value1: '',
       value2: '',
       searchValue: ''
@@ -94,6 +71,17 @@ export default {
   },
   methods: {
     newAccount() {},
+    delet(row) {
+      this.$http.delete(`/auth/permission/${row.id}`).then(res => {
+        if (res.code == 200) {
+          this.tableListData()
+          this.$message({
+            type: 'success',
+            message: res.message
+          })
+        }
+      })
+    },
     confirm() {
       this.$http({
         method: 'post',
@@ -102,13 +90,26 @@ export default {
           controllers: this.controllers,
           permissions_name: this.permissions_name
         }
-      }).then(request => {
-        console.log(request)
+      }).then(res => {
+        if (res.code == 200) {
+          this.tableListData()
+          this.$message({
+            type: 'success',
+            message: res.message
+          })
+        }
+      })
+    },
+    tableListData() {
+      this.$http.get('/auth/permissions/lists').then(res => {
+        if (res.code == 200) {
+          this.tableData = res.data
+        }
       })
     }
   },
   mounted() {
-    console.log(1)
+    this.tableListData()
   },
   components: {
     Breadcrumb

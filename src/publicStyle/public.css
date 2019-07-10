@@ -8,10 +8,10 @@
   text-align: center;
 }
 
-.tableContainer .tableTitle {
+/* .tableContainer .tableTitle {
   display: flex;
   justify-content: space-between;
-} 
+}  */
 
 .addSubjectTitle .el-dialog__header {
   text-align: center;
@@ -19,4 +19,20 @@
 
 .tableTitle .el-form {
   display: inline-block;
+}
+
+.fr {
+  float: right;
+}
+
+.fl {
+  float: left;
+}
+
+.tableTitle {
+  overflow: hidden;
+}
+
+.margin10 {
+  margin-right: 10px;
 }

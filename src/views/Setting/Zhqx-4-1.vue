@@ -139,7 +139,7 @@
           <template slot-scope="scope">
             <el-button type="text" size="small" class="delet"
               @click="Juesedelet(scope.row)">删除</el-button>
-            <el-button type="text" size="small" @click="powerVisible = true">
+            <el-button type="text" size="small" @click="JueseEdit(scope.row)">
               修改
             </el-button>
             <el-button type="text" size="small"
@@ -153,23 +153,16 @@
         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"
           label-width="100px" class="demo-ruleForm">
           <el-form-item label="角色" size="small">
-            <el-select v-model="zhanghu_manage_from.region" autocomplete="off"
-              placeholder="请选择角色">
-              <el-option label="管理员" value="manager"></el-option>
-              <el-option label="产品部" value="producter"></el-option>
-              <el-option label="市场部" value="market"></el-option>
-              <el-option label="运营部" value="yunYing"></el-option>
-              <el-option label="开发部" value="dever"></el-option>
-            </el-select>
+            <el-input v-model="role_name" size="small" autocomplete="off">
+            </el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <template slot-scope="scope">
-            <el-button @click="powerVisible = false">取 消</el-button>
-            <el-button type="primary" @click="JueseRevise(scope.row)">确 定
-            </el-button>
-          </template>
-
+          <!-- <template slot-scope="scope"> -->
+          <el-button @click="powerVisible = false">取 消</el-button>
+          <el-button type="primary" @click="JueseRevise()">确 定
+          </el-button>
+          <!-- </template> -->
         </div>
       </el-dialog>
       <!-- 新增角色模态 -->
@@ -249,9 +242,12 @@ export default {
     }
     return {
       userId: '',
+      jueseId: '',
       currentPage1: 1,
       currentPage2: 1,
       powerVisible: false,
+      // last_page1: '',
+      // last_page2: '',
       total: 0,
       total2: 0,
       jueseSelectList: [],
@@ -322,19 +318,29 @@ export default {
       // 角色 分页
       this.$http({
         method: 'get',
-        url: '/auth/roleList'
+        url: '/auth/roleList',
+        params: {
+          page: this.currentPage2
+        }
       }).then(res => {
         this.total2 = res.data.total
+        // this.last_page2 = res.data.last_page
         this.JueseTableData = res.data.data
       })
       this.$http({
         method: 'get',
-        url: '/re/accNumber'
+        url: '/re/accNumber',
+        params: {
+          page: this.currentPage1
+        }
       }).then(res => {
         if (res.code == 200) {
           this.tableData = res.data.list.data
           this.total = res.data.list.total * 1
+          // this.last_page1 = res.data.list.last_page
           console.log(this.total)
+        } else {
+          this.$message.error(res.message)
         }
       })
       // 角色  不分页
@@ -345,6 +351,8 @@ export default {
         if (res.code == 200) {
           console.log(res)
           this.JueseSelectData = res.data.role
+        } else {
+          this.$message.error(res.message)
         }
       })
     },
@@ -357,16 +365,26 @@ export default {
           this.$message({ message: res.message, type: 'success' })
           this.$http({
             method: 'get',
-            url: '/re/accNumber'
+            url: '/re/accNumber',
+            params: {
+              page: this.currentPage1
+            }
           }).then(res => {
             if (res.code == 200) {
               this.tableData = res.data.list.data
               this.total = res.data.list.total * 1
-              console.log(this.total)
+              if (res.data.list.data.length == 0) {
+                this.currentPage1 -= 1
+                // this.last_page1 -= 1;
+                this.initData()
+              }
+              // this.last_page1 = res.data.list.last_page
+            } else {
+              this.$message.error(res.message)
             }
           })
         } else {
-          this.$message.error('出错啦！')
+          this.$message.error(res.message)
         }
       })
     },
@@ -388,9 +406,13 @@ export default {
           }).then(res => {
             if (res.code == 200) {
               this.dialogFormVisible = false
+
+              // this.currentPage1 = this.last_page1
               this.initData()
-              this.currentPage1 = 1
+
+              // this.currentPage1 = 1
               this.$message({ message: res.message, type: 'success' })
+              this.$refs[formName].resetFields()
             } else {
               this.$message.error(res.message)
             }
@@ -410,9 +432,12 @@ export default {
         .then(res => {
           if (res.code == 200) {
             this.$message({ message: res.message, type: 'success' })
-            this.currentPage2 = 1
+            // this.currentPage2 = this.last_page2
             this.dialogTableVisible = false
+            this.role_name = ''
             this.initData()
+          } else {
+            this.$message.error(res.message)
           }
         })
     },
@@ -444,21 +469,28 @@ export default {
             if (res.code == 200) {
               this.$message({ type: 'success', message: res.message })
               this.zhuanghu_manage_edit = false
+              this.$refs[formName].resetFields()
               this.$http({
                 method: 'get',
-                url: '/re/accNumber'
+                url: '/re/accNumber',
+                params: {
+                  page: this.currentPage1
+                }
               }).then(res => {
                 if (res.code == 200) {
                   this.tableData = res.data.list.data
-                  
-                  console.log(this.total)
+                  // this.last_page1 = res.data.list.last_page
+                } else {
+                  this.$message.error(res.message)
                 }
               })
+            } else {
+              this.$message.error(res.message)
             }
           })
         } else {
           console.log('error submit!!')
-          this.dialogFormVisible = true
+          this.zhuanghu_manage_edit = true
           return false
         }
       })
@@ -473,6 +505,9 @@ export default {
       }).then(res => {
         if (res.code == 200) {
           this.tableData = res.data.list.data
+          // this.last_page1 = res.data.list.last_page
+        } else {
+          this.$message.error(res.message)
         }
       })
     },
@@ -485,21 +520,46 @@ export default {
         }
       }).then(res => {
         this.JueseTableData = res.data.data
+        // this.last_page2 = res.data.last_page
       })
     },
     Juesedelet(row) {
       this.$http.delete(`/auth/role/${row.id}`).then(res => {
         this.$http({
           method: 'get',
-          url: '/auth/roleList'
+          url: '/auth/roleList',
+          params: {
+            page: this.currentPage2
+          }
         }).then(res => {
           this.total2 = res.total
           this.JueseTableData = res.data.data
-          this.currentPage2 = 1
+          if (res.data.data.length == 0) {
+            this.currentPage2 -= 1
+            // this.last_page1 -= 1;
+            this.initData()
+          }
         })
       })
     },
-    JueseRevise(row) {}
+    JueseRevise() {
+      this.$http.put(`/auth/role/${this.jueseId}`, { role_name: this.role_name }).then(res => {
+        this.$http.get('/auth/roleList', { params: { page: this.currentPage2 } }).then(res => {
+          if (res.code == 200) {
+            this.JueseTableData = res.data.data
+            // this.last_page2 = res.data.last_page
+            this.powerVisible = false
+            this.role_name = ''
+          } else {
+            this.$message.error(res.message)
+          }
+        })
+      })
+    },
+    JueseEdit(row) {
+      this.powerVisible = true
+      this.jueseId = row.id
+    }
   },
   components: {
     Breadcrumb

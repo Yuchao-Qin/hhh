@@ -2,7 +2,7 @@
   <div class="homePage">
     <!-- titleHeader -->
     <el-row class="pageTitle" type="flex" justify="space-between">
-      <el-col class="homeTitle">
+      <el-col :span="10" class="homeTitle">
         <h1 class="logo">logo</h1>
         <h3>后台管理平台</h3>
       </el-col>
@@ -137,6 +137,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+h1,h3{
+  margin: 10px 0;
+}
 .pageTitle {
   background: #409eff;
   color: #fff;

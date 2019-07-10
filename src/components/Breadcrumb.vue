@@ -13,10 +13,10 @@
     </el-breadcrumb>
     <div>
       <input class="fileInput" accept=".csv" type="file" name="file" ref="file"
-        @change="handleFileChnage">
+        @change="handleFileChnage" >
       <el-button v-if="crumData.leadingIn" type="primary" @click="upLoad"
         multiple size="mini">表格上传</el-button>
-      <el-button v-if="crumData.leadingOut" size="mini" type="primary">数据导出
+      <el-button v-if="crumData.leadingOut" size="mini" @click="downLoad" type="primary">数据导出
       </el-button>
     </div>
 
@@ -44,8 +44,8 @@ export default {
       formData.append('file', file)
       console.log(console.log(file.value))
       request({
-        method: 'get',
-        url: '/product/export',
+        method: 'post',
+        url: '/product/save',
         headers: {
           'Content-Type': 'multipart/form-data'
         },
@@ -57,20 +57,10 @@ export default {
     upLoad() {
       console.log(this.$refs.file.submit, 1)
       this.$refs.file.click()
+      console.dir(this.$refs.file)
     },
-    handleRemove(file, fileList) {
-      console.log(file, fileList)
-    },
-    handlePreview(file) {
-      console.log(file)
-    },
-    handleExceed(files, fileList) {
-      this.$message.warning(
-        `当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`
-      )
-    },
-    beforeRemove(file, fileList) {
-      return this.$confirm(`确定移除 ${file.name}？`)
+    downLoad() {
+      
     }
   }
 }
