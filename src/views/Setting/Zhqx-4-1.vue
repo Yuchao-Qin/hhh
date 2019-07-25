@@ -15,8 +15,7 @@
       <el-row :gutter="5" class="tableTitle">
         <el-col class="tableName" :span="20"><span>账户列表</span></el-col>
         <el-col class="addAccount" :span="4">
-          <el-button size="small" type="primary"
-            @click="dialogFormVisible = true">+
+          <el-button size="small" type="primary" @click="addManager">+
             新增管理员</el-button>
         </el-col>
       </el-row>
@@ -124,8 +123,7 @@
       <el-row :gutter="5" class="tableTitle">
         <el-col class="tableName" :span="16"><span>角色列表</span></el-col>
         <el-col class="addAccount" :span="8">
-          <el-button size="small" type="primary"
-            @click="dialogTableVisible = true">+
+          <el-button size="small" type="primary" @click="addJuese">+
             新增角色</el-button>
         </el-col>
       </el-row>
@@ -150,32 +148,38 @@
       </el-table>
       <!-- 修改模态 -->
       <el-dialog width="30%" title="修改" :visible.sync="powerVisible">
-        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"
-          label-width="100px" class="demo-ruleForm">
-          <el-form-item label="角色" size="small">
-            <el-input v-model="role_name" size="small" autocomplete="off">
+        <el-form :model="JueSeruleForm" status-icon :rules="JueSerules"
+          ref="JueSeruleForm" label-width="100px" class="demo-ruleForm">
+          <el-form-item label="角色名称" size="small" prop="role_name">
+            <el-input v-model="JueSeruleForm.role_name" size="small"
+              autocomplete="off">
             </el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <!-- <template slot-scope="scope"> -->
           <el-button @click="powerVisible = false">取 消</el-button>
-          <el-button type="primary" @click="JueseRevise()">确 定
+          <el-button type="primary" @click="JueseRevise('JueSeruleForm')">确 定
           </el-button>
           <!-- </template> -->
         </div>
       </el-dialog>
       <!-- 新增角色模态 -->
       <el-dialog width="30%" title="新增角色" :visible.sync="dialogTableVisible">
-        <el-form status-icon label-width="100px" class="demo-ruleForm">
-          <el-form-item class="jueseName" label="角色名称">
-            <el-input v-model="role_name" size="small" autocomplete="off">
-            </el-input>
-          </el-form-item>
-        </el-form>
+        <template v-if="dialogTableVisible">
+          <el-form :model="JueSeruleForm" :rules="JueSerules"
+            ref="JueSeruleForm" status-icon label-width="100px"
+            class="demo-ruleForm">
+            <el-form-item class="jueseName" label="角色名称" prop="role_name">
+              <el-input v-model="JueSeruleForm.role_name" size="small"
+                autocomplete="off">
+              </el-input>
+            </el-form-item>
+          </el-form>
+        </template>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogTableVisible = false">取 消</el-button>
-          <el-button type="primary" @click="JueseConfirm">确 定
+          <el-button type="primary" @click="JueseConfirm('JueSeruleForm')">确 定
           </el-button>
         </div>
       </el-dialog>
@@ -281,6 +285,12 @@ export default {
         personName: '',
         phoneNumber: ''
       },
+      JueSeruleForm: {
+        role_name: ''
+      },
+      JueSerules: {
+        role_name: [{ required: true, message: '内容不可为空', trigger: 'blur' }]
+      },
       rules: {
         account: [{ required: true, validator: validateAccount, trigger: 'blur' }],
         pass: [{ required: true, validator: validatePass, trigger: 'blur' }],
@@ -314,6 +324,16 @@ export default {
     }
   },
   methods: {
+    addJuese() {
+      this.dialogTableVisible = true
+      this.JueSeruleForm.role_name = ''
+    },
+    addManager() {
+      this.dialogFormVisible = true
+      Object.keys(this.ruleForm).forEach(item => {
+        this.ruleForm[item] = ''
+      })
+    },
     initData() {
       // 角色 分页
       this.$http({
@@ -357,6 +377,22 @@ export default {
       })
     },
     accountListDelet(row) {
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.ACCOUNTDELETFUN(row)
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+    },
+    ACCOUNTDELETFUN(row) {
       this.$http({
         method: 'DELETE',
         url: `/re/${row.id}`
@@ -424,22 +460,26 @@ export default {
         }
       })
     },
-    JueseConfirm() {
-      this.$http
-        .post('/auth/role', {
-          role_name: this.role_name
-        })
-        .then(res => {
-          if (res.code == 200) {
-            this.$message({ message: res.message, type: 'success' })
-            // this.currentPage2 = this.last_page2
-            this.dialogTableVisible = false
-            this.role_name = ''
-            this.initData()
-          } else {
-            this.$message.error(res.message)
-          }
-        })
+    JueseConfirm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.$http
+            .post('/auth/role', {
+              role_name: this.JueSeruleForm.role_name
+            })
+            .then(res => {
+              if (res.code == 200) {
+                this.$message({ message: res.message, type: 'success' })
+                // this.currentPage2 = this.last_page2
+                this.dialogTableVisible = false
+                this.role_name = ''
+                this.initData()
+              } else {
+                this.$message.error(res.message)
+              }
+            })
+        }
+      })
     },
     // 权限分配按钮
     permissionsHandel(index, row) {
@@ -449,6 +489,9 @@ export default {
     manage_edit(row) {
       this.zhuanghu_manage_edit = true
       this.userId = row.id
+      this.ruleForm.personName = row.admin_name
+      this.ruleForm.phoneNumber = row.admin_phone
+      this.ruleForm.region = row.role_id
     },
     manage_edit_confirm(formName) {
       this.$refs[formName].validate(valid => {
@@ -524,6 +567,22 @@ export default {
       })
     },
     Juesedelet(row) {
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.JUESEDELETFUN(row)
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+    },
+    JUESEDELETFUN(row) {
       this.$http.delete(`/auth/role/${row.id}`).then(res => {
         this.$http({
           method: 'get',
@@ -542,23 +601,28 @@ export default {
         })
       })
     },
-    JueseRevise() {
-      this.$http.put(`/auth/role/${this.jueseId}`, { role_name: this.role_name }).then(res => {
-        this.$http.get('/auth/roleList', { params: { page: this.currentPage2 } }).then(res => {
-          if (res.code == 200) {
-            this.JueseTableData = res.data.data
-            // this.last_page2 = res.data.last_page
-            this.powerVisible = false
-            this.role_name = ''
-          } else {
-            this.$message.error(res.message)
-          }
-        })
+    JueseRevise(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.$http.put(`/auth/role/${this.jueseId}`, { role_name: this.JueSeruleForm.role_name }).then(res => {
+            this.$http.get('/auth/roleList', { params: { page: this.currentPage2 } }).then(res => {
+              if (res.code == 200) {
+                this.JueseTableData = res.data.data
+                // this.last_page2 = res.data.last_page
+                this.powerVisible = false
+                this.role_name = ''
+              } else {
+                this.$message.error(res.message)
+              }
+            })
+          })
+        }
       })
     },
     JueseEdit(row) {
       this.powerVisible = true
       this.jueseId = row.id
+      this.JueSeruleForm.role_name = row.role_name
     }
   },
   components: {

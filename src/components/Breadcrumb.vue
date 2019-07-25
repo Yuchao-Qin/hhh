@@ -16,7 +16,9 @@
         @change="handleFileChnage" >
       <el-button v-if="crumData.leadingIn" type="primary" @click="upLoad"
         multiple size="mini">表格上传</el-button>
-      <el-button v-if="crumData.leadingOut" size="mini" @click="downLoad" type="primary">数据导出
+      <el-button v-if="crumData.leadingOut" size="mini" @click="downLoad" type="primary">
+        <slot name="out">商品导出</slot>
+        
       </el-button>
     </div>
 
@@ -32,7 +34,8 @@ export default {
   data() {
     return {
       fileName: '',
-      file: ''
+      file: '',
+      formData:null
     }
   },
   methods: {
@@ -40,27 +43,28 @@ export default {
       let file = e.target.files[0]
       this.fileName = file.name
       this.file = file
-      let formData = new FormData()
-      formData.append('file', file)
-      console.log(console.log(file.value))
-      request({
-        method: 'post',
-        url: '/product/save',
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-        params: formData
-      }).then(res => {
-        console.log(res)
-      })
+      this.formData = new FormData()
+      this.formData.append('file', file)
+      // console.log(file)
+      // console.log(formData.get('file'))
+      this.$emit('update:formData',this.formData)
+      // console.log(this.formData)
+      // request({
+      //   method: 'post',
+      //   url: '/product/save',
+      //   headers: {
+      //     'Content-Type': 'multipart/form-data'
+      //   },
+      //   data: this.formData
+      // }).then(res => {
+      //   console.log(res)
+      // })
     },
     upLoad() {
-      console.log(this.$refs.file.submit, 1)
       this.$refs.file.click()
-      console.dir(this.$refs.file)
     },
     downLoad() {
-      
+      this.$emit('downLoad')
     }
   }
 }

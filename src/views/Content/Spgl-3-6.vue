@@ -2,7 +2,8 @@
   <!-- 用户管理 -->
   <div class="page">
     <!-- 面包屑 -->
-    <Breadcrumb :crumData="crumData"></Breadcrumb>
+    <Breadcrumb :crumData="crumData" @downLoad="downLoad"
+      :formData.sync="formData"></Breadcrumb>
     <!-- 账户管理 -->
     <div class="tableContainer">
       <div :gutter="3" class="tableTitle">
@@ -19,21 +20,20 @@
         </span>
         <span :span="8" class="fr">
           <el-button size="mini" type="primary" @click="search">筛选</el-button>
-          <el-button size="mini" type="primary">查看全部</el-button>
+          <el-button size="mini" type="primary" @click="lookAll">清除筛选
+          </el-button>
           <el-button size="mini" type="primary" @click="deleTable">删除选中项
           </el-button>
           <el-popover class="popoverButton" placement="left" width="200"
             trigger="click" v-model="subjectVisible">
-            <el-select size="mini" v-model="subjectMenu">
-              <!-- <el-option value="1" label="专题A"></el-option>
-              <el-option value="2" label="专题B"></el-option>
-              <el-option value="3" label="专题C"></el-option> -->
-              <el-option v-for="(item,index) in menuList" :key="index"
-                :value="item.id" :label="item.title"></el-option>
+            <el-select size="mini" v-model="sid">
+              <el-option v-for="(item,index) in subList" :key="index"
+                :value="item.special_id" :label="item.special_topic_type">
+              </el-option>
             </el-select>
             <div class="addMenuButtonContainer">
-              <el-button size="mini" type="primary"
-                @click="subjectVisible=false">确认添加</el-button>
+              <el-button size="mini" type="primary" @click="addSub">确认添加
+              </el-button>
             </div>
             <el-button slot="reference" size="mini" type="primary">添加至专题
             </el-button>
@@ -131,7 +131,6 @@
             autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
-      <vueCropper>111111</vueCropper>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary" @click="confirm('ruleForm')">确 定</el-button>
@@ -150,6 +149,7 @@ export default {
         searchSelect: ''
       },
       menuList: {},
+      subList: {},
       slectInputData: null,
       searchData: {},
       currentPage: 1,
@@ -172,14 +172,21 @@ export default {
         bangding: ''
       },
       mid: '',
+      sid: '',
       menuVisible: false,
       subjectVisible: false,
-      subjectMenu: ''
+      subjectMenu: '',
+      formData: ''
     }
   },
   watch: {
     radio1(newValue) {
       this.crumData = [{ name: '设置' }, { name: '账户权限' }, { name: newValue }]
+    },
+    formData(newValue) {
+      if (this.formData !== '') {
+        this.importPro()
+      }
     }
   },
   methods: {
@@ -200,16 +207,14 @@ export default {
       this.slectInputData = { [searchSelect]: searchValue }
       this.searchData = { ...this.slectInputData }
       console.log(this.searchData)
+      this.currentPage = 1
       this.tableListData(this.searchData).then(res => {
         this.tableData = res.data.data_list.list
         this.total = res.data.data_list.total
-        this.currentPage = 1
       })
     },
     // 分页
     handleCurrentChange(val) {
-      console.log(isNull(this.slectInputData))
-
       if (!isNull(this.slectInputData)) {
         this.searchItem.searchSelect = Object.keys(this.slectInputData)[0]
         this.searchItem.searchValue = this.slectInputData[this.searchItem.searchSelect]
@@ -218,8 +223,8 @@ export default {
         this.searchItem.searchValue = ''
       }
       console.log(val)
-      this.searchData.page = val
-      this.tableListData(this.searchData).then(res => {
+      // this.searchData.page = val
+      this.tableListData(this.searchData, val).then(res => {
         this.tableData = res.data.data_list.list
       })
     },
@@ -229,28 +234,43 @@ export default {
     },
     // 删除选中项
     deleTable() {
-      if (this.multipleSelection.length == 0) { 
+      if (this.multipleSelection.length == 0) {
         this.$message.error('请选择商品')
         return
       }
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.DELETALLFUN()
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+    },
+    DELETALLFUN() {
       let deletIdArr = this.multipleSelection.map(item => {
         return item.id
       })
       let stringdelet = deletIdArr.join(',')
       this.tableDeleApi({ ids: stringdelet }).then(res => {
-        console.log(res)
         if (res.code == 200) {
           this.$message({
             type: 'success',
             message: res.message
           })
-          this.tableListData().then(res => {
+          this.tableListData(this.searchData).then(res => {
             console.log(res)
             this.tableData = res.data.data_list.list
             this.total = res.data.data_list.total
             if (res.data.data_list.list.length == 0 && this.currentPage > 0) {
               this.currentPage -= 1
-              this.tableListData().then(res => {
+              this.tableListData(this.searchData).then(res => {
                 this.tableData = res.data.data_list.list
                 this.total = res.data.data_list.total
               })
@@ -288,10 +308,47 @@ export default {
         }
       })
     },
-    async tableListData(params = { page: this.currentPage }) {
+    // 添加至专题按钮
+    addSub() {
+      if (this.multipleSelection.length == 0) {
+        this.$message.error('请选择商品')
+        return
+      }
+      let addSubArr = this.multipleSelection.map(item => {
+        return item.id
+      })
+      let stringMenu = addSubArr.join(',')
+      this.addMenuApi({ sid: this.sid, ids: stringMenu }).then(res => {
+        if (res.code == 200) {
+          this.$message({
+            type: 'success',
+            message: res.message
+          })
+          this.menuVisible = false
+          this.$refs.multipleTable.clearSelection()
+        } else {
+          this.$message.error(res.message)
+        }
+      })
+
+      this.subjectVisible = false
+    },
+    // 查看全部
+    lookAll() {
+      this.searchItem.searchSelect = ''
+      this.searchItem.searchValue = ''
+      this.searchData.searchSelect = ''
+      this.searchData.searchValue = ''
+      this.currentPage = 1
+      this.tableListData().then(res => {
+        this.tableData = res.data.data_list.list
+        this.total = res.data.data_list.total
+      })
+    },
+    async tableListData(params, pages = this.currentPage) {
       let res = await this.$http({
         method: 'get',
-        url: `/product/lists${params.page ? '/' + params.page : ''}`,
+        url: `/product/lists${pages ? '/' + pages : ''}`,
         params: {
           limit: 10,
           ...params
@@ -313,15 +370,76 @@ export default {
         method: 'GET',
         url: '/menu/lists'
       })
+      console.log(res)
       if (res.code == 200) {
-        this.menuList = res.data
+        this.menuList = res.data.list
       }
     },
-    // 添加之菜单
-    async addMenuApi(params = {}) {
+    // 专题列表
+    async subjectApi() {
+      let res = await this.$http({
+        method: 'GET',
+        url: '/st/specialShow'
+      })
+      console.log(res)
+      if (res.code == 200) {
+        this.subList = res.data.list
+      }
+    },
+    // 添加至菜单或专题
+    addMenuApi(params = {}) {
       let res = this.$http.post('/product/group', { ...params })
-
       return res
+    },
+    // 导入商品
+    importPro() {
+      this.$http({
+        method: 'post',
+        url: '/product/save',
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+        data: this.formData
+      }).then(res => {
+        console.log(res)
+        if (res.code == 200) {
+          this.$message({
+            type: 'success',
+            message: res.message
+          })
+        } else {
+          this.$message.error(res.message)
+        }
+      })
+    },
+    // 导出商品
+    downLoad() {
+      if (!isNull(this.slectInputData)) {
+        this.searchItem.searchSelect = Object.keys(this.slectInputData)[0]
+        this.searchItem.searchValue = this.slectInputData[this.searchItem.searchSelect]
+      } else {
+        this.searchItem.searchSelect = ''
+        this.searchItem.searchValue = ''
+      }
+      this.$http({ method: 'get', url: '/product/export', params: this.searchData }).then(res => {
+        if (res) {
+          // console.log(res)
+          this.download(res.request.responseURL)
+        }
+      })
+    },
+    download(responseUrl) {
+      if (!responseUrl) {
+        return
+      }
+      let url = responseUrl
+      let link = document.createElement('a')
+      link.style.display = 'none'
+      link.href = url
+      // link.setAttribute('download', 'excel.csv')
+
+      document.body.appendChild(link)
+      link.click()
     }
   },
 
@@ -335,6 +453,7 @@ export default {
       }
     })
     this.menuListApi()
+    this.subjectApi()
   },
   components: {
     Breadcrumb

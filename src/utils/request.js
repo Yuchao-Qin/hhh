@@ -52,11 +52,16 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   
   response => {
+
     let { data, code, result, message } = response.data;
+    // console.log(response)
     if (code !== 200) {
       // if(status===500) 处理token过期等
       // return Promise.resolve(false);
       $endLoading()
+      if (!code&&!message) {
+        return response
+      }
       return { data, result, message, code };
     } else {
       $endLoading()
@@ -65,7 +70,7 @@ service.interceptors.response.use(
   },
   error => {
     console.log("err" + error); // for debug
-    
+    // console.log(error)
     // if (error.message == 'timeout of 5000ms exceeded') {
     //   Message.error(error.message)
     //   $endLoading()
@@ -79,7 +84,7 @@ service.interceptors.response.use(
       router.push({name:'Login'})
       // pre();
     } else {
-      Message.error('接口报错！')
+      Message.error(message)
     }
     
     return Promise.reject(error);

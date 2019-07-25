@@ -36,3 +36,17 @@
 .margin10 {
   margin-right: 10px;
 }
+
+.el-color-picker__mask {
+  background-color: rgba(0,0,0,0);
+} 
+
+.el-input.is-disabled .el-input__inner {
+    color: black;
+    border-color:normal;
+    background-color:#fff
+}
+
+.jueseName {
+  min-width: 450px
+}

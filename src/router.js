@@ -4,7 +4,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
+  mode: 'hash',
   // base: process.env.BASE_URL,
   routes: [
     {
@@ -88,22 +88,22 @@ export default new Router({
         components:  {default1:()=>import("./views/Setting/Tjqx-4-3")}
       },
       {
-        path:'Management/Yhgl-2-1/BillDetail',
+        path:'Management/Yhgl-2-1/BillDetail/:account/:id/:nickname',
         name:'BillDetail',
         components:  {default1:()=>import("./views/Management/inPage/BillDetail")},
       },
       {
-        path:'Management/Yhgl-2-2/userManager',
+        path:'Management/Yhgl-2-2/userManager/:account/:id/:name',
         name:'userManager',
         components:  {default1:()=>import("./views/Management/inPage/userManager")},
       },
       {
-        path:'Content/Ztgl-3-4/ProdectManage',
+        path:'Content/Ztgl-3-4/ProdectManage/:name/:special_id',
         name:'ProdectManage',
         components:  {default1:()=>import("./views/Content/inPage/ProdectManage")},
       },
       {
-        path:'Content/Ztgl-3-4/MenuManage',
+        path:'Content/Ztgl-3-3/MenuManage/:id',
         name:'MenuManage',
         components:  {default1:()=>import("./views/Content/inPage/MenuManage")},
       },

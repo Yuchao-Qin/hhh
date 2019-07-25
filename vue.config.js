@@ -1,6 +1,8 @@
 // vue.config.js
 const path = require("path");
 module.exports = {
+  // publicPath:'/',
+  // baseUrl: './',
   configureWebpack: () => ({
     resolve: {
       alias: {
@@ -13,6 +15,7 @@ module.exports = {
     config
         .plugin('define')
         .tap(args => { 
+          
             args[0]["process.env"].BASE_URL = JSON.stringify(process.env.BASE_URL);
             return args
         })

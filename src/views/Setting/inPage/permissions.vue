@@ -84,7 +84,7 @@ export default {
       addDialogFormVisible: false,
       permissions: {
         role_id: this.$route.params.id,
-        permissions_id: 1,
+        permissions_id: '',
         is_read: '0',
         is_post: '0',
         is_delete: '0',
@@ -148,7 +148,6 @@ export default {
         )
     },
     Tabledelet(row) {
-      console.log(1111)
       this.$http({
         method: 'DELETE',
         url: `/auth/role/node`,

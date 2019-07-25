@@ -6,7 +6,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import VueCropper from 'vue-cropper';
 import "./publicStyle/public.css";
 import Request from '@/utils/request.js';
-import { Message,Loading } from 'element-ui';
+import { Message,Loading,MessageBox } from 'element-ui';
 import { pre } from "@/permission"; //路由访问权限
 pre();
 let loading = null;
@@ -23,6 +23,7 @@ Vue.prototype.$endLoading = function () {
 }
 Vue.prototype.$message = Message;
 Vue.prototype.$http = Request;
+Vue.prototype.$confirm = MessageBox.confirm ;
 
 
 
@@ -57,13 +58,16 @@ import { Option,
          Popover,
          Upload,
          Tag,
-         Image
+         Image,
+         ColorPicker,
+         InputNumber
         } from "element-ui";
         
 Vue.config.productionTip = false;
 
 // 注册组件
 Vue.use(VueCropper);
+Vue.use(InputNumber);
 Vue.use(Option);
 Vue.use(Select);
 Vue.use(Input);
@@ -99,6 +103,7 @@ Vue.use(Popover);
 Vue.use(Upload);
 Vue.use(Tag);
 Vue.use(Image);
+Vue.use(ColorPicker);
 
 
 

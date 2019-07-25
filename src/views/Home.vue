@@ -15,7 +15,7 @@
     <el-row class="content" type="flex" justify="space-between">
       <el-col class="contentNav">
         <el-scrollbar>
-          <el-menu :default-active="refreshActive" class="el-menu-vertical-demo"
+          <el-menu :default-active="refreshActive" class="el-menu-vertical-demo menu-native"
             @open="handleOpen" @select="handleSelect" :collapse="isCollapse">
             <el-submenu v-for="(titleItem, titleIndex) in menuData"
               :key="titleIndex" :index="(titleIndex + 1).toString()">
@@ -50,7 +50,7 @@ export default {
       menuData: [
         { title: '数据查看', icon: 'el-icon-pie-chart', item: [{ name: '数据查看', index: 'sjck-1-1' }] },
         {
-          title: '管&emsp;&emsp;理',
+          title: '管理',
           icon: 'el-icon-menu',
           item: [
             { name: '用户管理', index: 'yhgl-2-1' },
@@ -60,7 +60,7 @@ export default {
           ]
         },
         {
-          title: '内&emsp;&emsp;容',
+          title: '内容',
           icon: 'el-icon-folder-opened',
           item: [
             { name: '商品管理', index: 'spgl-3-6' },
@@ -72,7 +72,7 @@ export default {
           ]
         },
         {
-          title: '设&emsp;&emsp;置',
+          title: '设置',
           icon: 'el-icon-setting',
           item: [
             { name: '账户管理', index: 'zhqx-4-1' },
@@ -140,6 +140,9 @@ export default {
 h1,h3{
   margin: 10px 0;
 }
+.logOut{
+  cursor:pointer;
+}
 .pageTitle {
   background: #409eff;
   color: #fff;
@@ -177,6 +180,13 @@ h1,h3{
   width: calc(100% - 215px);
 }
 
+//  .el-submenu__title {
+//   text-align: left !important;
+// }
+
+// .menu-native .el-submenu__title {
+//   text-align: left;
+// }
 // .content {
 //   overflow: auto;
 // }
@@ -185,5 +195,14 @@ h1,h3{
 //   overflow-y: auto;
 //   overflow-x: hidden;
 // }
+</style>
+<style>
+.menu-native .el-submenu__title {
+   text-align: left;
+ }
+
+.menu-native .el-submenu .el-menu-item {
+  text-align: left;
+}
 </style>
 

@@ -4,41 +4,61 @@
     <Breadcrumb :crumData="crumData"></Breadcrumb>
     <!-- tab -->
     <h3 class="title">账单详情</h3>
-    <div class="headGroup">
+    <!-- <div class="headGroup">
       <DatePicker @Datepicker="DateP = $event"></DatePicker>
-    </div>
+      
+    </div> -->
     <!-- 账户管理 -->
     <div class="tableContainer">
       <div :gutter="5" class="tableTitle">
-        <span class="tableName" :span="20">
-          <span>用户ID：xxxxxxxxxx</span><span>用户昵称：xxxxxxxx</span></span>
+        <span class="tableName fl margin10" :span="20">
+          <span>用户ID：{{account}}</span><span>用户昵称：{{nickname}}</span></span>
+        <span class="tableName fl margin10">
+          <DatePicker :pic.sync="searchItem.date"></DatePicker>
+        </span>
+        <span class="tableName fl margin10">
+          <el-select v-model="searchItem.type" size="mini" placeholder="请选择">
+            <el-option v-for="item in options" :key="item.value"
+              :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
+        </span>
+        <span class="fr">
+          <el-button size="mini" type="primary" @click="screen">筛选</el-button>
+          <el-button size="mini" type="primary" @click="clearScreen">清除筛选
+          </el-button>
+        </span>
       </div>
-      <el-table  size="mini" max-height="550" :data="tableData" border stripe style="width: 100%">
-        <el-table-column prop="accountNumber" label="时间">
+      <el-table size="mini" max-height="550" :data="tableData" border stripe
+        style="width: 100%">
+        <el-table-column prop="add_time" label="时间">
         </el-table-column>
-        <el-table-column prop="character" label="金额">
+        <el-table-column prop="cost" label="金额">
         </el-table-column>
-        <el-table-column prop="name">
-          <template slot="header" slot-scope="">
-            <el-select v-model="tableSelectValue" size="mini" placeholder="请选择">
-              <el-option v-for="item in options" :key="item.value"
-                :label="item.label" :value="item.value">
-              </el-option>
-            </el-select>
+        <el-table-column prop="name" label="记录">
+          <template slot-scope="scope">
+            {{scope.row.type == 1?'消费':'充值'}}
           </template>
         </el-table-column>
-        <el-table-column prop="phoneNumber" v-if="chong_zhi" label="来源">
+        <el-table-column prop="purpose" label="来源/去处">
         </el-table-column>
-        <el-table-column prop="phoneNumber" v-if="xiao_fei" label="去处">
+        <!-- <el-table-column prop="phoneNumber" label="去处">
+        </el-table-column> -->
+        <el-table-column prop="staus" label="卡密">
+          <template slot-scope="scope">
+            {{scope.row.type==2?scope.row.secret:'空'}}
+          </template>
         </el-table-column>
-        <el-table-column prop="staus" v-if="chong_zhi" label="卡密">
-        </el-table-column>
-        <el-table-column prop="staus" v-if="xiao_fei" label="优惠券链接">
+        <el-table-column prop="link" label="优惠券链接">
+          <template slot-scope="scope">
+            {{scope.row.type==1?scope.row.link:'空'}}
+          </template>
         </el-table-column>
       </el-table>
       <!-- 分页 -->
       <el-pagination class="pagination" background layout="prev, pager, next"
-        :pager-count='17' :total="1000">
+        @current-change="handleCurrentChange" :current-page.sync="currentPage"
+        :total="total">
       </el-pagination>
     </div>
   </div>
@@ -49,6 +69,15 @@ import DatePicker from '@/components/DatePicker.vue'
 export default {
   data() {
     return {
+      currentPage: 1,
+      total: 0,
+      searchItem: {
+        date: []
+      },
+      searchData: {},
+      account: this.$route.params.account,
+      nickname: this.$route.params.nickname,
+      id: this.$route.params.id,
       overView: [],
       management: [],
       content: [],
@@ -61,73 +90,41 @@ export default {
         leadingIn: false,
         leadingOut: false
       },
-      tableData: [
-        {
-          accountNumber: '2016-05-02',
-          character: '管理员',
-          name: '王小虎',
-          phoneNumber: '13888888888',
-          staus: 200
-        },
-        {
-          accountNumber: '2016-05-04',
-          character: '管理员',
-          name: '王小虎',
-          phoneNumber: '13888888888',
-          staus: 200
-        },
-        {
-          accountNumber: '2016-05-01',
-          character: '管理员',
-          name: '王小虎',
-          phoneNumber: '13888888888',
-          staus: 200
-        },
-        {
-          accountNumber: '2016-05-03',
-          character: '管理员',
-          name: '王小虎',
-          phoneNumber: '13888888888',
-          staus: 200
-        }
-      ],
+      tableData: [],
       options: [
         {
-          value: '全部记录',
-          label: '全部记录'
-        },
-        {
-          value: '充值',
+          value: '2',
           label: '充值'
         },
         {
-          value: '消费',
+          value: '1',
           label: '消费'
         }
       ],
-      tableSelectValue: '全部记录'
+      tableSelectValue: ''
     }
   },
-  watch: {
-    // radio1(newValue) {
-    //   this.crumData = [{ name: '设置' }, { name: '账户权限' }, { name: newValue }]
-    // }
-  },
-  watch: {
-    tableSelectValue(newValue) {
-      if (newValue == '充值') {
-        this.chong_zhi = true
-        this.xiao_fei = false
-      } else if (newValue == '消费') {
-        this.xiao_fei = true
-        this.chong_zhi = false
-      } else {
-        this.xiao_fei = true
-        this.chong_zhi = true
-      }
-    }
-  },
+  watch: {},
   methods: {
+    // 分页
+    handleCurrentChange(val) {
+      this.searchItem = { ...this.searchData }
+      this.TableListAPI(this.searchData,val)
+    },
+    // 筛选
+    screen() {
+      this.currentPage = 1
+      this.searchData = { ...this.searchItem }
+      this.TableListAPI(this.searchData)
+    },
+    // 清除筛选
+    clearScreen() {
+      this.currentPage = 1
+      this.searchItem = {}
+      this.searchData = {}
+      this.searchItem.date = []
+      this.TableListAPI(this.searchData)
+    },
     confirm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -139,10 +136,26 @@ export default {
           this.dialogFormVisible = true
         }
       })
+    },
+    // 表单列表
+    TableListAPI(params, page = this.currentPage) {
+      this.$http({
+        method: 'get',
+        url: `/user/order${page ? '/' + page : ''}`,
+        params: { user_id: this.id, ...params }
+      }).then(res => {
+        if (res.code == 200) {
+          this.tableData = res.data.list
+          this.total = res.data.total
+        }
+      })
+    },
+    async initPage() {
+      await this.TableListAPI()
     }
   },
   mounted() {
-    console.log(1)
+    this.initPage()
   },
   components: {
     Breadcrumb,
@@ -165,7 +178,6 @@ export default {
 .tableContainer {
   padding: 0 15px;
   .tableTitle {
-    display: flex;
     padding: 10px;
   }
 }
@@ -184,7 +196,6 @@ export default {
 .delet {
   color: red;
 }
-
 
 .el-select {
   width: 100%;

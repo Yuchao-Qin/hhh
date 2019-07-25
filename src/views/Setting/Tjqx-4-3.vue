@@ -7,8 +7,8 @@
     <div class="tableContainer">
       <div :gutter="3" class="tableTitle">
         <span :span="8">
-          <el-button size="mini" type="primary"
-            @click="permissionsManageVisible = true">+ 添加权限管理</el-button>
+          <el-button size="mini" type="primary" @click="addPower">+ 添加权限管理
+          </el-button>
         </span>
       </div>
       <el-table size="mini" max-height="530" :data="tableData" border stripe
@@ -71,7 +71,28 @@ export default {
   },
   methods: {
     newAccount() {},
+    addPower() {
+      this.permissionsManageVisible = true
+      this.controllers = ''
+      this.permissions_name = ''
+    },
     delet(row) {
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.DELETFUN(row)
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+    },
+    DELETFUN(row) {
       this.$http.delete(`/auth/permission/${row.id}`).then(res => {
         if (res.code == 200) {
           this.tableListData()
@@ -92,6 +113,7 @@ export default {
         }
       }).then(res => {
         if (res.code == 200) {
+          this.permissionsManageVisible = false
           this.tableListData()
           this.$message({
             type: 'success',

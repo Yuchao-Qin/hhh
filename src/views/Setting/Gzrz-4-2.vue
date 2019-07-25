@@ -17,7 +17,7 @@
         </span>
         <span class="fr" :span="8">
           <el-button type="primary" size="mini" @click="search">筛选</el-button>
-          <el-button size="mini" type="primary" @click="searchAll">查看全部
+          <el-button size="mini" type="primary" @click="searchAll">清除筛选
           </el-button>
         </span>
       </div>
